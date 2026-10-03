@@ -82,7 +82,7 @@ function RegisterContainer() {
                 <LoginFormContainer title={`Create an Account`}>
                     <Field
                         type={'text'}
-                        label={'Username'}
+                        label={'Nom d\'utilisateur'}
                         icon={faIdBadge}
                         name={'username'}
                         placeholder={'user_account'}

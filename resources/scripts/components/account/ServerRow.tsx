@@ -357,7 +357,7 @@ export default ({
                             <ResourceBar
                                 value={Number(cpuUsed?.toFixed(1) ?? 0)}
                                 icon={faMicrochip}
-                                label={'CPU'}
+                                label={'Processeur (CPU)'}
                                 colorClass={'bg-white/50'}
                             />
                             <ResourceBar

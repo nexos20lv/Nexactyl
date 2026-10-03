@@ -31,7 +31,7 @@ export default ({ node, setNode }: { node: Node | null; setNode: (_: Node | null
         <SearchableSelect
             id={'nodeId'}
             name={'nodeId'}
-            label={'Node'}
+            label={'Noeud (Node)'}
             placeholder={'Select a node...'}
             items={nodes}
             selected={node}

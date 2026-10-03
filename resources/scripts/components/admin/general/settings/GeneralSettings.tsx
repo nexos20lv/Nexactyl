@@ -149,7 +149,7 @@ export default () => {
                                     />
                                 </div>
                                 <div className={'inline-flex'}>
-                                    <Label className={'mt-1 mr-2'}>Admin</Label>
+                                    <Label className={'mt-1 mr-2'}>Administrateur</Label>
                                     <Field
                                         id={'activity.enabled.admin'}
                                         name={'activity.enabled.admin'}

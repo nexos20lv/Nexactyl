@@ -98,7 +98,7 @@ export const InformationContainer = ({ title, initialValues, children, onSubmit 
 
                             <div css={tw`md:w-full md:flex md:flex-row mt-6`}>
                                 <div css={tw`md:w-full md:flex md:flex-col md:mr-4 mt-6 md:mt-0`}>
-                                    <Field id={'username'} name={'username'} label={'Username'} type={'text'} />
+                                    <Field id={'username'} name={'username'} label={'Nom d\'utilisateur'} type={'text'} />
                                 </div>
 
                                 <div css={tw`md:w-full md:flex md:flex-col md:ml-4 mt-6 md:mt-0`}>

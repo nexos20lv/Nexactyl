@@ -99,7 +99,7 @@ export default function UserForm({ title, initialValues, children, onSubmit, uui
                             <Field
                                 id={'username'}
                                 name={'username'}
-                                label={'Username'}
+                                label={'Nom d\'utilisateur'}
                                 type={'text'}
                                 description={"The user's username, what else would go here?"}
                             />

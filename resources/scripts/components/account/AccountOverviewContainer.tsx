@@ -45,7 +45,7 @@ export default () => {
                 </ContentBox>
 
                 <ContentBox css={tw`mt-8 lg:mt-0 lg:ml-8`} title="Account Information">
-                    <Detail label={'Username'}>{user.username}</Detail>
+                    <Detail label={'Nom d\'utilisateur'}>{user.username}</Detail>
                     <Detail label={'Adresse Email'}>{user.email}</Detail>
                     <Detail label={'Account ID'}>
                         <CopyOnClick text={user.uuid}>

@@ -38,7 +38,7 @@ export default ({ subuser }: Props) => {
                     />
                     &nbsp;
                 </p>
-                <p css={tw`text-2xs text-neutral-300 uppercase hidden md:block`}>2FA Enabled</p>
+                <p css={tw`text-2xs text-neutral-300 uppercase hidden md:block`}>A2F Activé</p>
             </div>
             <div css={tw`ml-4 hidden md:block`}>
                 <p css={tw`font-medium text-center`}>
