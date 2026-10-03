@@ -17,7 +17,7 @@ export default () => {
     if (!enabled) return <EnableTicketsContainer />;
 
     return (
-        <AdminContentBlock title={'Ticket Dashboard'}>
+        <>
             <FlashMessageRender byKey={'admin:tickets'} className={'mb-4'} />
             <div className={'w-full flex flex-row items-center mb-8'}>
                 <div className={'flex flex-col flex-shrink'} style={{ minWidth: '0' }}>
@@ -49,6 +49,6 @@ export default () => {
 
                 <Route path={'/*'} element={<NotFound />} />
             </Routes>
-        </AdminContentBlock>
+        </>
     );
 };
