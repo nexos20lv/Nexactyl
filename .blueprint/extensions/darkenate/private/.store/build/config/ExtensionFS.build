@@ -1,0 +1,1 @@
+/* DarkenateStart */ 'blueprint:darkenate' => [ 'driver' => 'local', 'root' => storage_path('extensions/darkenate'), 'url' => env('APP_URL') . '/fs/extensions/darkenate', 'visibility' => 'public', 'throw' => false, ], 'blueprint_private:darkenate' => [ 'driver' => 'local', 'root' => storage_path('.extensions/darkenate'), 'throw' => false, ], /* DarkenateEnd */

@@ -1,0 +1,41 @@
+## Blueprint addon manifest for Console Logs.
+## `identifier` should be treated as immutable after release (it is used for install/remove and lookups).
+## `target` should match the Blueprint release this addon is tested against.
+
+info:
+  name: "Console Logs"
+  identifier: "consolelogs"
+  description: "Addon that allows users to Copy Console Logs to Clipboard"
+  flags: ""
+  version: "v1.1"
+  target: "beta-2026-01"
+  author: "Euphoria Development"
+  icon: "consolelogs.png"
+  website: "https://euphoriadevelopment.uk"
+
+admin:
+  view: "admin/view.blade.php"
+  controller: ""
+  css: ""
+  wrapper: ""
+
+dashboard:
+  css: ""
+  wrapper: "client/wrapper.blade.php"
+  components: "components"
+
+data:
+  directory: ""
+  public: ""
+  console: ""
+
+requests:
+  views: ""
+  controllers: ""
+  routers:
+    application: ""
+    client: ""
+    web: ""
+
+database:
+  migrations: ""

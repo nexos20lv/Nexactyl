@@ -1,0 +1,3 @@
+#!/bin/bash
+php "$PTERODACTYL_DIRECTORY/.blueprint/extensions/paneladdressoverride/private/unpatch.php"
+

@@ -1,0 +1,1 @@
+/* ConsolelogsStart */ 'blueprint:consolelogs' => [ 'driver' => 'local', 'root' => storage_path('extensions/consolelogs'), 'url' => env('APP_URL') . '/fs/extensions/consolelogs', 'visibility' => 'public', 'throw' => false, ], 'blueprint_private:consolelogs' => [ 'driver' => 'local', 'root' => storage_path('.extensions/consolelogs'), 'throw' => false, ], /* ConsolelogsEnd */

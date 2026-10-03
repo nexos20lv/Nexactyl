@@ -1,0 +1,90 @@
+ln: failed to create symbolic link '/var/www/pterodactyl/public/extensions/blueprint': File exists
+ln: failed to create symbolic link '/var/www/pterodactyl/public/assets/extensions/blueprint': File exists
+
+   ERROR  The [public/storage] link already exists.  
+
+
+   INFO  Seeding database.  
+
+
+
+   INFO  Blade templates cached successfully.  
+
+
+   INFO  Configuration cached successfully.  
+
+
+   INFO  Route cache cleared successfully.  
+
+
+   INFO  Application cache cleared successfully.  
+
+Flushed Blueprint stylesheet and scripts cache.
+   INFO  Broadcasting queue restart signal.  
+
+chown: cannot dereference '/var/www/pterodactyl/resources/scripts/blueprint/css/imported/darkenate.css': No such file or directory
+chown: cannot dereference '/var/www/pterodactyl/storage/extensions/darkenate': No such file or directory
+chown: cannot dereference '/var/www/pterodactyl/storage/extensions/refreshtheme': No such file or directory
+chown: cannot dereference '/var/www/pterodactyl/public/fs/darkenate': No such file or directory
+chown: cannot dereference '/var/www/pterodactyl/public/fs/refreshtheme': No such file or directory
+chown: cannot dereference '/var/www/pterodactyl/public/assets/extensions/darkenate': No such file or directory
+chown: cannot dereference '/var/www/pterodactyl/public/assets/extensions/refreshtheme': No such file or directory
+chown: cannot dereference '/var/www/pterodactyl/public/extensions/refreshtheme': No such file or directory
+ln: failed to create symbolic link '/var/www/pterodactyl/public/assets/extensions/darkenate': File exists
+ln: failed to create symbolic link '/var/www/pterodactyl/storage/extensions/darkenate': File exists
+ln: failed to create symbolic link '/var/www/pterodactyl/public/fs/darkenate': File exists
+ln: failed to create symbolic link '/var/www/pterodactyl/.blueprint/extensions/darkenate/private': File exists
+
+   ERROR  The [public/storage] link already exists.  
+
+
+
+   INFO  Blade templates cached successfully.  
+
+
+   INFO  Configuration cached successfully.  
+
+
+   INFO  Route cache cleared successfully.  
+
+
+   INFO  Application cache cleared successfully.  
+
+Flushed Blueprint stylesheet and scripts cache.
+   INFO  Broadcasting queue restart signal.  
+
+chown: cannot dereference '/var/www/pterodactyl/storage/extensions/refreshtheme': No such file or directory
+chown: cannot dereference '/var/www/pterodactyl/public/fs/refreshtheme': No such file or directory
+chown: cannot dereference '/var/www/pterodactyl/public/assets/extensions/refreshtheme': No such file or directory
+chown: cannot dereference '/var/www/pterodactyl/public/extensions/refreshtheme': No such file or directory
+ln: failed to create symbolic link '/var/www/pterodactyl/.blueprint/extensions/consolelogs/private': File exists
+ln: failed to create symbolic link '/var/www/pterodactyl/public/assets/extensions/darkenate': File exists
+ln: failed to create symbolic link '/var/www/pterodactyl/storage/extensions/darkenate': File exists
+ln: failed to create symbolic link '/var/www/pterodactyl/public/fs/darkenate': File exists
+ln: failed to create symbolic link '/var/www/pterodactyl/.blueprint/extensions/darkenate/private': File exists
+ln: failed to create symbolic link '/var/www/pterodactyl/.blueprint/extensions/paneladdressoverride/private': File exists
+rm: cannot remove '/var/www/pterodactyl/routes/blueprint/web/translations.php': No such file or directory
+ln: failed to create symbolic link '/var/www/pterodactyl/.blueprint/extensions/translations/private': File exists
+
+   ERROR  The [public/storage] link already exists.  
+
+
+
+   INFO  Blade templates cached successfully.  
+
+
+   INFO  Configuration cached successfully.  
+
+
+   INFO  Route cache cleared successfully.  
+
+
+   INFO  Application cache cleared successfully.  
+
+Flushed Blueprint stylesheet and scripts cache.
+   INFO  Broadcasting queue restart signal.  
+
+chown: cannot dereference '/var/www/pterodactyl/storage/extensions/refreshtheme': No such file or directory
+chown: cannot dereference '/var/www/pterodactyl/public/fs/refreshtheme': No such file or directory
+chown: cannot dereference '/var/www/pterodactyl/public/assets/extensions/refreshtheme': No such file or directory
+chown: cannot dereference '/var/www/pterodactyl/public/extensions/refreshtheme': No such file or directory

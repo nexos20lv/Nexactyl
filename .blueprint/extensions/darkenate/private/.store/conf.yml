@@ -1,0 +1,18 @@
+# https://blueprint.zip/docs/configs/confyml
+
+info:
+  name: "Darkenate"
+  identifier: "darkenate"
+  description: "A dark theme inspired by bloom.host's colors and the Recolor theme"
+  version: "v2.0.3"
+  target: "beta-2026-01"
+  author: "JasonHorkles"
+  icon: "assets/icon.jpg"
+  website: "https://github.com/blueprint-community/extension-darkenate"
+
+admin:
+  view: "admin/view.blade.php"
+  css: "admin/admin.style.css"
+
+dashboard:
+  css: "client/client.style.css"
