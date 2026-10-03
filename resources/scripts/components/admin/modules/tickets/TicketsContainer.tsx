@@ -60,7 +60,7 @@ function TicketContainer() {
                             'hidden lg:block text-base text-neutral-400 whitespace-nowrap overflow-ellipsis overflow-hidden'
                         }
                     >
-                        Update settings and manage user tickets.
+                        Mettre à jour les paramètres et gérer les tickets.
                     </p>
                 </div>
                 <div css={tw`flex ml-auto pl-4`}>

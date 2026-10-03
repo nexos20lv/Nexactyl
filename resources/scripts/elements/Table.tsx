@@ -19,9 +19,9 @@ const PaginatedFooter = ({
         >
             <div className={'flex justify-between space-x-2'}>
                 <p className={'text-xs font-bold text-gray-400 my-auto'}>
-                    Showing <span className={'text-white'}>{pagination.startIndex + 1}</span> to{' '}
+                    Affichage de <span className={'text-white'}>{pagination.startIndex + 1}</span> à{' '}
                     <span className={'text-white'}>{pagination.endIndex}</span> of{' '}
-                    <span className={'text-white'}>{pagination.totalItems}</span> results
+                    <span className={'text-white'}>{pagination.totalItems}</span> résultats
                 </p>
                 <div className={'inline-flex'}>
                     <p className={'text-xs font-bold text-gray-400 my-auto mr-2'}>

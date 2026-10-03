@@ -13,7 +13,7 @@ export default () => {
 
     return (
         <div className={'mr-4'} onClick={submit}>
-            {!enabled ? <Button>Enable Tickets</Button> : <Button.Danger>Disable Tickets</Button.Danger>}
+            {!enabled ? <Button>Activer les tickets</Button> : <Button.Danger>Désactiver les tickets</Button.Danger>}
         </div>
     );
 };

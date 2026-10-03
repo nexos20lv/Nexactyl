@@ -184,7 +184,7 @@ export function Pagination<T>({ data, onPageSelect, children }: Props<T>) {
 
             <div css={tw`h-12 flex flex-row items-center w-full px-6 py-3 border-t border-neutral-500`}>
                 <p css={tw`text-sm leading-5 text-neutral-400`}>
-                    Showing{' '}
+                    Affichage de{' '}
                     <span css={tw`text-neutral-300`}>
                         {(pagination.currentPage - 1) * pagination.perPage + (pagination.total > 0 ? 1 : 0)}
                     </span>{' '}
@@ -280,7 +280,7 @@ export const NoItems = ({ className }: { className?: string }) => {
             </div>
 
             <p css={tw`text-lg text-neutral-300 text-center font-normal sm:mt-8`}>
-                No items could be found, it&apos;s almost like they are hiding.
+                Aucun élément n'a été trouvé.
             </p>
         </div>
     );

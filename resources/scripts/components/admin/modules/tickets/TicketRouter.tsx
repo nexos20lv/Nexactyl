@@ -27,7 +27,7 @@ export default () => {
                             'hidden lg:block text-base text-neutral-400 whitespace-nowrap overflow-ellipsis overflow-hidden'
                         }
                     >
-                        View, create and update tickets to users for support.
+                        Voir, créer et mettre à jour les tickets de support utilisateurs.
                     </p>
                 </div>
             </div>

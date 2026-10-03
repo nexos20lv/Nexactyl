@@ -99,7 +99,7 @@ export default () => {
             >
                 {({ isSubmitting }) => (
                     <Form>
-                        <AdminBox title={'Ticket Options'} icon={faGears} status={boxStatus.status}>
+                        <AdminBox title={'Options des tickets'} icon={faGears} status={boxStatus.status}>
                             <div className={'grid lg:grid-cols-3 gap-4'}>
                                 <div>
                                     <Label>Update ticket status</Label>
