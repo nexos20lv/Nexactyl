@@ -1,0 +1,86 @@
+name: Auto Release Nexactyl
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (ex: v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, bcmath, xml, curl, zip, gd, mysql
+
+      - name: Install PHP Dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Build Frontend
+        run: |
+          pnpm install
+          pnpm build
+
+      - name: Prepare Release Archive (panel.tar.gz)
+        run: |
+          # Clean up development files to make the archive lighter
+          rm -rf node_modules
+          rm -rf .git
+          rm -rf .github
+          # Create the final tar.gz including hidden files like .env.example
+          tar -czvf panel.tar.gz * .env.example
+
+      - name: Set Tag Name
+        id: tag
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "TAG_NAME=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+          else
+            echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          name: Nexactyl ${{ env.TAG_NAME }}
+          body: |
+            ## Nexactyl Release ${{ env.TAG_NAME }}
+            
+            This release is automatically compiled and ready for production.
+            
+            **Included in `panel.tar.gz`:**
+            - Frontend React pre-compiled (`public/build`)
+            - Vendor PHP dependencies pre-installed
+            - Optimized production ready files
+            
+            Download `panel.tar.gz` and extract it on your web server to update or install.
+          files: panel.tar.gz
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
