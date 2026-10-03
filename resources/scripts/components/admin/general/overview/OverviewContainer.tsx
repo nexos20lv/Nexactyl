@@ -131,7 +131,7 @@ export default () => {
             <AdminBox title={'Version Information'} icon={faDesktop}>
                 {settings.debug && (
                     <Alert type={'warning'} className={'mb-3'}>
-                        Nexactylis running in debug mode. Do not use in production.
+                        Nexactyl tourne en mode développeur (debug). Ne pas utiliser en production.
                     </Alert>
                 )}
                 {loading ? (
@@ -139,11 +139,11 @@ export default () => {
                 ) : (
                     <>
                         <div className={'text-gray-200 mb-2'}>
-                            You are currently running version&nbsp;
+                            Vous utilisez actuellement la version&nbsp;
                             <CopyOnClick text={versionData?.panel.current}>
                                 <Code>{versionData?.panel.current}</Code>
                             </CopyOnClick>
-                            , with the latest release being &nbsp;
+                            , la dernière version disponible est la &nbsp;
                             <CopyOnClick text={versionData?.panel.latest}>
                                 <Code>{versionData?.panel.latest}</Code>
                             </CopyOnClick>
@@ -151,9 +151,7 @@ export default () => {
                         </div>
                         {versionData?.panel.current.startsWith('v4.0.0-') && (
                             <Alert type={'danger'} className={'mt-4'}>
-                                You are running a beta release of Nexactylv4, which may include several bugs or weird
-                                glitches. Do NOT use this software in production unless you don&apos;t care about losing
-                                data.
+                                Vous utilisez une version bêta de Nexactyl v4, qui peut inclure des bugs. NE PAS utiliser en production à moins de comprendre les risques.
                             </Alert>
                         )}
                     </>
@@ -220,7 +218,7 @@ export default () => {
                             link={'/admin/settings'}
                             title={'Enable automatic updates'}
                             description={
-                                'By setting up automatic updates, you can keep Nexactylstable and secure in the background.'
+                                'En activant les mises à jour automatiques, vous pouvez garder Nexactyl stable et sécurisé en arrière-plan.'
                             }
                         />
                     )}
