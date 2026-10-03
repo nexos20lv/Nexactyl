@@ -24,10 +24,10 @@ echo -e "${CYAN}[1/7] Mise à jour du système et installation des dépendances.
 apt update -y
 apt -y install software-properties-common curl apt-transport-https ca-certificates gnupg tar unzip git redis-server nginx certbot python3-certbot-nginx mariadb-server
 
-echo -e "${CYAN}[2/7] Installation de PHP 8.1...${NC}"
+echo -e "${CYAN}[2/7] Installation de PHP 8.4...${NC}"
 curl -sSL https://packages.sury.org/php/README.txt | bash -x
 apt update -y
-apt -y install php8.1 php8.1-{common,cli,gd,mysql,mbstring,bcmath,xml,fpm,curl,zip}
+apt -y install php8.4 php8.4-{common,cli,gd,mysql,mbstring,bcmath,xml,fpm,curl,zip}
 
 echo -e "${CYAN}[3/7] Installation de Composer...${NC}"
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
