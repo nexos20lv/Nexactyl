@@ -18,6 +18,7 @@ class SuspendBillableServersCommand extends Command
     {
         if (!config('modules.billing.enabled')) {
             $this->info('Billing module is disabled, skipping suspension check.');
+
             return;
         }
         $suspension = $this->getLaravel()->make(\Everest\Services\Servers\SuspensionService::class);

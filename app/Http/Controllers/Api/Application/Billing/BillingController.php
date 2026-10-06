@@ -38,7 +38,7 @@ class BillingController extends ApplicationApiController
             Setting::set('settings::modules:billing:' . $key, $value);
         }
 
-        $loggedSettings = array_filter($settings, fn($k) => strpos($k, 'keys:') !== 0, ARRAY_FILTER_USE_KEY);
+        $loggedSettings = array_filter($settings, fn ($k) => strpos($k, 'keys:') !== 0, ARRAY_FILTER_USE_KEY);
 
         if (!empty($loggedSettings)) {
             Activity::event('admin:billing:update')
