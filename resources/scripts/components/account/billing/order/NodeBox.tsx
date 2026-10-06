@@ -19,25 +19,25 @@ export default ({ node, selected, setSelected, disabled }: Props) => {
     return (
         <div
             onClick={() => !disabled && setSelected(Number(node.id))}
-            className={classNames('relative', disabled && 'opacity-50 cursor-not-allowed')}
+            className={classNames('relative', disabled && 'cursor-not-allowed opacity-50')}
         >
             <GreyRowBox>
                 {!disabled && (
                     <CheckCircleIcon
                         className={classNames(
-                            'transition-colors duration-500 absolute w-5 h-5 top-2 right-2',
+                            'absolute top-2 right-2 h-5 w-5 transition-colors duration-500',
                             selected === Number(node.id) ? 'text-green-500' : 'text-gray-500',
                         )}
                     />
                 )}
-                <ServerIcon className={'mr-2 w-8 h-8'} style={{ color: colors.primary }} />
-                <p className={'text-gray-200 font-semibold'}>
+                <ServerIcon className={'mr-2 h-8 w-8'} style={{ color: colors.primary }} />
+                <p className={'font-semibold text-gray-200'}>
                     {node.name}{' '}
-                    <span className={'font-medium ml-2 text-gray-400 italic text-sm'}>
+                    <span className={'ml-2 text-sm font-medium italic text-gray-400'}>
                         <code>{node.fqdn}</code> - {disabled ? 'Available for paid servers only' : 'available'}
                     </span>
                     {!disabled && node.deploymentFee > 0 && (
-                        <span className={'block text-xs text-yellow-400 mt-0.5'}>
+                        <span className={'mt-0.5 block text-xs text-yellow-400'}>
                             + <Money value={node.deploymentFee} /> one-time deployment fee
                         </span>
                     )}

@@ -49,7 +49,7 @@ function Pagination<T>({ data: { items, pagination }, onPageSelect, children }: 
                 <div css={tw`my-3 flex justify-center`}>
                     {(pages?.[0] ?? 0) > 1 && !isFirstPage && (
                         <Block.Text size={Button.Sizes.Small} onClick={() => onPageSelect(1)} className={'mx-1'}>
-                            <ChevronDoubleLeftIcon className={'w-4 h-4'} />
+                            <ChevronDoubleLeftIcon className={'h-4 w-4'} />
                         </Block.Text>
                     )}
                     {pages.map(i => (
@@ -68,7 +68,7 @@ function Pagination<T>({ data: { items, pagination }, onPageSelect, children }: 
                             onClick={() => onPageSelect(pagination.totalPages)}
                             className={'mx-1'}
                         >
-                            <ChevronDoubleRightIcon className={'w-4 h-4'} />
+                            <ChevronDoubleRightIcon className={'h-4 w-4'} />
                         </Block.Text>
                     )}
                 </div>

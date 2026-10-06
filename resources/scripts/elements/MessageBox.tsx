@@ -78,10 +78,10 @@ const MessageBox = ({ title, children, type }: Props) => {
                             aria-label={'Dismiss'}
                             onClick={() => setOpen(false)}
                             className={
-                                'inline-flex items-center justify-center flex-shrink-0 text-gray-400 hover:text-gray-200 duration-150 hover:rotate-90 transition-transform'
+                                'inline-flex flex-shrink-0 items-center justify-center text-gray-400 transition-transform duration-150 hover:rotate-90 hover:text-gray-200'
                             }
                         >
-                            <XIcon className={'w-4 h-4'} />
+                            <XIcon className={'h-4 w-4'} />
                         </button>
                     </Container>
                 </motion.div>

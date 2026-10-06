@@ -77,7 +77,7 @@ const FilterField = ({
     );
 
     return (
-        <label className={'flex flex-col w-full sm:w-52'}>
+        <label className={'flex w-full flex-col sm:w-52'}>
             <span className={'mb-1 text-xs font-medium uppercase tracking-wide text-neutral-400'}>{label}</span>
             <Input
                 className={'h-8'}
@@ -106,19 +106,19 @@ function ActivityLogsContainer() {
 
     return (
         <AdminContentBlock title={'Activity Log'}>
-            <div className={'w-full flex flex-row items-center mb-8'}>
-                <div className={'flex flex-col flex-shrink'} style={{ minWidth: '0' }}>
-                    <h2 className={'text-2xl text-neutral-50 font-header font-medium'}>Activity Log</h2>
+            <div className={'mb-8 flex w-full flex-row items-center'}>
+                <div className={'flex flex-shrink flex-col'} style={{ minWidth: '0' }}>
+                    <h2 className={'font-header text-2xl font-medium text-neutral-50'}>Activity Log</h2>
                     <p
                         className={
-                            'hidden lg:block text-base text-neutral-400 whitespace-nowrap overflow-ellipsis overflow-hidden'
+                            'hidden overflow-hidden overflow-ellipsis whitespace-nowrap text-base text-neutral-400 lg:block'
                         }
                     >
                         A paper-trail of administrative actions taken across the panel.
                     </p>
                 </div>
                 {hasActiveFilters && (
-                    <div className={'flex ml-auto pl-4'}>
+                    <div className={'ml-auto flex pl-4'}>
                         <Link
                             to={'#'}
                             className={classNames(btnStyles.button, btnStyles.text, 'w-full sm:w-auto')}
@@ -186,18 +186,18 @@ function ActivityLogsContainer() {
                                             <TableRow key={item.id}>
                                                 <td
                                                     className={
-                                                        'px-6 text-sm text-neutral-200 text-left whitespace-nowrap'
+                                                        'whitespace-nowrap px-6 text-left text-sm text-neutral-200'
                                                     }
                                                 >
                                                     <CopyOnClick text={item.logId}>
-                                                        <code className={'font-mono bg-neutral-900 rounded py-1 px-2'}>
+                                                        <code className={'rounded bg-neutral-900 py-1 px-2 font-mono'}>
                                                             {item.logId ?? '—'}
                                                         </code>
                                                     </CopyOnClick>
                                                 </td>
                                                 <td
                                                     className={
-                                                        'px-6 text-sm text-neutral-200 text-left whitespace-nowrap'
+                                                        'whitespace-nowrap px-6 text-left text-sm text-neutral-200'
                                                     }
                                                 >
                                                     <Tooltip
@@ -209,12 +209,12 @@ function ActivityLogsContainer() {
                                                         <span>{format(item.timestamp, 'MMM do, yyyy H:mm:ss')}</span>
                                                     </Tooltip>
                                                 </td>
-                                                <td className={'px-6 py-4 text-sm text-neutral-200 text-left'}>
+                                                <td className={'px-6 py-4 text-left text-sm text-neutral-200'}>
                                                     <div className={'flex flex-wrap items-center gap-1.5'}>
                                                         <div className={'flex items-center gap-1.5'}>
                                                             <div
                                                                 className={
-                                                                    'h-5 w-5 rounded-full overflow-hidden bg-slate-600'
+                                                                    'h-5 w-5 overflow-hidden rounded-full bg-slate-600'
                                                                 }
                                                             >
                                                                 <Avatar name={actor?.uuid || 'system'} />
@@ -256,7 +256,7 @@ function ActivityLogsContainer() {
                                                                                 <Link
                                                                                     to={href}
                                                                                     className={
-                                                                                        'hover:text-cyan-400 transition-colors duration-75'
+                                                                                        'transition-colors duration-75 hover:text-cyan-400'
                                                                                     }
                                                                                 >
                                                                                     {label}
@@ -290,16 +290,16 @@ function ActivityLogsContainer() {
                                                         )}
                                                     </div>
                                                 </td>
-                                                <td className={'px-6 py-4 text-sm text-neutral-200 text-left'}>
+                                                <td className={'px-6 py-4 text-left text-sm text-neutral-200'}>
                                                     <div className={'flex items-center gap-2'}>
                                                         <Link
                                                             to={`#${pathTo({ event: item.event })}`}
                                                             className={
-                                                                'font-mono text-xs text-slate-400 hover:text-cyan-400 transition-colors duration-75'
+                                                                'font-mono text-xs text-slate-400 transition-colors duration-75 hover:text-cyan-400'
                                                             }
                                                         >
                                                             {item.event}
-                                                            <p className={'text-white mb-1 text-sm'}>
+                                                            <p className={'mb-1 text-sm text-white'}>
                                                                 {item.description}
                                                             </p>
                                                         </Link>
@@ -328,14 +328,14 @@ function ActivityLogsContainer() {
                                                 </td>
                                                 <td
                                                     className={
-                                                        'px-6 text-sm text-neutral-200 text-left whitespace-nowrap'
+                                                        'whitespace-nowrap px-6 text-left text-sm text-neutral-200'
                                                     }
                                                 >
                                                     {item.ip ? (
                                                         <Link
                                                             to={`#${pathTo({ ip: item.ip })}`}
                                                             className={
-                                                                'hover:text-cyan-400 transition-colors duration-75'
+                                                                'transition-colors duration-75 hover:text-cyan-400'
                                                             }
                                                         >
                                                             {item.ip}

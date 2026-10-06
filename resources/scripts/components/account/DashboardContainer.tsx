@@ -104,21 +104,17 @@ export default () => {
                         </Button.Text>
                     </h2>
                     {!servers && !error ? (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                        >
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                             <ServerRowSkeleton />
                             <ServerRowSkeleton />
                         </motion.div>
                     ) : servers?.items.length === 0 ? (
                         <ContentBox>
                             <div className={'text-gray-400'}>
-                                <div className={'grid lg:grid-cols-2 gap-6 m-4'}>
+                                <div className={'m-4 grid gap-6 lg:grid-cols-2'}>
                                     <ServerSvg color={colors.primary} />
                                     <div>
-                                        <h1 className={'text-gray-200 text-2xl font-bold'}>Deploy your first server</h1>
+                                        <h1 className={'text-2xl font-bold text-gray-200'}>Deploy your first server</h1>
                                         <div className={'mt-2'}>
                                             It looks like you have no servers deployed to your account.&nbsp;
                                             {billing ? (
@@ -128,7 +124,7 @@ export default () => {
                                                     you&apos;d like to run.
                                                     <div className={'text-right'}>
                                                         <Link to={'/account/billing/order'}>
-                                                            <Button className={'w-1/2 text-white font-normal'}>
+                                                            <Button className={'w-1/2 font-normal text-white'}>
                                                                 View Options{' '}
                                                                 <FontAwesomeIcon
                                                                     icon={faCircleArrowRight}
@@ -147,7 +143,7 @@ export default () => {
                             </div>
                         </ContentBox>
                     ) : (
-                        <Pagination data={servers} onPageSelect={setPage}>
+                        <Pagination data={servers!} onPageSelect={setPage}>
                             {({ items }) =>
                                 items.length > 0 ? (
                                     items.map((server, _index) => (

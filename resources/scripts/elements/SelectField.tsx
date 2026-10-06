@@ -231,7 +231,11 @@ const SelectField = forwardRef<HTMLElement, SelectFieldProps>(function Select2(
 
     const getValue = (value: any) => {
         if (isMulti) {
-            return options ? options.filter(o => (value as any[])?.includes(o.value) || (value as any[])?.includes(Number(o.value))) : [];
+            return options
+                ? options.filter(
+                      o => (value as any[])?.includes(o.value) || (value as any[])?.includes(Number(o.value)),
+                  )
+                : [];
         }
         return options ? options.find(o => o.value === value || Number(o.value) === value) || '' : '';
     };
@@ -324,28 +328,28 @@ const AsyncSelectField = forwardRef<HTMLElement, AsyncSelectFieldProps>(function
                         setSelectedValue(null);
                     }
                 }, [field.value, isMulti]);
-                
+
                 return (
-                <div className={className}>
-                    {label && <Label htmlFor={id}>{label}</Label>}
-                    <Async
-                        {...props}
-                        id={id}
-                        name={name}
-                        styles={SelectStyle}
-                        value={selectedValue}
-                        onChange={o => onChange(o, name, setFieldValue)}
-                        isMulti={isMulti}
-                    />
-                    {touched[field.name] && errors[field.name] ? (
-                        <p css={tw`text-red-200 text-xs mt-1`}>
-                            {(errors[field.name] as string).charAt(0).toUpperCase() +
-                                (errors[field.name] as string).slice(1)}
-                        </p>
-                    ) : description ? (
-                        <p css={tw`text-neutral-400 text-xs mt-1`}>{description}</p>
-                    ) : null}
-                </div>
+                    <div className={className}>
+                        {label && <Label htmlFor={id}>{label}</Label>}
+                        <Async
+                            {...props}
+                            id={id}
+                            name={name}
+                            styles={SelectStyle}
+                            value={selectedValue}
+                            onChange={o => onChange(o, name, setFieldValue)}
+                            isMulti={isMulti}
+                        />
+                        {touched[field.name] && errors[field.name] ? (
+                            <p css={tw`text-red-200 text-xs mt-1`}>
+                                {(errors[field.name] as string).charAt(0).toUpperCase() +
+                                    (errors[field.name] as string).slice(1)}
+                            </p>
+                        ) : description ? (
+                            <p css={tw`text-neutral-400 text-xs mt-1`}>{description}</p>
+                        ) : null}
+                    </div>
                 );
             }}
         </FormikField>

@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faMemory,
-    faMicrochip,
+
+
     faPlus,
     faPowerOff,
     faTrash,
@@ -12,7 +12,7 @@ import {
     faServer,
     faClock,
     faArrowUpRightFromSquare,
-    IconDefinition,
+
     faIdBadge,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
@@ -29,6 +29,7 @@ import CopyOnClick from '@/elements/CopyOnClick';
 import { motion } from 'framer-motion';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip } from 'chart.js';
+import { useChart } from '@/components/server/console/chart';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
 export function statusToColor(state?: ServerPowerState): string {
@@ -76,41 +77,63 @@ const StatusDot = ({ state }: { state?: ServerPowerState }) => {
     const isStarting = state === 'starting';
     const isStopping = state === 'stopping';
 
-    const bgClass = isRunning ? 'bg-emerald-400' : isStarting ? 'bg-sky-400' : isStopping ? 'bg-amber-400' : 'bg-red-500';
-    const glowClass = isRunning ? 'shadow-[0_0_12px_rgba(52,211,153,0.8)]' : isStarting ? 'shadow-[0_0_12px_rgba(56,189,248,0.8)]' : isStopping ? 'shadow-[0_0_12px_rgba(251,191,36,0.8)]' : 'shadow-[0_0_8px_rgba(239,68,68,0.6)]';
+    const bgClass = isRunning
+        ? 'bg-emerald-400'
+        : isStarting
+        ? 'bg-sky-400'
+        : isStopping
+        ? 'bg-amber-400'
+        : 'bg-red-500';
+    const glowClass = isRunning
+        ? 'shadow-[0_0_12px_rgba(52,211,153,0.8)]'
+        : isStarting
+        ? 'shadow-[0_0_12px_rgba(56,189,248,0.8)]'
+        : isStopping
+        ? 'shadow-[0_0_12px_rgba(251,191,36,0.8)]'
+        : 'shadow-[0_0_8px_rgba(239,68,68,0.6)]';
 
     return (
         <span className={'relative flex h-3 w-3'}>
             {(isRunning || isStarting) && (
                 <span
-                    className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-60 ${bgClass}`}
+                    className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 ${bgClass}`}
                 />
             )}
-            <span className={`relative inline-flex rounded-full h-3 w-3 ${bgClass} ${glowClass}`} />
+            <span className={`relative inline-flex h-3 w-3 rounded-full ${bgClass} ${glowClass}`} />
         </span>
     );
 };
 
 /** Resource sparkline */
-const ResourceSparkline = ({ value, label, chartData, chartOptions }: { value: number; label: string; chartData: any; chartOptions: any }) => {
+const ResourceSparkline = ({
+    value,
+    label,
+    chartData,
+    chartOptions,
+}: {
+    value: number;
+    label: string;
+    chartData: any;
+    chartOptions: any;
+}) => {
     const clamped = Math.min(Math.max(value, 0), 100);
 
     return (
-        <div className={'w-full flex flex-col gap-1 min-w-0'}>
+        <div className={'flex w-full min-w-0 flex-col gap-1'}>
             <div className={'flex items-center justify-between gap-2'}>
-                <span className={'flex items-center gap-1.5 text-xs text-gray-400 font-medium tracking-wide uppercase'}>
+                <span className={'flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-gray-400'}>
                     {label}
                 </span>
                 <span
                     className={classNames(
-                        'text-xs font-mono font-semibold tabular-nums',
-                        clamped >= 90 ? 'text-red-400' : clamped >= 70 ? 'text-amber-400' : 'text-gray-200'
+                        'font-mono text-xs font-semibold tabular-nums',
+                        clamped >= 90 ? 'text-red-400' : clamped >= 70 ? 'text-amber-400' : 'text-gray-200',
                     )}
                 >
                     {clamped.toFixed(0)}%
                 </span>
             </div>
-            <div className={'h-8 w-full relative'}>
+            <div className={'relative h-8 w-full'}>
                 <Line data={chartData} options={chartOptions} />
             </div>
         </div>
@@ -209,7 +232,7 @@ export default ({
             whileHover={{ scale: 1.015 }}
             transition={{ duration: 0.2 }}
             className={classNames(
-                'group relative w-full my-2 rounded-xl border transition-all duration-300',
+                'group relative my-2 w-full rounded-xl border transition-all duration-300',
                 'hover:border-white/15 hover:shadow-lg hover:shadow-black/30',
                 'border-white/5',
             )}
@@ -229,13 +252,13 @@ export default ({
                 )}
             />
 
-            <div className={'flex flex-col lg:flex-row lg:items-center gap-4 p-4 lg:p-5'}>
-                <div className={'flex items-start gap-3 flex-1 min-w-0'}>
-                    <div className={'relative flex-shrink-0 mt-0.5'}>
+            <div className={'flex flex-col gap-4 p-4 lg:flex-row lg:items-center lg:p-5'}>
+                <div className={'flex min-w-0 flex-1 items-start gap-3'}>
+                    <div className={'relative mt-0.5 flex-shrink-0'}>
                         <div
                             className={classNames(
-                                'w-10 h-10 rounded-lg flex items-center justify-center border',
-                                isSuspended ? 'bg-red-500/10 border-red-500/20' : statusToBg(powerState),
+                                'flex h-10 w-10 items-center justify-center rounded-lg border',
+                                isSuspended ? 'border-red-500/20 bg-red-500/10' : statusToBg(powerState),
                             )}
                         >
                             <FontAwesomeIcon
@@ -251,22 +274,22 @@ export default ({
                         </div>
                     </div>
                     <div className={'min-w-0 flex-1'}>
-                        <div className={'flex flex-wrap items-center gap-2 mb-1'}>
+                        <div className={'mb-1 flex flex-wrap items-center gap-2'}>
                             <Link
                                 to={`/server/${server.id}`}
                                 className={
-                                    'font-semibold text-white text-sm hover:text-white/80 transition-colors duration-200 truncate max-w-xs'
+                                    'max-w-xs truncate text-sm font-semibold text-white transition-colors duration-200 hover:text-white/80'
                                 }
                             >
                                 {server.name}
                             </Link>
                             <span
                                 className={classNames(
-                                    'inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full border',
+                                    'inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-medium',
                                     isSuspended
-                                        ? 'bg-red-500/10 border-red-500/20 text-red-400'
+                                        ? 'border-red-500/20 bg-red-500/10 text-red-400'
                                         : isTransferring
-                                        ? 'bg-violet-500/10 border-violet-500/20 text-violet-400'
+                                        ? 'border-violet-500/20 bg-violet-500/10 text-violet-400'
                                         : statusToBg(powerState) + ' ' + statusToColor(powerState),
                                 )}
                             >
@@ -279,18 +302,18 @@ export default ({
                             {hasGroup ? (
                                 <span
                                     className={
-                                        'inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full border border-white/10 bg-white/5'
+                                        'inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-xs font-medium'
                                     }
                                 >
                                     <span
-                                        className={'w-1.5 h-1.5 rounded-full'}
+                                        className={'h-1.5 w-1.5 rounded-full'}
                                         style={{ backgroundColor: group.color }}
                                     />
                                     <span style={{ color: group.color }}>{group.name}</span>
                                     <button
                                         onClick={onDelete}
                                         className={
-                                            'ml-0.5 text-gray-600 hover:text-red-400 transition-colors duration-150'
+                                            'ml-0.5 text-gray-600 transition-colors duration-150 hover:text-red-400'
                                         }
                                         title={'Remove from group'}
                                     >
@@ -301,7 +324,7 @@ export default ({
                                 <button
                                     onClick={() => setOpen({ open: 'add', serverId: server.uuid })}
                                     className={
-                                        'hidden xl:inline-flex items-center gap-1 text-xs text-gray-600 hover:text-gray-300 border border-dashed border-gray-700 hover:border-gray-500 rounded-full px-2 py-0.5 transition-all duration-200 hover:bg-white/5'
+                                        'hidden items-center gap-1 rounded-full border border-dashed border-gray-700 px-2 py-0.5 text-xs text-gray-600 transition-all duration-200 hover:border-gray-500 hover:bg-white/5 hover:text-gray-300 xl:inline-flex'
                                     }
                                 >
                                     <FontAwesomeIcon icon={faPlus} size={'xs'} />
@@ -312,8 +335,16 @@ export default ({
                         <div className={'flex flex-wrap items-center gap-x-3 gap-y-1'}>
                             {allocation && (
                                 <CopyOnClick text={`${allocation.ip}:${allocation.port}`}>
-                                    <span className={'flex items-center gap-1.5 text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors'}>
-                                        <FontAwesomeIcon icon={faNetworkWired} size={'xs'} className={'text-gray-600'} />
+                                    <span
+                                        className={
+                                            'flex cursor-pointer items-center gap-1.5 text-xs text-gray-500 transition-colors hover:text-gray-300'
+                                        }
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faNetworkWired}
+                                            size={'xs'}
+                                            className={'text-gray-600'}
+                                        />
                                         <span className={'font-mono'}>
                                             {allocation.alias || allocation.ip}:{allocation.port}
                                         </span>
@@ -337,20 +368,26 @@ export default ({
                                 </span>
                             )}
                             <CopyOnClick text={server.uuid}>
-                                <span className={'flex items-center gap-1.5 text-xs text-gray-600 cursor-pointer hover:text-gray-400 transition-colors'}>
+                                <span
+                                    className={
+                                        'flex cursor-pointer items-center gap-1.5 text-xs text-gray-600 transition-colors hover:text-gray-400'
+                                    }
+                                >
                                     <FontAwesomeIcon icon={faIdBadge} size={'xs'} className={'text-gray-600'} />
-                                    <span className={'font-mono opacity-60'}>{server.uuid.substring(0, 8)}&hellip;</span>
+                                    <span className={'font-mono opacity-60'}>
+                                        {server.uuid.substring(0, 8)}&hellip;
+                                    </span>
                                 </span>
                             </CopyOnClick>
                         </div>
                     </div>
                 </div>
-                <div className={'flex-shrink-0 w-full lg:w-72 xl:w-80'}>
+                <div className={'w-full flex-shrink-0 lg:w-72 xl:w-80'}>
                     {isOfflineOrSuspended ? (
                         <div
                             className={classNames(
-                                'flex items-center justify-center gap-3 h-full min-h-[52px] rounded-lg border px-4 py-3',
-                                isSuspended ? 'bg-red-500/5 border-red-500/10' : 'bg-white/5 border-white/5',
+                                'flex h-full min-h-[52px] items-center justify-center gap-3 rounded-lg border px-4 py-3',
+                                isSuspended ? 'border-red-500/10 bg-red-500/5' : 'border-white/5 bg-white/5',
                             )}
                         >
                             <FontAwesomeIcon
@@ -369,7 +406,7 @@ export default ({
                     ) : (
                         <div
                             className={
-                                'flex justify-between gap-y-3 gap-x-5 bg-white/[0.03] rounded-lg border border-white/5 px-4 py-3'
+                                'flex justify-between gap-y-3 gap-x-5 rounded-lg border border-white/5 bg-white/[0.03] px-4 py-3'
                             }
                         >
                             <ResourceSparkline
@@ -387,11 +424,11 @@ export default ({
                         </div>
                     )}
                 </div>
-                <div className={'flex-shrink-0 hidden xl:flex items-center'}>
+                <div className={'hidden flex-shrink-0 items-center xl:flex'}>
                     <Link
                         to={`/server/${server.id}`}
                         className={
-                            'flex items-center gap-1.5 text-xs text-gray-600 hover:text-white border border-white/5 hover:border-white/20 rounded-lg px-3 py-2 bg-white/[0.02] hover:bg-white/10 transition-all duration-200'
+                            'flex items-center gap-1.5 rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2 text-xs text-gray-600 transition-all duration-200 hover:border-white/20 hover:bg-white/10 hover:text-white'
                         }
                     >
                         <FontAwesomeIcon icon={faArrowUpRightFromSquare} size={'xs'} />

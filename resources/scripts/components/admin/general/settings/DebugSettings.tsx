@@ -49,8 +49,8 @@ export default () => {
     return (
         <>
             <FlashMessageRender byKey={'settings:debug'} css={{ marginBottom: '1rem' }} />
-            <div className={'w-full flex flex-row items-center mb-4'}>
-                <div className={'flex flex-col flex-shrink'} style={{ minWidth: '0' }}>
+            <div className={'mb-4 flex w-full flex-row items-center'}>
+                <div className={'flex flex-shrink flex-col'} style={{ minWidth: '0' }}>
                     <p className={'text-base text-neutral-400'}>
                         {logs === undefined
                             ? 'Checking for issues with the Panel...'
@@ -61,9 +61,9 @@ export default () => {
                             : 'No errors have been found in the Panel logs.'}
                     </p>
                 </div>
-                <div className={'flex ml-auto pl-4'}>
+                <div className={'ml-auto flex pl-4'}>
                     <Button onClick={downloadAll} disabled={!logs?.length || downloading !== null}>
-                        <ArchiveIcon className={'h-4 w-4 mr-2'} />
+                        <ArchiveIcon className={'mr-2 h-4 w-4'} />
                         {downloading === '__archive__' ? 'Preparing...' : 'Download All (.zip)'}
                     </Button>
                 </div>
@@ -83,15 +83,15 @@ export default () => {
                             {logs !== undefined &&
                                 logs.map(log => (
                                     <TableRow key={log.name}>
-                                        <td className={'px-6 py-4 text-sm text-neutral-200 text-left'}>
-                                            <code className={'font-mono bg-neutral-900 rounded py-1 px-2'}>
+                                        <td className={'px-6 py-4 text-left text-sm text-neutral-200'}>
+                                            <code className={'rounded bg-neutral-900 py-1 px-2 font-mono'}>
                                                 {log.name}
                                             </code>
                                         </td>
-                                        <td className={'px-6 text-sm text-neutral-200 text-left whitespace-nowrap'}>
+                                        <td className={'whitespace-nowrap px-6 text-left text-sm text-neutral-200'}>
                                             {bytesToString(log.size)}
                                         </td>
-                                        <td className={'px-6 text-sm text-neutral-200 text-left whitespace-nowrap'}>
+                                        <td className={'whitespace-nowrap px-6 text-left text-sm text-neutral-200'}>
                                             <Tooltip
                                                 placement={'top'}
                                                 content={format(log.modifiedAt, 'MMM do, yyyy H:mm:ss')}
@@ -101,20 +101,20 @@ export default () => {
                                                 </span>
                                             </Tooltip>
                                         </td>
-                                        <td className={'px-6 text-sm text-left whitespace-nowrap'}>
+                                        <td className={'whitespace-nowrap px-6 text-left text-sm'}>
                                             <span className={log.errors > 0 ? 'text-red-400' : 'text-neutral-200'}>
                                                 {log.errors}
                                             </span>
                                         </td>
-                                        <td className={'px-6 text-sm text-left whitespace-nowrap'}>
+                                        <td className={'whitespace-nowrap px-6 text-left text-sm'}>
                                             <span className={log.warnings > 0 ? 'text-yellow-400' : 'text-neutral-200'}>
                                                 {log.warnings}
                                             </span>
                                         </td>
-                                        <td className={'px-6 py-4 text-sm text-right whitespace-nowrap'}>
+                                        <td className={'whitespace-nowrap px-6 py-4 text-right text-sm'}>
                                             <button
                                                 className={
-                                                    'text-neutral-400 hover:text-cyan-400 transition-colors duration-75 disabled:opacity-50'
+                                                    'text-neutral-400 transition-colors duration-75 hover:text-cyan-400 disabled:opacity-50'
                                                 }
                                                 disabled={downloading !== null}
                                                 onClick={() => download(log.name)}

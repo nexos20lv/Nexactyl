@@ -61,18 +61,18 @@ export default () => {
 
     return (
         <PageContentBlock title={'Available Products'}>
-            <div className={'text-3xl lg:text-5xl font-bold mt-8 mb-12'}>
+            <div className={'mt-8 mb-12 text-3xl font-bold lg:text-5xl'}>
                 Order a Product
-                <p className={'text-gray-400 font-normal text-sm mt-1'}>
+                <p className={'mt-1 text-sm font-normal text-gray-400'}>
                     Choose and configure any of the products below to your liking.
                 </p>
             </div>
-            <div className={'grid lg:grid-cols-4 gap-4 lg:gap-12'}>
+            <div className={'grid gap-4 lg:grid-cols-4 lg:gap-12'}>
                 <div>
-                    <p className={'text-2xl text-gray-300 mb-6 mt-4 font-bold'}>Categories</p>
+                    <p className={'mb-6 mt-4 text-2xl font-bold text-gray-300'}>Categories</p>
                     {(!categories || categories.length < 1) && (
-                        <div className={'font-semibold my-4 text-gray-400'}>
-                            <FontAwesomeIcon icon={faExclamationTriangle} className={'w-5 h-5 mr-2 text-yellow-400'} />
+                        <div className={'my-4 font-semibold text-gray-400'}>
+                            <FontAwesomeIcon icon={faExclamationTriangle} className={'mr-2 h-5 w-5 text-yellow-400'} />
                             No categories found.
                         </div>
                     )}
@@ -83,10 +83,10 @@ export default () => {
                             return (
                                 <button
                                     className={classNames(
-                                        'flex items-center font-semibold w-full text-left rounded-lg py-3 px-4 duration-200 cursor-pointer line-clamp-1 border-l-4',
+                                        'flex w-full cursor-pointer items-center rounded-lg border-l-4 py-3 px-4 text-left font-semibold duration-200 line-clamp-1',
                                         active
                                             ? 'text-neutral-100'
-                                            : 'text-gray-400 hover:text-gray-200 border-transparent',
+                                            : 'border-transparent text-gray-400 hover:text-gray-200',
                                     )}
                                     style={
                                         active
@@ -104,7 +104,7 @@ export default () => {
                                     key={cat.id}
                                 >
                                     {cat.icon && (
-                                        <img src={cat.icon} className={'w-6 h-6 inline-flex rounded-full mr-3'} />
+                                        <img src={cat.icon} className={'mr-3 inline-flex h-6 w-6 rounded-full'} />
                                     )}
                                     {cat.name}
                                 </button>
@@ -118,45 +118,45 @@ export default () => {
                     ) : (
                         <>
                             {products?.length < 1 && (
-                                <div className={'font-semibold my-4 text-gray-400'}>
+                                <div className={'my-4 font-semibold text-gray-400'}>
                                     <FontAwesomeIcon
                                         icon={faExclamationTriangle}
-                                        className={'w-5 h-5 mr-2 text-yellow-400'}
+                                        className={'mr-2 h-5 w-5 text-yellow-400'}
                                     />
                                     No products could be found in this category.
                                 </div>
                             )}
-                            <div className={'grid grid-cols-1 xl:grid-cols-3 gap-4'}>
+                            <div className={'grid grid-cols-1 gap-4 xl:grid-cols-3'}>
                                 {products?.map(product => (
                                     <ContentBox
                                         key={product.id}
                                         className={
-                                            'transition duration-200 hover:shadow-xl hover:-translate-y-0.5 flex flex-col'
+                                            'flex flex-col transition duration-200 hover:-translate-y-0.5 hover:shadow-xl'
                                         }
                                     >
-                                        <div className={'p-3 lg:p-6 flex flex-col flex-1'}>
+                                        <div className={'flex flex-1 flex-col p-3 lg:p-6'}>
                                             <div className={'flex justify-center'}>
                                                 <div
                                                     className={
-                                                        'w-16 h-16 rounded-full flex items-center justify-center'
+                                                        'flex h-16 w-16 items-center justify-center rounded-full'
                                                     }
                                                     style={{ backgroundColor: hexToRgba(colors.primary, 0.1) }}
                                                 >
                                                     {product.icon ? (
-                                                        <img src={product.icon} className={'w-9 h-9'} />
+                                                        <img src={product.icon} className={'h-9 w-9'} />
                                                     ) : (
                                                         <FontAwesomeIcon
                                                             icon={faShoppingBag}
-                                                            className={'w-7 h-7'}
+                                                            className={'h-7 w-7'}
                                                             style={{ color: colors.primary }}
                                                         />
                                                     )}
                                                 </div>
                                             </div>
-                                            <p className={'text-2xl font-bold text-center mt-4 font-header'}>
+                                            <p className={'mt-4 text-center font-header text-2xl font-bold'}>
                                                 {product.name}
                                             </p>
-                                            <p className={'text-center mt-1 mb-6'}>
+                                            <p className={'mt-1 mb-6 text-center'}>
                                                 <Money
                                                     value={product.price}
                                                     suffix={' / mo'}
@@ -198,7 +198,7 @@ export default () => {
                                             </div>
                                             <div
                                                 className={
-                                                    'text-center pt-4 mt-auto border-t border-dashed border-gray-700'
+                                                    'mt-auto border-t border-dashed border-gray-700 pt-4 text-center'
                                                 }
                                             >
                                                 <Link to={`/account/billing/order/${product.id}`}>

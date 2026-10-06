@@ -115,7 +115,7 @@ export default function UserForm({ title, initialValues, children, onSubmit, uui
                                 autoComplete={'new-password'}
                                 description={
                                     uuid
-                                        ? 'Leave empty to keep this user\'s current password.'
+                                        ? "Leave empty to keep this user's current password."
                                         : 'Leave empty to email the user a link where they will be required to set a password.'
                                 }
                             />
@@ -123,7 +123,7 @@ export default function UserForm({ title, initialValues, children, onSubmit, uui
                     </AdminBox>
                     <AdminBox title={'Permission Control'} css={tw`relative mt-6`} icon={faToggleOn}>
                         <SpinnerOverlay visible={isSubmitting} />
-                        <div className={'grid lg:grid-cols-2 gap-4'}>
+                        <div className={'grid gap-4 lg:grid-cols-2'}>
                             <div css={tw`w-full flex flex-row mb-6`}>
                                 <div
                                     css={tw`w-full border border-neutral-900 shadow-inner p-4 rounded`}

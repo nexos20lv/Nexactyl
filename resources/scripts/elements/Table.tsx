@@ -18,13 +18,13 @@ const PaginatedFooter = ({
             className={'rounded-b-xl py-2 px-4'}
         >
             <div className={'flex justify-between space-x-2'}>
-                <p className={'text-xs font-bold text-gray-400 my-auto'}>
+                <p className={'my-auto text-xs font-bold text-gray-400'}>
                     Showing <span className={'text-white'}>{pagination.startIndex + 1}</span> to{' '}
                     <span className={'text-white'}>{pagination.endIndex}</span> of{' '}
                     <span className={'text-white'}>{pagination.totalItems}</span> results
                 </p>
                 <div className={'inline-flex'}>
-                    <p className={'text-xs font-bold text-gray-400 my-auto mr-2'}>
+                    <p className={'my-auto mr-2 text-xs font-bold text-gray-400'}>
                         Page <span className={'text-white'}>{pagination.currentPage}</span> of{' '}
                         <span className={'text-white'}>{pagination.totalPages}</span>
                     </p>
@@ -33,14 +33,14 @@ const PaginatedFooter = ({
                         size={Button.Sizes.Small}
                         onClick={pagination.goToPreviousPage}
                     >
-                        <ChevronLeftIcon className={'w-4 h-4'} />
+                        <ChevronLeftIcon className={'h-4 w-4'} />
                     </Button.Text>
                     <Button.Text
                         disabled={pagination.currentPage === pagination.totalPages}
                         size={Button.Sizes.Small}
                         onClick={pagination.goToNextPage}
                     >
-                        <ChevronRightIcon className={'w-4 h-4'} />
+                        <ChevronRightIcon className={'h-4 w-4'} />
                     </Button.Text>
                 </div>
             </div>

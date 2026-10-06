@@ -38,7 +38,6 @@ export default () => {
             .then(() => {
                 // setServer({ ...server, ...s });
 
-                
                 setFieldValue('addAllocations', []);
                 setFieldValue('removeAllocations', []);
             })

@@ -49,20 +49,20 @@ const StepHeader = ({
     const { colors } = useStoreState(state => state.theme.data!);
 
     return (
-        <div className={'flex items-start gap-4 mb-4'}>
+        <div className={'mb-4 flex items-start gap-4'}>
             <div
-                className={'w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1 font-bold text-sm'}
+                className={'mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold'}
                 style={
                     complete
                         ? { backgroundColor: colors.primary, color: '#fff' }
                         : { backgroundColor: hexToRgba(colors.primary, 0.12), color: colors.primary }
                 }
             >
-                {complete ? <FontAwesomeIcon icon={faCheck} className={'w-3.5 h-3.5'} /> : step}
+                {complete ? <FontAwesomeIcon icon={faCheck} className={'h-3.5 w-3.5'} /> : step}
             </div>
-            <div className={'text-xl lg:text-3xl font-semibold'}>
+            <div className={'text-xl font-semibold lg:text-3xl'}>
                 {title}
-                <p className={'text-gray-400 font-normal text-sm mt-1'}>{description}</p>
+                <p className={'mt-1 text-sm font-normal text-gray-400'}>{description}</p>
             </div>
         </div>
     );
@@ -160,29 +160,29 @@ export default () => {
     return (
         <PageContentBlock title={'Your Order'}>
             <FlashMessageRender byKey={'account:billing:order'} className={'mb-4'} />
-            <div className={'text-3xl lg:text-5xl font-bold mt-8 mb-12'}>
+            <div className={'mt-8 mb-12 text-3xl font-bold lg:text-5xl'}>
                 Your Order
-                <p className={'text-gray-400 font-normal text-sm mt-1'}>
+                <p className={'mt-1 text-sm font-normal text-gray-400'}>
                     Customize your selected plan and submit a payment.
                 </p>
             </div>
-            <div className={'grid lg:grid-cols-8 gap-4 lg:gap-12'}>
-                <div className={'lg:border-r-4 border-gray-500 lg:col-span-2'}>
-                    <p className={'text-2xl text-gray-300 my-4 font-bold'}>
+            <div className={'grid gap-4 lg:grid-cols-8 lg:gap-12'}>
+                <div className={'border-gray-500 lg:col-span-2 lg:border-r-4'}>
+                    <p className={'my-4 text-2xl font-bold text-gray-300'}>
                         Selected Plan
-                        {product.icon && <img src={product.icon} className={'w-8 h-8 ml-2 inline-flex'} />}
+                        {product.icon && <img src={product.icon} className={'ml-2 inline-flex h-8 w-8'} />}
                     </p>
                     <LimitBox icon={faIdBadge} limit={<>{product.name}</>} />
-                    <div className={'font-semibold text-gray-400 text-lg my-1'}>
-                        <FontAwesomeIcon icon={faCreditCard} className={'w-4 h-4 inline-flex mr-2 '} />
+                    <div className={'my-1 text-lg font-semibold text-gray-400'}>
+                        <FontAwesomeIcon icon={faCreditCard} className={'mr-2 inline-flex h-4 w-4 '} />
                         <Money value={Number(finalPrice)} className={'mr-1'} accent />
                         <span className={'text-sm'}>/ mo</span>
                     </div>
-                    <div className={'h-0.5 my-4 bg-gray-600 mr-8 rounded-full'} />
+                    <div className={'my-4 mr-8 h-0.5 rounded-full bg-gray-600'} />
                     <LimitBox icon={faMicrochip} limit={<>{product.limits.cpu}% CPU</>} />
                     <LimitBox icon={faMemory} limit={<>{(product.limits.memory / 1024).toFixed(1)} GiB Memory</>} />
                     <LimitBox icon={faHdd} limit={<>{(product.limits.disk / 1024).toFixed(1)} GiB Disk</>} />
-                    <div className={'h-0.5 my-4 bg-gray-600 mr-8 rounded-full'} />
+                    <div className={'my-4 mr-8 h-0.5 rounded-full bg-gray-600'} />
                     <LimitBox icon={faArchive} limit={<>{product.limits.backup} Backup Slots</>} />
                     <LimitBox icon={faDatabase} limit={<>{product.limits.database} Database Slots</>} />
                     <LimitBox icon={faEthernet} limit={<>{product.limits.allocation} Network Ports</>} />
@@ -196,7 +196,7 @@ export default () => {
                                 title={'Choose a location'}
                                 description={'Select a location from our list to deploy your server to.'}
                             />
-                            <div className={'grid lg:grid-cols-2 gap-4'}>
+                            <div className={'grid gap-4 lg:grid-cols-2'}>
                                 {(!nodes || nodes.length < 1) && (
                                     <Alert type={'danger'} className={'col-span-2'}>
                                         There are no nodes available for deployment. Please contact an administrator.
@@ -213,7 +213,7 @@ export default () => {
                                 ))}
                             </div>
                         </div>
-                        <div className={'h-px bg-gray-700 rounded-full'} />
+                        <div className={'h-px rounded-full bg-gray-700'} />
                         {needsEggSelection && (
                             <>
                                 <div className={'my-10'}>
@@ -225,7 +225,7 @@ export default () => {
                                             'Select which server type from this nest you would like to deploy.'
                                         }
                                     />
-                                    <div className={'grid lg:grid-cols-2 gap-4'}>
+                                    <div className={'grid gap-4 lg:grid-cols-2'}>
                                         {(!availableEggs || availableEggs.length < 1) && (
                                             <Alert type={'danger'} className={'col-span-2'}>
                                                 There are no eggs available for this product. Please contact an
@@ -242,7 +242,7 @@ export default () => {
                                         ))}
                                     </div>
                                 </div>
-                                <div className={'h-px bg-gray-700 rounded-full'} />
+                                <div className={'h-px rounded-full bg-gray-700'} />
                             </>
                         )}
                         {showVariablesStep && (
@@ -256,7 +256,7 @@ export default () => {
                                             'Modify your server variables before your server is even created for ease of use.'
                                         }
                                     />
-                                    <div className={'grid lg:grid-cols-2 gap-4'}>
+                                    <div className={'grid gap-4 lg:grid-cols-2'}>
                                         {variables?.map(variable => (
                                             <div key={variable.envVariable}>
                                                 {variable.isEditable && <VariableBox variable={variable} vars={vars} />}
@@ -264,7 +264,7 @@ export default () => {
                                         ))}
                                     </div>
                                 </div>
-                                <div className={'h-px bg-gray-700 rounded-full'} />
+                                <div className={'h-px rounded-full bg-gray-700'} />
                             </>
                         )}
                         <div className={'my-10'}>
@@ -274,12 +274,12 @@ export default () => {
                                 title={'Legal Documents'}
                                 description={'Agree and sign the relevant legal documents for your new server.'}
                             />
-                            <div className={'grid lg:grid-cols-2 gap-4'}>
+                            <div className={'grid gap-4 lg:grid-cols-2'}>
                                 <TitledGreyBox title={'Terms of Service agreement'} className={'relative'}>
                                     {!termsAgreed ? (
                                         <>
                                             Click the checkbox to agree to our{' '}
-                                            <a href={billing.links.terms} className={'text-blue-400 font-semibold'}>
+                                            <a href={billing.links.terms} className={'font-semibold text-blue-400'}>
                                                 Terms of Service <FontAwesomeIcon icon={faExternalLinkAlt} />
                                             </a>
                                         </>
@@ -300,7 +300,7 @@ export default () => {
                                     {!privacyAgreed ? (
                                         <>
                                             Click the checkbox to agree to our{' '}
-                                            <a href={billing.links.privacy} className={'text-blue-400 font-semibold'}>
+                                            <a href={billing.links.privacy} className={'font-semibold text-blue-400'}>
                                                 Privacy Policy <FontAwesomeIcon icon={faExternalLinkAlt} />
                                             </a>
                                         </>
@@ -319,7 +319,7 @@ export default () => {
                                 </TitledGreyBox>
                             </div>
                         </div>
-                        <div className={'h-px bg-gray-700 rounded-full'} />
+                        <div className={'h-px rounded-full bg-gray-700'} />
                         {!termsAgreed || !privacyAgreed ? (
                             <Alert type={'warning'}>
                                 Please agree to the above legal documents before proceeding with your order.
@@ -335,13 +335,13 @@ export default () => {
                                                 <>
                                                     Due Today: <Money value={grandTotal} accent />
                                                     {deploymentFee > 0 && (
-                                                        <span className={'text-sm text-gray-400 font-normal ml-2'}>
+                                                        <span className={'ml-2 text-sm font-normal text-gray-400'}>
                                                             (includes <Money value={deploymentFee} /> one-time
                                                             deployment fee)
                                                         </span>
                                                     )}
                                                     {discountCode && (
-                                                        <span className={'text-green-400 text-base font-normal ml-3'}>
+                                                        <span className={'ml-3 text-base font-normal text-green-400'}>
                                                             ({discountCode.code} discount applied)
                                                         </span>
                                                     )}
@@ -358,7 +358,7 @@ export default () => {
                                                 )
                                             }
                                         />
-                                        <div className={'flex justify-between w-full mt-8'}>
+                                        <div className={'mt-8 flex w-full justify-between'}>
                                             <DiscountCodeDialog
                                                 discountCode={discountCode}
                                                 setDiscountCode={setDiscountCode}
@@ -375,7 +375,7 @@ export default () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className={'flex w-full mt-8'}>
+                                    <div className={'mt-8 flex w-full'}>
                                         {needsEggSelection && !selectedEgg ? (
                                             <Alert type={'warning'} className={'w-full'}>
                                                 Please select an egg above to continue.

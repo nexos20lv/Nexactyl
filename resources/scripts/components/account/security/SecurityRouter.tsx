@@ -73,9 +73,9 @@ const SecurityRouter = () => {
                 </MessageBox>
             )}
 
-            <div className={'text-3xl lg:text-5xl font-bold mt-8 mb-8'}>
+            <div className={'mt-8 mb-8 text-3xl font-bold lg:text-5xl'}>
                 Security
-                <p className={'text-gray-400 font-normal text-sm mt-1'}>{active.description}</p>
+                <p className={'mt-1 text-sm font-normal text-gray-400'}>{active.description}</p>
             </div>
 
             <SubNavigation>

@@ -52,15 +52,15 @@ const NavigationBar = () => {
     }, []);
 
     const renderBreadcrumbs = () => (
-        <ol className="w-1/3 text-gray-400 text-sm inline-flex space-x-2">
+        <ol className="inline-flex w-1/3 space-x-2 text-sm text-gray-400">
             <Link to={'/'}>
-                <HomeIcon className="w-4 h-4 my-auto brightness-150" />
+                <HomeIcon className="my-auto h-4 w-4 brightness-150" />
             </Link>
             {pathnames.map((segment, index) => {
                 const href = `/${pathnames.slice(0, index + 1).join('/')}`;
                 return (
                     <li key={index} className="inline-flex">
-                        <ChevronRightIcon className="mr-2 w-4 h-4 my-auto" />
+                        <ChevronRightIcon className="my-auto mr-2 h-4 w-4" />
                         {index === pathnames.length - 1 ? (
                             <span className="capitalize">{segment}</span>
                         ) : (
@@ -79,12 +79,12 @@ const NavigationBar = () => {
             case 0:
                 return (
                     <span className={'inline-flex items-center gap-x-2'}>
-                        <EyeIcon className={'w-4 h-4 flex-shrink-0'} />
+                        <EyeIcon className={'h-4 w-4 flex-shrink-0'} />
                         {!data || !activityEnabled ? (
                             <Spinner size="small" centered />
                         ) : (
                             <>
-                                <span className="font-bold mb-1">{data.items[0]?.event}</span> -{' '}
+                                <span className="mb-1 font-bold">{data.items[0]?.event}</span> -{' '}
                                 <span className="text-xs">
                                     {formatDistanceToNow(data.items[0]?.timestamp ?? new Date(), {
                                         includeSeconds: true,
@@ -99,7 +99,7 @@ const NavigationBar = () => {
                 return (
                     <span className={'inline-flex items-center gap-x-2'}>
                         <HeartIcon
-                            className={`w-4 h-4 flex-shrink-0 ${user.useTotp ? 'text-green-400' : 'text-red-400'}`}
+                            className={`h-4 w-4 flex-shrink-0 ${user.useTotp ? 'text-green-400' : 'text-red-400'}`}
                         />
                         2FA is {user.useTotp ? 'Enabled' : 'Disabled'}
                     </span>
@@ -107,7 +107,7 @@ const NavigationBar = () => {
             case 2:
                 return (
                     <span className={'inline-flex items-center gap-x-2'}>
-                        <IdentificationIcon className={'w-4 h-4 flex-shrink-0'} />
+                        <IdentificationIcon className={'h-4 w-4 flex-shrink-0'} />
                         User ID: {user.uuid.slice(0, 8)}
                     </span>
                 );
@@ -118,12 +118,12 @@ const NavigationBar = () => {
 
     return (
         <div
-            className="w-full overflow-x-auto shadow-md mb-8 backdrop-blur-md border-b border-white/5"
+            className="mb-8 w-full overflow-x-auto border-b border-white/5 shadow-md backdrop-blur-md"
             style={{ backgroundColor: theme.colors.sidebar }}
         >
-            <div className="px-8 flex h-[3.5rem] w-full items-center">
+            <div className="flex h-[3.5rem] w-full items-center px-8">
                 {renderBreadcrumbs()}
-                <RightNavigation className="flex h-full items-center justify-center ml-auto" theme={theme}>
+                <RightNavigation className="ml-auto flex h-full items-center justify-center" theme={theme}>
                     <div className="relative">
                         <div
                             className="absolute top-0 h-px transition-all duration-[250ms] ease-in-out"

@@ -15,8 +15,8 @@ interface QuickActionProps {
 const QuickAction = ({ tooltip, icon: Icon, link }: QuickActionProps) => (
     <Tooltip placement={'left'} content={tooltip} arrow>
         <Link to={link}>
-            <Button.Text className={'w-12 h-12 shadow-lg backdrop-blur-md'}>
-                <Icon className={'w-5 h-5'} />
+            <Button.Text className={'h-12 w-12 shadow-lg backdrop-blur-md'}>
+                <Icon className={'h-5 w-5'} />
             </Button.Text>
         </Link>
     </Tooltip>
@@ -31,11 +31,11 @@ export default () => {
     if (!enabled) return <></>;
 
     return (
-        <div className="hidden md:block fixed bottom-6 right-6" style={{ zIndex: 9999 }}>
+        <div className="fixed bottom-6 right-6 hidden md:block" style={{ zIndex: 9999 }}>
             <AnimatePresence>
                 {open && (
                     <motion.div
-                        className="flex flex-col items-center mb-4 space-y-2"
+                        className="mb-4 flex flex-col items-center space-y-2"
                         initial="closed"
                         animate="open"
                         exit="closed"
@@ -70,7 +70,7 @@ export default () => {
                 )}
             </AnimatePresence>
             <Button
-                className={'w-12 h-12 shadow-xl transition-transform duration-200 hover:scale-105'}
+                className={'h-12 w-12 shadow-xl transition-transform duration-200 hover:scale-105'}
                 onClick={() => setOpen(!open)}
             >
                 <motion.span
@@ -78,7 +78,7 @@ export default () => {
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     className={'flex'}
                 >
-                    <PlusIcon className={'w-5 h-5'} />
+                    <PlusIcon className={'h-5 w-5'} />
                 </motion.span>
             </Button>
         </div>

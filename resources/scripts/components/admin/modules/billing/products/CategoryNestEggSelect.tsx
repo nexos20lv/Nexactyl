@@ -43,7 +43,7 @@ const NestSelect = () => {
                     ))
                 )}
             </Select>
-            <p className={'text-xs text-gray-400 mt-1'}>
+            <p className={'mt-1 text-xs text-gray-400'}>
                 The nest this category&apos;s products will deploy servers from.
             </p>
         </div>
@@ -81,7 +81,7 @@ const EggSelect = () => {
                     </option>
                 ))}
             </Select>
-            <p className={'text-xs text-gray-400 mt-1'}>
+            <p className={'mt-1 text-xs text-gray-400'}>
                 Leave unset to let customers pick which egg in this nest to deploy at checkout.
             </p>
         </div>

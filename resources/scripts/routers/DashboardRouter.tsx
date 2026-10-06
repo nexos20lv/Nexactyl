@@ -39,7 +39,7 @@ function DashboardRouter() {
     };
 
     return (
-        <div className={'h-screen flex'}>
+        <div className={'flex h-screen'}>
             {' '}
             <MobileSidebar>
                 <MobileSidebar.Home />
@@ -61,12 +61,12 @@ function DashboardRouter() {
             <Sidebar className={'flex-none'} $collapsed={collapsed} theme={theme}>
                 <div
                     className={
-                        'h-16 w-full flex flex-col items-center justify-center mt-1 mb-3 select-none cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95'
+                        'mt-1 mb-3 flex h-16 w-full cursor-pointer select-none flex-col items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95'
                     }
                     onClick={() => setCollapsed(!collapsed)}
                 >
                     {!collapsed ? (
-                        <h1 className={'text-2xl text-neutral-50 whitespace-nowrap font-medium'}>{name}</h1>
+                        <h1 className={'whitespace-nowrap text-2xl font-medium text-neutral-50'}>{name}</h1>
                     ) : (
                         <img
                             src={logo?.toString() || 'https://avatars.githubusercontent.com/u/91636558'}
@@ -122,16 +122,16 @@ function DashboardRouter() {
                     </NavLink>
                 </span>
                 <Sidebar.User>
-                    <span className="flex items-center rounded-full ring-2 ring-transparent transition-all duration-200 hover:ring-white/10 hover:scale-105">
+                    <span className="flex items-center rounded-full ring-2 ring-transparent transition-all duration-200 hover:scale-105 hover:ring-white/10">
                         <Avatar.User />
                     </span>
-                    <div className={'flex flex-col ml-3'}>
+                    <div className={'ml-3 flex flex-col'}>
                         <span
                             className={
-                                'font-sans font-normal text-xs text-gray-300 whitespace-nowrap leading-tight select-none'
+                                'select-none whitespace-nowrap font-sans text-xs font-normal leading-tight text-gray-300'
                             }
                         >
-                            <div className={'text-gray-400 text-sm'}>Welcome back,</div>
+                            <div className={'text-sm text-gray-400'}>Welcome back,</div>
                             {user.email}
                         </span>
                     </div>

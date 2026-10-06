@@ -112,14 +112,14 @@ function OrderTable({ server_id }: { server_id?: number }) {
                                     orders.items.length > 0 &&
                                     orders.items.map(order => (
                                         <TableRow key={order.id}>
-                                            <td className={`px-6 text-sm text-neutral-200 text-left whitespace-nowrap`}>
+                                            <td className={`whitespace-nowrap px-6 text-left text-sm text-neutral-200`}>
                                                 <CopyOnClick text={order.id}>
-                                                    <code className={`font-mono bg-neutral-900 rounded py-1 px-2`}>
+                                                    <code className={`rounded bg-neutral-900 py-1 px-2 font-mono`}>
                                                         {order.id}
                                                     </code>
                                                 </CopyOnClick>
                                             </td>
-                                            <td className={'px-6 py-4 text-white font-bold'}>
+                                            <td className={'px-6 py-4 font-bold text-white'}>
                                                 <Money value={order.total} suffix={'/mo'} />
                                             </td>
                                             <td className={'px-6 py-4'}>{order.description}</td>
@@ -131,13 +131,13 @@ function OrderTable({ server_id }: { server_id?: number }) {
                                                     {order.status}
                                                 </Pill>
                                             </td>
-                                            <td className={'pr-12 py-4 text-center'}>
+                                            <td className={'py-4 pr-12 text-center'}>
                                                 <Pill size={'small'} type={order.type === 'new' ? 'success' : 'info'}>
                                                     {order.type.toUpperCase()}
                                                 </Pill>
                                             </td>
                                             {!server_id && (
-                                                <td className={'px-6 py-4 text-left ml-4'}>
+                                                <td className={'ml-4 px-6 py-4 text-left'}>
                                                     {order.server_id ? (
                                                         <FontAwesomeIcon
                                                             icon={faCheckCircle}
@@ -191,7 +191,7 @@ function BillingStats() {
     });
 
     return (
-        <div className={'grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8'}>
+        <div className={'mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4'}>
             <StatTile
                 icon={faServer}
                 label={'Active Services'}

@@ -51,8 +51,8 @@ const SuggestionCard = ({ icon, title, description, link, action }: SuggestionPr
     const { colors } = useStoreState(state => state.theme.data!);
 
     return (
-        <div className={'bg-black/25 p-3 lg:p-6 rounded-lg'}>
-            <h1 className={'text-xl font-semibold mb-2'}>
+        <div className={'rounded-lg bg-black/25 p-3 lg:p-6'}>
+            <h1 className={'mb-2 text-xl font-semibold'}>
                 <FontAwesomeIcon icon={icon} /> {title}
             </h1>
             <p className={'text-gray-300'}>{description}</p>
@@ -76,12 +76,12 @@ const StatCard = ({ icon, title, value, subtext }: StatProps) => {
     const { colors } = useStoreState(state => state.theme.data!);
 
     return (
-        <div className={'bg-black/25 p-3 lg:p-4 rounded-lg'}>
+        <div className={'rounded-lg bg-black/25 p-3 lg:p-4'}>
             <p className={'text-sm text-gray-400'}>
                 <FontAwesomeIcon icon={icon} style={{ color: colors.primary }} /> {title}
             </p>
-            <p className={'text-2xl font-semibold mt-1'}>{value}</p>
-            {subtext && <p className={'text-xs text-gray-400 mt-1'}>{subtext}</p>}
+            <p className={'mt-1 text-2xl font-semibold'}>{value}</p>
+            {subtext && <p className={'mt-1 text-xs text-gray-400'}>{subtext}</p>}
         </div>
     );
 };
@@ -138,7 +138,7 @@ export default () => {
                     <Spinner size={'large'} centered />
                 ) : (
                     <>
-                        <div className={'text-gray-200 mb-2'}>
+                        <div className={'mb-2 text-gray-200'}>
                             You are currently running version&nbsp;
                             <CopyOnClick text={versionData?.panel.current}>
                                 <Code>{versionData?.panel.current}</Code>
@@ -163,7 +163,7 @@ export default () => {
                 {loading || !metricData ? (
                     <Spinner size={'large'} centered />
                 ) : (
-                    <div className={'grid grid-cols-2 lg:grid-cols-4 gap-4'}>
+                    <div className={'grid grid-cols-2 gap-4 lg:grid-cols-4'}>
                         <StatCard icon={faLayerGroup} title={'Nodes'} value={metricData.nodes} />
                         <StatCard
                             icon={faServer}
@@ -213,7 +213,7 @@ export default () => {
                 )}
             </AdminBox>
             <AdminBox title={'Suggested Actions'} className={'mt-6'} icon={faQuestionCircle}>
-                <div className={'grid lg:grid-cols-3 gap-4'}>
+                <div className={'grid gap-4 lg:grid-cols-3'}>
                     {!settings.auto_update && (
                         <SuggestionCard
                             icon={faRecycle}

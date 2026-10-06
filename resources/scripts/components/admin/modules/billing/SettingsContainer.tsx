@@ -43,7 +43,7 @@ export default () => {
     };
 
     return (
-        <div className={'grid lg:grid-cols-3 gap-4'}>
+        <div className={'grid gap-4 lg:grid-cols-3'}>
             {open === 'setup' && <SetupStripe extOpen />}
             <AdminBox title={'Primary Currency'} icon={faDollar}>
                 Choose a primary currency to charge users.
@@ -70,14 +70,14 @@ export default () => {
                     renewal is due, to ensure that they will pay for the usage of the upgraded plan. The user will not
                     be able to then change their plan for another 30 days after a change to prevent abuse.
                 </p>
-                <p className={'text-gray-400 mt-2'}>
+                <p className={'mt-2 text-gray-400'}>
                     This service is currently&nbsp;
                     <span className={settings.allow_upgrades ? 'text-green-500' : 'text-red-500'}>
                         {settings.allow_upgrades ? 'enabled' : 'disabled'}
                     </span>
                     .
                 </p>
-                <div className={'text-right mt-2'}>
+                <div className={'mt-2 text-right'}>
                     <Button.Text onClick={() => submit('allow_upgrades', !settings.allow_upgrades)}>
                         {settings.allow_upgrades ? 'Disable' : 'Enable'}
                     </Button.Text>
@@ -87,7 +87,7 @@ export default () => {
                 <FlashMessageRender byKey={'billing:config'} className={'mb-2'} />
                 Use the below options to either export your current billing configurations, or use the Import button to
                 import a pre-created set of categories and products to Jexactyl.
-                <div className={'text-right mt-3'}>
+                <div className={'mt-3 text-right'}>
                     <ExportConfigButton />
                     <ImportConfigButton />
                 </div>
@@ -97,7 +97,7 @@ export default () => {
                     Without Stripe API authentication, your billing system will not work. Customers may proceed to the
                     checkout area but will be met with errors unless you add valid API keys which can be obtained
                     through the Stripe dashboard.
-                    <div className={'text-right mt-3'}>
+                    <div className={'mt-3 text-right'}>
                         <Button onClick={() => setOpen('setup')}>Add API keys</Button>
                     </div>
                 </AdminBox>
@@ -106,7 +106,7 @@ export default () => {
                     By resetting the Stripe API keys saved to the panel, all billing services (such as purchasing or
                     renewing a product) will stop working until new API keys are entered. Are you sure you wish to
                     continue?
-                    <div className={'text-right mt-3'}>
+                    <div className={'mt-3 text-right'}>
                         <Button.Danger onClick={onDeleteKeys}>Yes, delete API keys</Button.Danger>
                     </div>
                 </AdminBox>
@@ -118,7 +118,7 @@ export default () => {
             <AdminBox title={'Disable Billing Module'} icon={faPowerOff}>
                 Clicking the button below will disable all modules of the billing system - such as subscriptions, server
                 purchasing and more. Make sure that this will not impact your users before disabling.
-                <div className={'text-right mt-3'}>
+                <div className={'mt-3 text-right'}>
                     <ToggleFeatureButton />
                 </div>
             </AdminBox>

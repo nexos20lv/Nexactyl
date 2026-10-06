@@ -59,9 +59,9 @@ export default () => {
         <div>
             <FlashMessageRender byKey={'admin:billing'} className={'mb-4'} />
 
-            <div className={'grid lg:grid-cols-2 gap-4'}>
+            <div className={'grid gap-4 lg:grid-cols-2'}>
                 <AdminBox title={'Renewal Days Addition'} icon={faCalendar}>
-                    <p className={'text-gray-400 mb-4'}>
+                    <p className={'mb-4 text-gray-400'}>
                         Number of days that should be added to a billable server when a renewal is processed, by default
                         30 days.
                     </p>
@@ -75,14 +75,14 @@ export default () => {
                             onChange={e => setDays(parseInt(e.target.value))}
                             disabled={loading}
                         />
-                        <p className={'text-xs text-gray-500 mt-2'}>
+                        <p className={'mt-2 text-xs text-gray-500'}>
                             When a billable server is purchased or renewed, it will be active for this many days.
                         </p>
                     </div>
                 </AdminBox>
 
                 <AdminBox title={'Deletion Threshold'} icon={faClock}>
-                    <p className={'text-gray-400 mb-4'}>
+                    <p className={'mb-4 text-gray-400'}>
                         Number of days after expiration before a billable server is automatically deleted.
                     </p>
                     <div>
@@ -95,14 +95,14 @@ export default () => {
                             onChange={e => setThreshold(parseInt(e.target.value))}
                             disabled={loading}
                         />
-                        <p className={'text-xs text-gray-500 mt-2'}>
+                        <p className={'mt-2 text-xs text-gray-500'}>
                             Billable servers will be deleted after this many days of missing the renewal.
                         </p>
                     </div>
                 </AdminBox>
             </div>
 
-            <div className={'flex justify-end mt-6'}>
+            <div className={'mt-6 flex justify-end'}>
                 <Button onClick={handleSaveAll} disabled={loading}>
                     {loading ? 'Saving...' : 'Save All Settings'}
                 </Button>

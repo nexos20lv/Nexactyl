@@ -15,7 +15,7 @@ export default ({ order }: { order: Order }) => {
     if (!invoice) {
         return (
             <Tooltip content={'Your invoice is still being generated — check back shortly.'}>
-                <FontAwesomeIcon icon={faReceipt} className={'text-gray-500 cursor-default'} />
+                <FontAwesomeIcon icon={faReceipt} className={'cursor-default text-gray-500'} />
             </Tooltip>
         );
     }
@@ -35,7 +35,7 @@ export default ({ order }: { order: Order }) => {
                 aria-label={'Download invoice'}
                 onClick={download}
                 disabled={downloading}
-                className={'text-gray-400 hover:text-neutral-100 transition-colors duration-150 disabled:opacity-50'}
+                className={'text-gray-400 transition-colors duration-150 hover:text-neutral-100 disabled:opacity-50'}
             >
                 <FontAwesomeIcon icon={faReceipt} />
             </button>

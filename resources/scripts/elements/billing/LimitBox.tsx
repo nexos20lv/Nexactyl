@@ -8,8 +8,8 @@ interface LimitProps {
 }
 
 export default ({ icon, limit }: LimitProps) => (
-    <div className={'text-gray-400 mt-1'}>
-        <FontAwesomeIcon icon={icon} className={'w-4 h-4 mr-2'} />
+    <div className={'mt-1 text-gray-400'}>
+        <FontAwesomeIcon icon={icon} className={'mr-2 h-4 w-4'} />
         {limit}
     </div>
 );

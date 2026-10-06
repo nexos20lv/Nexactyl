@@ -95,7 +95,7 @@ function ServerRouter() {
 
     return (
         <Fragment key={'server-router'}>
-            <div className={'h-screen flex'}>
+            <div className={'flex h-screen'}>
                 <MobileSidebar>
                     <MobileSidebar.Home />
                     {routes.server
@@ -120,12 +120,12 @@ function ServerRouter() {
                 <Sidebar className={'flex-none'} $collapsed={collapsed} theme={theme}>
                     <div
                         className={
-                            'h-16 w-full flex flex-col items-center justify-center mt-1 mb-3 select-none cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95'
+                            'mt-1 mb-3 flex h-16 w-full cursor-pointer select-none flex-col items-center justify-center transition-transform duration-200 hover:scale-105 active:scale-95'
                         }
                         onClick={() => setCollapsed(!collapsed)}
                     >
                         {!collapsed ? (
-                            <h1 className={'text-2xl text-neutral-50 whitespace-nowrap font-medium'}>{name}</h1>
+                            <h1 className={'whitespace-nowrap text-2xl font-medium text-neutral-50'}>{name}</h1>
                         ) : (
                             <img
                                 src={logo?.toString() || 'https://avatars.githubusercontent.com/u/91636558'}
@@ -145,7 +145,8 @@ function ServerRouter() {
                                 route =>
                                     !route.category &&
                                     route.name &&
-                                    (!route.condition || route.condition({ billable, billingEnabled, activityEnabled })),
+                                    (!route.condition ||
+                                        route.condition({ billable, billingEnabled, activityEnabled })),
                             )
                             .map(route => (
                                 <NavLink to={route.path} key={route.path} end={route.end}>

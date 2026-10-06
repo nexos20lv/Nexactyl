@@ -97,7 +97,7 @@ export default () => {
                 </Alert>
             )}
             {renewalDate && (
-                <div className={'grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6'}>
+                <div className={'mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4'}>
                     <StatTile icon={faBoxOpen} label={'Plan'} value={product ? product.name : 'Unknown'} />
                     <StatTile
                         icon={faCalendarCheck}
@@ -113,7 +113,7 @@ export default () => {
                     />
                 </div>
             )}
-            <div className={'grid lg:grid-cols-3 gap-4'}>
+            <div className={'grid gap-4 lg:grid-cols-3'}>
                 {!renewalDate ? (
                     <Alert type={'warning'}>There is no present renewal date for your server.</Alert>
                 ) : (
@@ -125,13 +125,13 @@ export default () => {
                                 label={
                                     <div className={'text-center'}>
                                         <p className={'text-lg font-bold leading-none'}>{daysRemaining}d</p>
-                                        <p className={'text-2xs text-gray-400 mt-1'}>left</p>
+                                        <p className={'mt-1 text-2xs text-gray-400'}>left</p>
                                     </div>
                                 }
                             />
                             <div>
                                 <Label>Next renewal due</Label>
-                                <p className={'text-gray-400 text-sm'}>
+                                <p className={'text-sm text-gray-400'}>
                                     {new Date(renewalDate).toLocaleDateString()}
                                     {' - '}
                                     {timeUntil(renewalDate).days} days, {timeUntil(renewalDate).hours} hours
@@ -140,17 +140,17 @@ export default () => {
                         </div>
                         <div className={'my-6'}>
                             <Label>Your package</Label>
-                            <p className={'text-gray-400 text-sm'}>{product ? product.name : 'Unknown'}</p>
-                            <p className={'text-gray-500 text-xs'}>{product && product.description}</p>
+                            <p className={'text-sm text-gray-400'}>{product ? product.name : 'Unknown'}</p>
+                            <p className={'text-xs text-gray-500'}>{product && product.description}</p>
                         </div>
                         <div>
                             <Label>Plan cost</Label>
                             <div className={'flex justify-between'}>
-                                <p className={'text-gray-400 text-sm'}>
+                                <p className={'text-sm text-gray-400'}>
                                     {product ? <Money value={product.price} /> : '...'} every {settings.renewal.days}{' '}
                                     days
                                 </p>
-                                <Link to={'/account/billing/orders'} className={'text-green-400 text-xs'}>
+                                <Link to={'/account/billing/orders'} className={'text-xs text-green-400'}>
                                     View order <FontAwesomeIcon icon={faArrowRight} />
                                 </Link>
                             </div>
@@ -158,7 +158,7 @@ export default () => {
                     </ContentBox>
                 )}
                 <div className={'lg:col-span-2'}>
-                    <h2 className={'text-neutral-300 mb-4 px-4 text-2xl'}>Related Orders</h2>
+                    <h2 className={'mb-4 px-4 text-2xl text-neutral-300'}>Related Orders</h2>
                     <OrdersContainer server_id={Number(serverId)} />
                 </div>
                 <ContentBox title={'Renew Server'} className={'mt-6'}>

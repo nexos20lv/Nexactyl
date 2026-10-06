@@ -72,7 +72,7 @@ export default ({ discountCode }: { discountCode?: DiscountCode }) => {
             >
                 <SpinnerOverlay visible={loading} />
                 <div className="space-y-4">
-                    <div className={'grid lg:grid-cols-2 gap-4'}>
+                    <div className={'grid gap-4 lg:grid-cols-2'}>
                         <div>
                             <Label>
                                 <FontAwesomeIcon icon={faTeletype} /> Discount Code
@@ -121,7 +121,7 @@ export default ({ discountCode }: { discountCode?: DiscountCode }) => {
                         </p>
                     </div>
                 </div>
-                <div className={'h-px rounded-full bg-black/50 my-8'} />
+                <div className={'my-8 h-px rounded-full bg-black/50'} />
                 <div className={'space-y-4'}>
                     <div>
                         <Label>
@@ -135,7 +135,7 @@ export default ({ discountCode }: { discountCode?: DiscountCode }) => {
                             }}
                             className={classNames(
                                 type === 'percentage' ? 'bg-black/50 text-green-300' : 'bg-black/25',
-                                'rounded-l py-3 px-6 font-bold text-white w-1/2',
+                                'w-1/2 rounded-l py-3 px-6 font-bold text-white',
                             )}
                         >
                             Percentage Reduction (%)
@@ -148,7 +148,7 @@ export default ({ discountCode }: { discountCode?: DiscountCode }) => {
                             }}
                             className={classNames(
                                 type === 'numeric' ? 'bg-black/50 text-green-300' : 'bg-black/25',
-                                'rounded-r py-3 px-6 font-bold text-white w-1/2',
+                                'w-1/2 rounded-r py-3 px-6 font-bold text-white',
                             )}
                         >
                             Numeric Value ({currency})
@@ -159,7 +159,7 @@ export default ({ discountCode }: { discountCode?: DiscountCode }) => {
                             retailer discount method.
                         </p>
                     </div>
-                    <div className={'grid lg:grid-cols-2 gap-4'}>
+                    <div className={'grid gap-4 lg:grid-cols-2'}>
                         <div>
                             <Label>
                                 <FontAwesomeIcon icon={type === 'percentage' ? faPercent : faDollar} /> Discount Value
@@ -189,8 +189,8 @@ export default ({ discountCode }: { discountCode?: DiscountCode }) => {
                         </div>
                     </div>
                 </div>
-                <div className={'h-px rounded-full bg-black/50 my-8'} />
-                <div className={'bg-black/50 rounded-lg p-4'}>
+                <div className={'my-8 h-px rounded-full bg-black/50'} />
+                <div className={'rounded-lg bg-black/50 p-4'}>
                     <div className={'inline-flex'}>
                         <Label className={'mr-2'}>Make discount code active now?</Label>
                         <Switch
@@ -203,7 +203,7 @@ export default ({ discountCode }: { discountCode?: DiscountCode }) => {
                         Choose whether this discount code will be active immediately.
                     </p>
                 </div>
-                <div className={'text-right mt-8'}>
+                <div className={'mt-8 text-right'}>
                     <Button onClick={submit} type={'submit'}>
                         {edit ? 'Update' : 'Create'}
                     </Button>

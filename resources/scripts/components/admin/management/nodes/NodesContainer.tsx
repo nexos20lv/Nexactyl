@@ -123,7 +123,7 @@ const NodesContainer = () => {
                                                     <NavLink
                                                         to={`/admin/nodes/${node.id}`}
                                                         style={{ color: colors.primary }}
-                                                        className={'hover:brightness-125 duration-300'}
+                                                        className={'duration-300 hover:brightness-125'}
                                                     >
                                                         {node.name}
                                                     </NavLink>

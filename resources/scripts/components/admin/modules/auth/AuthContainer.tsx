@@ -45,7 +45,7 @@ export default () => {
                     </Button>
                 </div>
             </div>
-            <div className={'grid md:grid-cols-2 xl:grid-cols-3 gap-4'}>
+            <div className={'grid gap-4 md:grid-cols-2 xl:grid-cols-3'}>
                 <Registration />
                 <Security />
                 {modules.onboarding.enabled && <Onboarding />}

@@ -18,20 +18,20 @@ export default ({ icon, label, value, caption, className }: Props) => {
 
     return (
         <div
-            className={classNames('p-4 rounded-xl shadow-lg ring-1 ring-white/5', className)}
+            className={classNames('rounded-xl p-4 shadow-lg ring-1 ring-white/5', className)}
             style={{ backgroundColor: colors.secondary }}
         >
             <div className={'flex items-center justify-between'}>
-                <p className={'text-gray-400 text-xs font-semibold uppercase tracking-wide'}>{label}</p>
+                <p className={'text-xs font-semibold uppercase tracking-wide text-gray-400'}>{label}</p>
                 <div
-                    className={'w-8 h-8 rounded-lg flex items-center justify-center shrink-0'}
+                    className={'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg'}
                     style={{ backgroundColor: hexToRgba(colors.primary, 0.1) }}
                 >
-                    <FontAwesomeIcon icon={icon} className={'w-3.5 h-3.5'} style={{ color: colors.primary }} />
+                    <FontAwesomeIcon icon={icon} className={'h-3.5 w-3.5'} style={{ color: colors.primary }} />
                 </div>
             </div>
-            <p className={'text-2xl lg:text-3xl font-bold font-header mt-3 text-neutral-100 truncate'}>{value}</p>
-            {caption && <p className={'text-gray-500 text-xs mt-1'}>{caption}</p>}
+            <p className={'mt-3 truncate font-header text-2xl font-bold text-neutral-100 lg:text-3xl'}>{value}</p>
+            {caption && <p className={'mt-1 text-xs text-gray-500'}>{caption}</p>}
         </div>
     );
 };

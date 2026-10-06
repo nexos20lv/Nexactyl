@@ -48,7 +48,7 @@ export default ({ activity, children }: Props) => {
     return (
         <div
             className={
-                'group grid grid-cols-10 py-4 last:rounded-b-xl last:border-0 border-b border-black/40 transition-colors duration-200 hover:bg-white/[0.02]'
+                'group grid grid-cols-10 border-b border-black/40 py-4 transition-colors duration-200 last:rounded-b-xl last:border-0 hover:bg-white/[0.02]'
             }
             style={{ backgroundColor: colors.secondary }}
         >
@@ -63,7 +63,7 @@ export default ({ activity, children }: Props) => {
                         <Tooltip placement={'top'} content={actor?.email || 'System User'}>
                             <span className={'font-bold'}>{actor?.username || 'System'}</span>
                         </Tooltip>
-                        <span className={'text-slate-400 mx-2'}>&bull;</span>
+                        <span className={'mx-2 text-slate-400'}>&bull;</span>
                         <Link
                             to={`#${pathTo({ event: activity.event })}`}
                             className={

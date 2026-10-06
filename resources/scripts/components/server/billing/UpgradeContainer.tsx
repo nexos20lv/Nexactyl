@@ -29,8 +29,8 @@ interface LimitProps {
 }
 
 const LimitBox = ({ icon, limit }: LimitProps) => (
-    <div className={'text-gray-400 mt-1'}>
-        <FontAwesomeIcon icon={icon} className={'w-4 h-4 mr-2'} />
+    <div className={'mt-1 text-gray-400'}>
+        <FontAwesomeIcon icon={icon} className={'mr-2 h-4 w-4'} />
         {limit}
     </div>
 );
@@ -86,7 +86,7 @@ export default () => {
                     will then instantly be upgraded to the selected package, and will renew at the new package monthly
                     cost.
                     <div className={'my-3 w-full'}>
-                        <code className={'px-2 py-1 w-full bg-black/50 rounded-lg'}>
+                        <code className={'w-full rounded-lg bg-black/50 px-2 py-1'}>
                             {charge !== null ? (
                                 <>
                                     {settings.currency.symbol}
@@ -109,7 +109,7 @@ export default () => {
                 </Dialog>
             )}
             <FlashMessageRender byKey={'server:billing:upgrade'} />
-            <div className={'grid grid-cols-1 xl:grid-cols-3 gap-4'}>
+            <div className={'grid grid-cols-1 gap-4 xl:grid-cols-3'}>
                 {!options ||
                     (options.length === 0 && (
                         <Alert type={'info'} className={'xl:col-span-3'}>
@@ -122,17 +122,17 @@ export default () => {
                         <div className={'p-3 lg:p-6'}>
                             <div className={'flex justify-center'}>
                                 {product.icon ? (
-                                    <img src={product.icon} className={'w-16 h-16'} />
+                                    <img src={product.icon} className={'h-16 w-16'} />
                                 ) : (
                                     <FontAwesomeIcon
                                         icon={faShoppingBag}
-                                        className={'w-12 h-12 m-2'}
+                                        className={'m-2 h-12 w-12'}
                                         style={{ color: colors.primary }}
                                     />
                                 )}
                             </div>
-                            <p className={'text-3xl font-bold text-center mt-3'}>{product.name}</p>
-                            <p className={'text-lg font-semibold text-center mt-1 mb-4 text-gray-400'}>
+                            <p className={'mt-3 text-center text-3xl font-bold'}>{product.name}</p>
+                            <p className={'mt-1 mb-4 text-center text-lg font-semibold text-gray-400'}>
                                 <span style={{ color: colors.primary }} className={'mr-1'}>
                                     {settings.currency.symbol}
                                     {product.price.toFixed(2)}
@@ -141,11 +141,11 @@ export default () => {
                                 </span>
                                 <span className={'text-base'}>/ monthly</span>
                             </p>
-                            <div className={'grid justify-center items-center'}>
+                            <div className={'grid items-center justify-center'}>
                                 <LimitBox icon={faMicrochip} limit={<>{product.limits.cpu}% CPU</>} />
                                 <LimitBox icon={faMemory} limit={<>{product.limits.memory / 1024} GiB of RAM</>} />
                                 <LimitBox icon={faHdd} limit={<>{product.limits.disk / 1024} GiB of Storage</>} />
-                                <div className={'border border-dashed border-gray-500 my-4'} />
+                                <div className={'my-4 border border-dashed border-gray-500'} />
                                 {product.limits.backup ? (
                                     <LimitBox icon={faArchive} limit={<>{product.limits.backup} backup slots</>} />
                                 ) : (
@@ -166,7 +166,7 @@ export default () => {
                                     }
                                 />
                             </div>
-                            <div className={'text-center mt-6'} onClick={() => setOpen(product)}>
+                            <div className={'mt-6 text-center'} onClick={() => setOpen(product)}>
                                 <Button size={Button.Sizes.Large} className={'w-full'}>
                                     Configure
                                 </Button>

@@ -1,4 +1,3 @@
-import React from 'react';
 import classNames from 'classnames';
 
 interface SkeletonProps {
@@ -6,9 +5,5 @@ interface SkeletonProps {
 }
 
 export default function Skeleton({ className }: SkeletonProps) {
-    return (
-        <div
-            className={classNames('animate-pulse bg-white/10 rounded', className)}
-        />
-    );
+    return <div className={classNames('animate-pulse rounded bg-white/10', className)} />;
 }

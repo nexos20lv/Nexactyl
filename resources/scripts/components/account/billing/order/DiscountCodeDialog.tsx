@@ -43,16 +43,16 @@ export default ({ discountCode, setDiscountCode }: Props) => {
                     </div>
                 ) : (
                     <div className={'mt-4'}>
-                        <div className={'flex bg-black/50 p-4 rounded-lg'}>
+                        <div className={'flex rounded-lg bg-black/50 p-4'}>
                             <FontAwesomeIcon
                                 fixedWidth
-                                className={'mx-3 my-auto bg-black rounded-full p-2'}
+                                className={'mx-3 my-auto rounded-full bg-black p-2'}
                                 icon={discountCode.type === 'percentage' ? faPercentage : faDollar}
                             />
                             <div>
                                 <p className={'text-lg font-bold'}>
                                     {discountCode.code}
-                                    <span className={'ml-4 text-sm text-green-400 font-semibold my-auto'}>
+                                    <span className={'my-auto ml-4 text-sm font-semibold text-green-400'}>
                                         {discountCode.value}
                                         {discountCode.type === 'percentage' ? '%' : currencySymbol}
                                         &nbsp;saving
@@ -61,16 +61,16 @@ export default ({ discountCode, setDiscountCode }: Props) => {
                                 <p className={'mt-1 text-sm text-gray-400'}>{discountCode.description}</p>
                             </div>
                         </div>
-                        <div className={'text-right mt-4'}>
+                        <div className={'mt-4 text-right'}>
                             <Button onClick={() => setOpen(false)}>Done</Button>
                         </div>
                     </div>
                 )}
                 {invalid && (
-                    <p className={'text-red-400 text-sm'}>This discount code is not valid and cannot be used.</p>
+                    <p className={'text-sm text-red-400'}>This discount code is not valid and cannot be used.</p>
                 )}
             </Dialog>
-            <div className={'font-semibold text-blue-400 my-auto mr-4'} onClick={() => setOpen(true)}>
+            <div className={'my-auto mr-4 font-semibold text-blue-400'} onClick={() => setOpen(true)}>
                 Add a discount code <FontAwesomeIcon icon={faPlus} className={'ml-2'} />
             </div>
         </>

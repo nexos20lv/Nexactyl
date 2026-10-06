@@ -12,8 +12,8 @@ interface Props {
 export default function Can({ action, matchAny = false, renderOnError, children }: Props) {
     const adminPermissions = useStoreState(state => state.user.data!.adminPermissions);
 
-    const hasPermission = (Array.isArray(action) ? action : [action])[matchAny ? 'some' : 'every'](
-        p => hasAdminPermission(adminPermissions, p)
+    const hasPermission = (Array.isArray(action) ? action : [action])[matchAny ? 'some' : 'every'](p =>
+        hasAdminPermission(adminPermissions, p),
     );
 
     if (hasPermission) {

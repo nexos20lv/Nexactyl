@@ -65,9 +65,9 @@ const ScreenBlock = ({ title, image, message, onBack, onRetry }: ScreenBlockProp
                                 className={onRetry ? 'hover:spin' : undefined}
                             >
                                 {onRetry ? (
-                                    <RefreshIcon className={'w-4 h-4'} />
+                                    <RefreshIcon className={'h-4 w-4'} />
                                 ) : (
-                                    <ArrowLeftIcon className={'w-4 h-4'} />
+                                    <ArrowLeftIcon className={'h-4 w-4'} />
                                 )}
                             </ActionButton>
                         </div>
@@ -164,7 +164,7 @@ const Suspended = ({
                 >
                     <div css={tw`absolute left-0 top-0 ml-4 mt-4`}>
                         <ActionButton onClick={() => navigate('/')}>
-                            <ArrowLeftIcon className={'w-4 h-4'} />
+                            <ArrowLeftIcon className={'h-4 w-4'} />
                         </ActionButton>
                     </div>
                     <h2 css={tw`text-white font-bold text-4xl`}>{isFree ? 'Suspended' : 'Suspended - No Payment'}</h2>
@@ -184,7 +184,7 @@ const Suspended = ({
                                     <>
                                         Your free server has been suspended because the renewal date has passed. Please
                                         renew to restore access.
-                                        <div className={'mt-2 text-yellow-400 font-semibold'}>
+                                        <div className={'mt-2 font-semibold text-yellow-400'}>
                                             Days overdue: {daysOverdue}
                                         </div>
                                     </>
@@ -205,14 +205,14 @@ const Suspended = ({
                                     <>
                                         Your server has been suspended due to a lack of payment. Please pay to restore
                                         access.
-                                        <div className={'mt-2 text-gray-300 font-semibold'}>
+                                        <div className={'mt-2 font-semibold text-gray-300'}>
                                             Your outstanding balance is:
-                                            <span className={'text-white ml-2 font-bold'}>
+                                            <span className={'ml-2 font-bold text-white'}>
                                                 {currency}
                                                 {product.price}
                                             </span>
                                         </div>
-                                        <div className={'mt-2 text-yellow-400 font-semibold'}>
+                                        <div className={'mt-2 font-semibold text-yellow-400'}>
                                             Days overdue: {daysOverdue}
                                         </div>
                                     </>

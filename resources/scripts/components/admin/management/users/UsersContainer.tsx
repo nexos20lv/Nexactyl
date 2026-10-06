@@ -67,7 +67,7 @@ function UsersContainer() {
                 <div css={tw`flex ml-auto pl-4`}>
                     <Link to={'/admin/users/new'}>
                         <Button>
-                            <FontAwesomeIcon icon={faPlus} className={'mr-2 my-auto'} /> New User
+                            <FontAwesomeIcon icon={faPlus} className={'my-auto mr-2'} /> New User
                         </Button>
                     </Link>
                 </div>
@@ -160,7 +160,7 @@ function UsersContainer() {
                                                         </Pill>
                                                     )}
                                                 </td>
-                                                <td className={'px-6 py-4 whitespace-nowrap text-sm text-neutral-50'}>
+                                                <td className={'whitespace-nowrap px-6 py-4 text-sm text-neutral-50'}>
                                                     {user.state === 'suspended' ? (
                                                         <Pill type={'warn'}>
                                                             <FontAwesomeIcon
@@ -181,7 +181,7 @@ function UsersContainer() {
                                                         </Pill>
                                                     )}
                                                 </td>
-                                                <td className={'px-6 py-4 whitespace-nowrap text-sm text-neutral-50'}>
+                                                <td className={'whitespace-nowrap px-6 py-4 text-sm text-neutral-50'}>
                                                     {user.isRootAdmin || user.admin_role_id ? (
                                                         <>
                                                             <Pill type={'success'}>

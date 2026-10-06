@@ -27,8 +27,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 disabled={loading}
             >
                 {children}
-                {Icon && <Icon className={'w-4 h-4'} />}
-                {loading && <RefreshIcon className={'w-4 h-4 animate-spin'} />}
+                {Icon && <Icon className={'h-4 w-4'} />}
+                {loading && <RefreshIcon className={'h-4 w-4 animate-spin'} />}
             </button>
         );
     },
