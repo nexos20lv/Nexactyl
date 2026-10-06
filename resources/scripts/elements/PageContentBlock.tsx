@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import tw from 'twin.macro';
 import ContentContainer from '@/elements/ContentContainer';
 import FlashMessageRender from '@/elements/FlashMessageRender';
+import { motion } from 'framer-motion';
 
 export interface PageContentBlockProps {
     children?: ReactNode;
@@ -22,7 +23,12 @@ function PageContentBlock({ title, header, description, showFlashKey, className,
     }, [title]);
 
     return (
-        <>
+        <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+        >
             <ContentContainer css={tw`my-4 sm:my-10`} className={className}>
                 {showFlashKey && <FlashMessageRender byKey={showFlashKey} css={tw`mb-4`} />}
                 {header && (
@@ -47,7 +53,7 @@ function PageContentBlock({ title, header, description, showFlashKey, className,
                     </a>
                 </p>
             </ContentContainer>
-        </>
+        </motion.div>
     );
 }
 

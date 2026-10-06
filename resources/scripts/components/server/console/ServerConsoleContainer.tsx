@@ -78,7 +78,11 @@ function ServerConsoleContainer() {
                         : 'This server is currently being transferred to another node and all actions are unavailable.'}
                 </Alert>
             )}
-            <div className={'mb-4 flex justify-between gap-4 rounded-lg bg-black/50 p-5'}>
+            <div
+                className={
+                    'mb-4 flex justify-between gap-4 rounded-lg border border-white/10 bg-white/5 p-5 shadow-lg backdrop-blur-md'
+                }
+            >
                 <div className={'hidden pr-4 sm:col-span-2 sm:block lg:col-span-3'}>
                     <div className={'flex items-center space-x-2'}>
                         <h1 className={'font-header text-2xl leading-relaxed text-slate-50 line-clamp-1'}>{name}</h1>

@@ -17,15 +17,18 @@ interface StatBlockProps {
     className?: string;
 }
 
-function StatBlock({ title, copyOnClick, icon, color, dark, className, children }: StatBlockProps) {
+function StatBlock({ title, copyOnClick, icon, color, className, children }: StatBlockProps) {
     const colors = useStoreState(state => state.theme.data!.colors);
     const { fontSize, ref } = useFitText({ minFontSize: 8, maxFontSize: 500 });
 
     return (
         <CopyOnClick text={copyOnClick}>
             <div
-                className={classNames(styles.stat_block, className)}
-                style={{ backgroundColor: dark ? colors.headers : colors.secondary }}
+                className={classNames(
+                    styles.stat_block,
+                    className,
+                    'border border-white/10 bg-white/5 shadow-lg backdrop-blur-md transition-shadow hover:shadow-xl',
+                )}
             >
                 <div className={classNames(styles.status_bar || 'bg-slate-700')} />
                 {icon && (

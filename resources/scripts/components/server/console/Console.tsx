@@ -23,6 +23,7 @@ import 'xterm/css/xterm.css';
 import styles from './style.module.css';
 import { useStoreState } from '@/state/hooks';
 import { ArrowsExpandIcon } from '@heroicons/react/outline';
+import { DesktopComputerIcon } from '@heroicons/react/solid';
 import IntelligenceButton from './IntelligenceButton';
 
 const theme: ITheme = {
@@ -82,6 +83,7 @@ export default ({ expand, setExpand }: Props) => {
     const isTransferring = ServerContext.useStoreState(state => state.server.data!.isTransferring);
     const [history, setHistory] = usePersistedState<string[]>(`${serverId}:command_history`, []);
     const [historyIndex, setHistoryIndex] = useState(-1);
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     // SearchBarAddon has hardcoded z-index: 999 :(
     const zIndex = `
@@ -167,6 +169,16 @@ export default ({ expand, setExpand }: Props) => {
         }
     }, [terminal, connected]);
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isFullscreen) {
+                setIsFullscreen(false);
+            }
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [isFullscreen]);
+
     useEventListener(
         'resize',
         debounce(() => {
@@ -183,7 +195,7 @@ export default ({ expand, setExpand }: Props) => {
         // otherwise xterm computes its size mid-animation and glitches.
         const timeout = window.setTimeout(() => fitAddon.fit(), 500);
         return () => window.clearTimeout(timeout);
-    }, [expand]);
+    }, [expand, isFullscreen]);
 
     useEffect(() => {
         const listeners: Record<string, (s: string) => void> = {
@@ -233,7 +245,11 @@ export default ({ expand, setExpand }: Props) => {
             className={classNames(
                 styles.terminal,
                 'relative rounded-lg p-2 transition-all duration-500 ease-linear',
-                expand ? 'min-h-[48rem]' : 'min-h-[16rem]',
+                isFullscreen
+                    ? 'fixed inset-0 z-50 h-screen min-h-screen rounded-none bg-black/90 backdrop-blur-sm'
+                    : expand
+                    ? 'min-h-[48rem]'
+                    : 'min-h-[16rem]',
             )}
         >
             <SpinnerOverlay visible={!connected} size={'large'} />
@@ -267,10 +283,16 @@ export default ({ expand, setExpand }: Props) => {
                     >
                         <ChevronDoubleRightIcon className={'h-4 w-4'} />
                     </div>
-                    <div className={styles.expand_icon}>
+                    <div className={classNames(styles.expand_icon, 'right-8')}>
                         <ArrowsExpandIcon
-                            className={'h-4 w-4 duration-300 hover:text-green-400'}
+                            className={'h-4 w-4 cursor-pointer duration-300 hover:text-green-400'}
                             onClick={() => setExpand(s => !s)}
+                        />
+                    </div>
+                    <div className={styles.expand_icon}>
+                        <DesktopComputerIcon
+                            className={'h-4 w-4 cursor-pointer duration-300 hover:text-cyan-400'}
+                            onClick={() => setIsFullscreen(s => !s)}
                         />
                     </div>
                 </div>
