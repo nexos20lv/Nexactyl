@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { type Server } from '@definitions/server';
 import getServers from '@/api/getServers';
 import ServerRow from '@account/ServerRow';
+import ServerRowSkeleton from '@account/ServerRowSkeleton';
 import PageContentBlock from '@/elements/PageContentBlock';
 import useFlash from '@/plugins/useFlash';
 import { useStoreState } from 'easy-peasy';
@@ -25,6 +26,7 @@ import { type ServerGroup } from '@definitions/server';
 import ServerGroupDialog, { VisibleDialog } from '@account/groups/ServerGroupDialog';
 import ActivityLogContainer from './activity/ActivityLogContainer';
 import classNames from 'classnames';
+import { motion } from 'framer-motion';
 
 export default () => {
     const { search } = useLocation();
@@ -101,7 +103,16 @@ export default () => {
                             <FontAwesomeIcon icon={faList} />
                         </Button.Text>
                     </h2>
-                    {!servers || servers.items.length < 1 ? (
+                    {!servers && !error ? (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                        >
+                            <ServerRowSkeleton />
+                            <ServerRowSkeleton />
+                        </motion.div>
+                    ) : servers?.items.length === 0 ? (
                         <ContentBox>
                             <div className={'text-gray-400'}>
                                 <div className={'grid lg:grid-cols-2 gap-6 m-4'}>

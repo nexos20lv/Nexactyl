@@ -45,7 +45,6 @@ class DatabaseHostTransformer extends Transformer
             return $this->null();
         }
 
-        // TODO
         return $this->collection($model->databases, new ServerDatabaseTransformer());
     }
 }

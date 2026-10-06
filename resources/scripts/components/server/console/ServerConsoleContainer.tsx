@@ -54,6 +54,7 @@ function ServerConsoleContainer() {
         : null;
 
     const showRenewalWarning =
+        settings.enabled &&
         billingProductId &&
         daysUntilRenewal !== null &&
         daysUntilRenewal <= 0 &&
@@ -108,7 +109,7 @@ function ServerConsoleContainer() {
                     </div>
                     <p className={'text-sm line-clamp-2'}>
                         {description ?? uuid}
-                        {renewalDate && (
+                        {settings.enabled && renewalDate && (
                             <span className={'ml-1'}>&bull; {timeUntil(renewalDate!).days} days until renewal</span>
                         )}
                     </p>

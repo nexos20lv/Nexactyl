@@ -30,12 +30,19 @@ class BillingController extends ApplicationApiController
      */
     public function settings(UpdateBillingSettingsRequest $request): Response
     {
-        // todo(jex): use normalized request with foreach key value pairs
-        Setting::set('settings::modules:billing:' . $request->input('key'), $request->input('value'));
+        $settings = $request->has('key') && $request->has('value')
+            ? [$request->input('key') => $request->input('value')]
+            : $request->all();
 
-        if (strpos($request['key'], 'keys:') !== 0) {
+        foreach ($settings as $key => $value) {
+            Setting::set('settings::modules:billing:' . $key, $value);
+        }
+
+        $loggedSettings = array_filter($settings, fn($k) => strpos($k, 'keys:') !== 0, ARRAY_FILTER_USE_KEY);
+
+        if (!empty($loggedSettings)) {
             Activity::event('admin:billing:update')
-                ->property('settings', $request->all())
+                ->property('settings', $loggedSettings)
                 ->description('Jexpanelbilling settings were updated')
                 ->log();
         }

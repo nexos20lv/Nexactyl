@@ -66,8 +66,19 @@ export default ({ className }: { className?: string }) => {
 
                     <Button
                         css={tw`w-full sm:w-auto mt-4 sm:mt-0`}
-                        // onClick={submit}
-                        // TODO: When clicked, save as a JSON file.
+                        disabled={!content}
+                        onClick={() => {
+                            if (!content) return;
+                            const blob = new Blob([content], { type: 'application/json' });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `egg-${params.id}-export.json`;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                        }}
                     >
                         Save
                     </Button>

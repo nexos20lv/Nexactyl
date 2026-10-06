@@ -38,7 +38,7 @@ export default () => {
             .then(() => {
                 // setServer({ ...server, ...s });
 
-                // TODO: Figure out how to properly clear react-selects for allocations.
+                
                 setFieldValue('addAllocations', []);
                 setFieldValue('removeAllocations', []);
             })

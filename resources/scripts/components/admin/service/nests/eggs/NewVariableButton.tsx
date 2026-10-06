@@ -96,10 +96,9 @@ export default function NewVariableButton() {
                 )}
             </Formik>
 
-            {/* TODO: make button green */}
-            <Button type="button" onClick={() => setVisible(true)}>
+            <Button.Success type="button" onClick={() => setVisible(true)}>
                 New Variable
-            </Button>
+            </Button.Success>
         </>
     );
 }

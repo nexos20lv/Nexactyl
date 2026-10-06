@@ -18,6 +18,7 @@ import { Button } from '@/elements/button';
 import Input from '@/elements/Input';
 import AdminBox from '@/elements/AdminBox';
 import Field from '@/elements/Field';
+import SelectField from '@/elements/SelectField';
 import SpinnerOverlay from '@/elements/SpinnerOverlay';
 import Label from '@/elements/Label';
 import type { ApplicationStore } from '@/state';
@@ -101,8 +102,11 @@ export function ServerServiceContainer({
     );
 }
 
-export function ServerImageContainer() {
+export function ServerImageContainer({ egg }: { egg?: Egg }) {
     const { isSubmitting } = useFormikContext();
+    const options = egg?.dockerImages
+        ? Object.entries(egg.dockerImages).map(([name, image]) => ({ label: name, value: image as string }))
+        : [];
 
     return (
         <AdminBox title={'Image Configuration'} className="relative w-full">
@@ -110,8 +114,11 @@ export function ServerImageContainer() {
 
             <div className="md:w-full md:flex md:flex-col">
                 <div>
-                    {/* TODO: make this a proper select but allow a custom image to be specified if needed. */}
-                    <Field id={'image'} name={'image'} label={'Docker Image'} type={'text'} />
+                    {options.length > 0 ? (
+                        <SelectField id={'image'} name={'image'} label={'Docker Image'} options={options} isCreatable />
+                    ) : (
+                        <Field id={'image'} name={'image'} label={'Docker Image'} type={'text'} />
+                    )}
                 </div>
             </div>
         </AdminBox>
@@ -181,7 +188,7 @@ function ServerStartupForm({
                     </div>
 
                     <div className="flex">
-                        <ServerImageContainer />
+                        <ServerImageContainer egg={egg} />
                     </div>
                 </div>
 

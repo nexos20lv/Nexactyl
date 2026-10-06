@@ -23,6 +23,7 @@ import Checkbox from '@/elements/inputs/Checkbox';
 import CopyOnClick from '@/elements/CopyOnClick';
 import useFlash from '@/plugins/useFlash';
 import { useStoreState } from '@/state/hooks';
+import Can from '@/components/admin/Can';
 
 interface Props {
     filters?: Filters;
@@ -210,33 +211,61 @@ function ServersTable({ filters }: Props) {
                                                 </NavLink>
                                             </td>
 
-                                            {/* TODO: Have permission check for displaying user information. */}
                                             <td css={tw`px-6 text-sm text-left whitespace-nowrap`}>
-                                                <NavLink
-                                                    to={`/admin/users/${server.relations.user?.id}`}
-                                                    css={tw`text-primary-400 hover:text-primary-300`}
-                                                >
-                                                    <div css={tw`text-sm text-neutral-200`}>
-                                                        {server.relations.user?.email}
-                                                    </div>
+                                                <Can
+                                                    action={'users.read'}
+                                                    renderOnError={
+                                                        <>
+                                                            <div css={tw`text-sm text-neutral-200`}>
+                                                                {server.relations.user?.email}
+                                                            </div>
 
-                                                    <div css={tw`text-sm text-neutral-400`}>
-                                                        {server.relations.user?.uuid.split('-')[0]}
-                                                    </div>
-                                                </NavLink>
+                                                            <div css={tw`text-sm text-neutral-400`}>
+                                                                {server.relations.user?.uuid.split('-')[0]}
+                                                            </div>
+                                                        </>
+                                                    }
+                                                >
+                                                    <NavLink
+                                                        to={`/admin/users/${server.relations.user?.id}`}
+                                                        css={tw`text-primary-400 hover:text-primary-300`}
+                                                    >
+                                                        <div css={tw`text-sm text-neutral-200`}>
+                                                            {server.relations.user?.email}
+                                                        </div>
+
+                                                        <div css={tw`text-sm text-neutral-400`}>
+                                                            {server.relations.user?.uuid.split('-')[0]}
+                                                        </div>
+                                                    </NavLink>
+                                                </Can>
                                             </td>
 
-                                            {/* TODO: Have permission check for displaying node information. */}
                                             <td css={tw`px-6 text-sm text-left whitespace-nowrap`}>
-                                                <NavLink to={`/admin/nodes/${server.relations.node?.id}`}>
-                                                    <div css={tw`text-sm text-neutral-200`}>
-                                                        {server.relations.node?.name}
-                                                    </div>
+                                                <Can
+                                                    action={'nodes.read'}
+                                                    renderOnError={
+                                                        <>
+                                                            <div css={tw`text-sm text-neutral-200`}>
+                                                                {server.relations.node?.name}
+                                                            </div>
 
-                                                    <div css={tw`text-sm text-neutral-400`}>
-                                                        {server.relations.node?.fqdn}
-                                                    </div>
-                                                </NavLink>
+                                                            <div css={tw`text-sm text-neutral-400`}>
+                                                                {server.relations.node?.fqdn}
+                                                            </div>
+                                                        </>
+                                                    }
+                                                >
+                                                    <NavLink to={`/admin/nodes/${server.relations.node?.id}`}>
+                                                        <div css={tw`text-sm text-neutral-200`}>
+                                                            {server.relations.node?.name}
+                                                        </div>
+
+                                                        <div css={tw`text-sm text-neutral-400`}>
+                                                            {server.relations.node?.fqdn}
+                                                        </div>
+                                                    </NavLink>
+                                                </Can>
                                             </td>
 
                                             <td css={tw`px-6 whitespace-nowrap`}>

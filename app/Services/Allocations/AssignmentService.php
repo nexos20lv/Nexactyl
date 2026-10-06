@@ -49,11 +49,12 @@ class AssignmentService
 
         $underlying = 'Unknown IP';
         try {
-            // TODO: how should we approach supporting IPv6 with this?
-            // gethostbyname only supports IPv4, but the alternative (dns_get_record) returns
-            // an array of records, which is not ideal for this use case, we need a SINGLE
-            // IP to use, not multiple.
-            $underlying = gethostbyname($allocationIp);
+            if (filter_var($allocationIp, FILTER_VALIDATE_IP)) {
+                $underlying = $allocationIp;
+            } else {
+                $records = dns_get_record($allocationIp, DNS_A + DNS_AAAA);
+                $underlying = !empty($records) ? ($records[0]['ipv6'] ?? $records[0]['ip'] ?? gethostbyname($allocationIp)) : gethostbyname($allocationIp);
+            }
             $parsed = Network::parse($underlying);
         } catch (\Exception $exception) {
             throw new DisplayException("Could not parse provided allocation IP address for $allocationIp ($underlying): {$exception->getMessage()}", $exception);

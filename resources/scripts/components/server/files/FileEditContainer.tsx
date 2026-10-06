@@ -91,8 +91,7 @@ export default () => {
     };
 
     if (error) {
-        // TODO: onBack
-        return <ServerError message={error} />;
+        return <ServerError message={error} onBack={() => navigate(`/server/${id}/files`)} />;
     }
 
     return (

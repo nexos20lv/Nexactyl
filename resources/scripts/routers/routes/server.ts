@@ -77,9 +77,9 @@ const server: ServerRouteDefinition[] = [
         permission: 'billing.*',
         name: 'Billing',
         icon: Icon.CashIcon,
-        condition: flags => flags.billable,
+        condition: flags => flags.billable && flags.billingEnabled,
     }),
-    route('billing/upgrade', UpgradeContainer, { condition: flags => flags.billable }),
+    route('billing/upgrade', UpgradeContainer, { condition: flags => flags.billable && flags.billingEnabled }),
 ];
 
 export default server;

@@ -56,6 +56,7 @@ function ServerRouter() {
     const [collapsed, setCollapsed] = usePersistedState<boolean>(`sidebar_user_${user.uuid}`, false);
     const server = ServerContext.useStoreState(state => state.server.data);
     const activityEnabled = useStoreState(state => state.settings.data!.activity.enabled.server);
+    const billingEnabled = useStoreState(state => state.everest.data!.billing.enabled);
     const billable = server?.billingProductId;
     const status = ServerContext.useStoreState(state => state.status.value);
 
@@ -82,7 +83,7 @@ function ServerRouter() {
         };
     }, [params.id]);
 
-    if (billable && server.renewalDate && server.renewalDate.getTime() < new Date().getTime())
+    if (billingEnabled && billable && server.renewalDate && server.renewalDate.getTime() < new Date().getTime())
         return (
             <Suspended
                 id={server.billingProductId}
@@ -99,7 +100,9 @@ function ServerRouter() {
                     <MobileSidebar.Home />
                     {routes.server
                         .filter(
-                            route => route.name && (!route.condition || route.condition({ billable, activityEnabled })),
+                            route =>
+                                route.name &&
+                                (!route.condition || route.condition({ billable, billingEnabled, activityEnabled })),
                         )
                         .map(route => (
                             <MobileSidebar.Link
@@ -142,7 +145,7 @@ function ServerRouter() {
                                 route =>
                                     !route.category &&
                                     route.name &&
-                                    (!route.condition || route.condition({ billable, activityEnabled })),
+                                    (!route.condition || route.condition({ billable, billingEnabled, activityEnabled })),
                             )
                             .map(route => (
                                 <NavLink to={route.path} key={route.path} end={route.end}>

@@ -25,6 +25,11 @@ import { type ServerGroup } from '@definitions/server';
 import { VisibleDialog } from './groups/ServerGroupDialog';
 import useFlash from '@/plugins/useFlash';
 import { timeUntil } from '../server/billing/ServerBillingContainer';
+import CopyOnClick from '@/elements/CopyOnClick';
+import { motion } from 'framer-motion';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Tooltip } from 'chart.js';
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
 export function statusToColor(state?: ServerPowerState): string {
     switch (state) {
@@ -67,69 +72,65 @@ export function statusToLabel(state?: ServerPowerState): string {
 
 /** Animated pulsing dot indicator */
 const StatusDot = ({ state }: { state?: ServerPowerState }) => {
-    const color = {
-        running: 'bg-emerald-400',
-        starting: 'bg-sky-400',
-        stopping: 'bg-amber-400',
-    };
+    const isRunning = state === 'running';
+    const isStarting = state === 'starting';
+    const isStopping = state === 'stopping';
+
+    const bgClass = isRunning ? 'bg-emerald-400' : isStarting ? 'bg-sky-400' : isStopping ? 'bg-amber-400' : 'bg-red-500';
+    const glowClass = isRunning ? 'shadow-[0_0_12px_rgba(52,211,153,0.8)]' : isStarting ? 'shadow-[0_0_12px_rgba(56,189,248,0.8)]' : isStopping ? 'shadow-[0_0_12px_rgba(251,191,36,0.8)]' : 'shadow-[0_0_8px_rgba(239,68,68,0.6)]';
 
     return (
-        <span className={'relative flex h-2.5 w-2.5'}>
-            {(state === 'running' || state === 'starting') && (
+        <span className={'relative flex h-3 w-3'}>
+            {(isRunning || isStarting) && (
                 <span
-                    className={classNames(
-                        'animate-ping absolute inline-flex h-full w-full rounded-full opacity-60',
-                        color,
-                    )}
+                    className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-60 ${bgClass}`}
                 />
             )}
-            <span className={classNames('relative inline-flex rounded-full h-2.5 w-2.5', color)} />
+            <span className={`relative inline-flex rounded-full h-3 w-3 ${bgClass} ${glowClass}`} />
         </span>
     );
 };
 
-/** Resource bar with animated fill */
-const ResourceBar = ({
-    value,
-    icon,
-    label,
-    colorClass,
-}: {
-    value: number;
-    icon: IconDefinition;
-    label: string;
-    colorClass: string;
-}) => {
+/** Resource sparkline */
+const ResourceSparkline = ({ value, label, chartData, chartOptions }: { value: number; label: string; chartData: any; chartOptions: any }) => {
     const clamped = Math.min(Math.max(value, 0), 100);
-    const barColor = clamped >= 90 ? 'bg-red-400' : clamped >= 70 ? 'bg-amber-400' : colorClass;
 
     return (
         <div className={'w-full flex flex-col gap-1 min-w-0'}>
             <div className={'flex items-center justify-between gap-2'}>
                 <span className={'flex items-center gap-1.5 text-xs text-gray-400 font-medium tracking-wide uppercase'}>
-                    <FontAwesomeIcon icon={icon} className={'text-gray-500'} size={'xs'} />
                     {label}
                 </span>
                 <span
                     className={classNames(
                         'text-xs font-mono font-semibold tabular-nums',
-                        clamped >= 90 ? 'text-red-400' : clamped >= 70 ? 'text-amber-400' : 'text-gray-200',
+                        clamped >= 90 ? 'text-red-400' : clamped >= 70 ? 'text-amber-400' : 'text-gray-200'
                     )}
                 >
                     {clamped.toFixed(0)}%
                 </span>
             </div>
-            <div className={'h-1.5 w-full rounded-full bg-white/10 overflow-hidden'}>
-                <div
-                    className={classNames('h-full rounded-full transition-all duration-700 ease-out', barColor)}
-                    style={{ width: `${clamped}%` }}
-                />
+            <div className={'h-8 w-full relative'}>
+                <Line data={chartData} options={chartOptions} />
             </div>
         </div>
     );
 };
 
 type Timer = ReturnType<typeof setInterval>;
+
+const sparklineOptions: any = {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: false,
+    plugins: { legend: { display: false }, tooltip: { enabled: false } },
+    scales: {
+        x: { display: false },
+        y: { display: false, min: 0, max: 100 },
+    },
+    elements: { point: { radius: 0 }, line: { tension: 0.25, borderWidth: 2 } },
+    layout: { padding: 0 },
+};
 
 export default ({
     server,
@@ -143,9 +144,13 @@ export default ({
     const { clearFlashes, addFlash, clearAndAddHttpError } = useFlash();
     const [stats, setStats] = useState<ServerStats>();
     const colors = useStoreState(state => state.theme.data!.colors);
+    const billingEnabled = useStoreState(state => state.everest.data!.billing.enabled);
     const interval = useRef<Timer>(null) as React.MutableRefObject<Timer>;
     const [isSuspended, setIsSuspended] = useState(server.status === 'suspended');
     const [removed, setRemoved] = useState(false);
+
+    const cpuChart = useChart('CPU', { sets: 1, options: sparklineOptions });
+    const ramChart = useChart('RAM', { sets: 1, options: sparklineOptions });
 
     const onDelete = () => {
         clearFlashes();
@@ -183,6 +188,11 @@ export default ({
             : (stats?.cpuUsagePercent ?? 0) / (server.limits.cpu / 100);
     const memoryUsed = ((stats?.memoryUsageInBytes ?? 0) / 1024 / 1024 / server.limits.memory) * 100;
 
+    useEffect(() => {
+        cpuChart.push(cpuUsed);
+        ramChart.push(memoryUsed);
+    }, [cpuUsed, memoryUsed]);
+
     const powerState: ServerPowerState | undefined = stats?.status;
     const isOfflineOrSuspended = !!server.status || stats?.status === 'offline';
     const isTransferring = server.isTransferring;
@@ -193,7 +203,11 @@ export default ({
     const hasGroup = group && group.id === server.groupId && !removed;
 
     return (
-        <div
+        <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ scale: 1.015 }}
+            transition={{ duration: 0.2 }}
             className={classNames(
                 'group relative w-full my-2 rounded-xl border transition-all duration-300',
                 'hover:border-white/15 hover:shadow-lg hover:shadow-black/30',
@@ -297,14 +311,16 @@ export default ({
                         </div>
                         <div className={'flex flex-wrap items-center gap-x-3 gap-y-1'}>
                             {allocation && (
-                                <span className={'flex items-center gap-1.5 text-xs text-gray-500'}>
-                                    <FontAwesomeIcon icon={faNetworkWired} size={'xs'} className={'text-gray-600'} />
-                                    <span className={'font-mono'}>
-                                        {allocation.ip}:{allocation.port}
+                                <CopyOnClick text={`${allocation.ip}:${allocation.port}`}>
+                                    <span className={'flex items-center gap-1.5 text-xs text-gray-500 cursor-pointer hover:text-gray-300 transition-colors'}>
+                                        <FontAwesomeIcon icon={faNetworkWired} size={'xs'} className={'text-gray-600'} />
+                                        <span className={'font-mono'}>
+                                            {allocation.alias || allocation.ip}:{allocation.port}
+                                        </span>
                                     </span>
-                                </span>
+                                </CopyOnClick>
                             )}
-                            {renewal && (
+                            {billingEnabled && renewal && (
                                 <span className={'flex items-center gap-1.5 text-xs text-gray-500'}>
                                     <FontAwesomeIcon icon={faClock} size={'xs'} className={'text-gray-600'} />
                                     <span>
@@ -320,10 +336,12 @@ export default ({
                                     </span>
                                 </span>
                             )}
-                            <span className={'flex items-center gap-1.5 text-xs text-gray-600'}>
-                                <FontAwesomeIcon icon={faIdBadge} size={'xs'} className={'text-gray-600'} />
-                                <span className={'font-mono opacity-60'}>{server.uuid.substring(0, 8)}&hellip;</span>
-                            </span>
+                            <CopyOnClick text={server.uuid}>
+                                <span className={'flex items-center gap-1.5 text-xs text-gray-600 cursor-pointer hover:text-gray-400 transition-colors'}>
+                                    <FontAwesomeIcon icon={faIdBadge} size={'xs'} className={'text-gray-600'} />
+                                    <span className={'font-mono opacity-60'}>{server.uuid.substring(0, 8)}&hellip;</span>
+                                </span>
+                            </CopyOnClick>
                         </div>
                     </div>
                 </div>
@@ -354,17 +372,17 @@ export default ({
                                 'flex justify-between gap-y-3 gap-x-5 bg-white/[0.03] rounded-lg border border-white/5 px-4 py-3'
                             }
                         >
-                            <ResourceBar
+                            <ResourceSparkline
                                 value={Number(cpuUsed?.toFixed(1) ?? 0)}
-                                icon={faMicrochip}
                                 label={'CPU'}
-                                colorClass={'bg-white/50'}
+                                chartData={cpuChart.props.data}
+                                chartOptions={cpuChart.props.options}
                             />
-                            <ResourceBar
+                            <ResourceSparkline
                                 value={Number(memoryUsed.toFixed(1))}
-                                icon={faMemory}
                                 label={'Memory'}
-                                colorClass={'bg-white/50'}
+                                chartData={ramChart.props.data}
+                                chartOptions={ramChart.props.options}
                             />
                         </div>
                     )}
@@ -381,6 +399,6 @@ export default ({
                     </Link>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
