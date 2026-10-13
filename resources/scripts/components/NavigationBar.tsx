@@ -51,7 +51,11 @@ export default () => {
             <SpinnerOverlay visible={isLoggingOut} />
             <div className={'mx-auto w-full flex items-center h-[3.5rem] max-w-[1200px] px-4'}>
                 <div id={'logo'} className={'flex-1 flex items-center gap-3'}>
-                    <div className={'w-7 h-7 rounded-lg bg-violet-600/20 border border-violet-500/40 flex items-center justify-center text-violet-400 font-bold text-sm shadow-[0_0_10px_rgba(168,85,247,0.25)]'}>
+                    <div
+                        className={
+                            'w-7 h-7 rounded-lg bg-violet-600/20 border border-violet-500/40 flex items-center justify-center text-violet-400 font-bold text-sm shadow-[0_0_10px_rgba(168,85,247,0.25)]'
+                        }
+                    >
                         ⚡
                     </div>
                     <Link
@@ -60,7 +64,8 @@ export default () => {
                             'text-xl font-header font-semibold no-underline text-neutral-100 hover:text-white transition-colors duration-150 tracking-tight'
                         }
                     >
-                        {name || 'PTERODACTYL'}<span className={'text-violet-400'}>.</span>
+                        {name || 'PTERODACTYL'}
+                        <span className={'text-violet-400'}>.</span>
                     </Link>
                 </div>
                 <RightNavigation className={'flex h-full items-center justify-center'}>

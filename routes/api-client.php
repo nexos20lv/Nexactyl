@@ -150,4 +150,19 @@ Route::group([
         Route::post('/reinstall', [Client\Servers\SettingsController::class, 'reinstall']);
         Route::put('/docker-image', [Client\Servers\SettingsController::class, 'dockerImage']);
     });
+    Route::group(['prefix' => '/versions'], function () {
+        Route::get('/loaders', [Client\Servers\VersionManagerController::class, 'loaders']);
+        Route::get('/list', [Client\Servers\VersionManagerController::class, 'versions']);
+        Route::post('/install', [Client\Servers\VersionManagerController::class, 'install']);
+    });
+
+    Route::group(['prefix' => '/mods'], function () {
+        Route::get('/search', [Client\Servers\ModManagerController::class, 'search']);
+        Route::post('/install', [Client\Servers\ModManagerController::class, 'install']);
+    });
+
+    Route::group(['prefix' => '/store'], function () {
+        Route::get('/balance', [Client\Servers\BoosterStoreController::class, 'balance']);
+        Route::post('/boosters/apply', [Client\Servers\BoosterStoreController::class, 'apply']);
+    });
 });

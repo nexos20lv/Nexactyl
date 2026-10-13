@@ -19,6 +19,8 @@ import ServerActivityLogContainer from '@/components/server/ServerActivityLogCon
 //
 // These specific lazy loaded routes are to avoid loading in heavy screens
 // for the server dashboard when they're only needed for specific instances.
+const VersionContainer = lazy(() => import('@/components/server/versions/VersionContainer'));
+const BoosterStoreContainer = lazy(() => import('@/components/server/store/BoosterStoreContainer'));
 const FileEditContainer = lazy(() => import('@/components/server/files/FileEditContainer'));
 const ScheduleEditContainer = lazy(() => import('@/components/server/schedules/ScheduleEditContainer'));
 
@@ -127,6 +129,18 @@ export default {
             permission: 'startup.*',
             name: 'Startup',
             component: StartupContainer,
+        },
+        {
+            path: '/versions',
+            permission: 'startup.*',
+            name: 'Versions & Mods',
+            component: VersionContainer,
+        },
+        {
+            path: '/store',
+            permission: null,
+            name: 'Boutique Hardware',
+            component: BoosterStoreContainer,
         },
         {
             path: '/settings',
