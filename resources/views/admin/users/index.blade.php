@@ -39,6 +39,7 @@
                             <th>Client Name</th>
                             <th>Username</th>
                             <th class="text-center">2FA</th>
+                            <th class="text-center"><i class="fa fa-diamond" style="color:#c084fc;"></i> Crédits</th>
                             <th class="text-center"><span data-toggle="tooltip" data-placement="top" title="Servers that this user is marked as the owner of.">Servers Owned</span></th>
                             <th class="text-center"><span data-toggle="tooltip" data-placement="top" title="Servers that this user can access because they are marked as a subuser.">Can Access</span></th>
                             <th></th>
@@ -57,6 +58,9 @@
                                     @else
                                         <i class="fa fa-unlock text-red"></i>
                                     @endif
+                                </td>
+                                <td class="text-center">
+                                    <span class="label" style="background:#7c3aed;color:#fff;font-size:12px;padding:4px 8px;border-radius:4px;font-weight:600;"><i class="fa fa-diamond"></i> {{ number_format($user->credits ?? 0) }} cr</span>
                                 </td>
                                 <td class="text-center">
                                     <a href="{{ route('admin.servers', ['filter[owner_id]' => $user->id]) }}">{{ $user->servers_count }}</a>

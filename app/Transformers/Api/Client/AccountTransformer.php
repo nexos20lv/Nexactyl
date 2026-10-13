@@ -27,6 +27,7 @@ class AccountTransformer extends BaseClientTransformer
             'first_name' => $model->name_first,
             'last_name' => $model->name_last,
             'language' => $model->language,
+            'credits' => (int) ($model->credits ?? 0),
         ];
     }
 }

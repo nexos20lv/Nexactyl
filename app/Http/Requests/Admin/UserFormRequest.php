@@ -23,6 +23,8 @@ class UserFormRequest extends AdminFormRequest
             'password',
             'language',
             'root_admin',
+        ])->merge([
+            'credits' => 'nullable|integer|min:0',
         ])->toArray();
     }
 }

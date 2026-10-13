@@ -134,6 +134,7 @@ class User extends Model implements
         'totp_authenticated_at',
         'gravatar',
         'root_admin',
+        'credits',
     ];
 
     /**
@@ -143,6 +144,7 @@ class User extends Model implements
         'root_admin' => 'boolean',
         'use_totp' => 'boolean',
         'gravatar' => 'boolean',
+        'credits' => 'integer',
         'totp_authenticated_at' => 'datetime',
     ];
 

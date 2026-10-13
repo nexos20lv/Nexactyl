@@ -8,6 +8,7 @@ export interface UserData {
     language: string;
     rootAdmin: boolean;
     useTotp: boolean;
+    credits?: number;
     createdAt: Date;
     updatedAt: Date;
 }

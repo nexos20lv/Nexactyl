@@ -67,6 +67,10 @@ class ServerTransformer extends BaseClientTransformer
             ],
             'invocation' => $service->handle($server, !$user->can(Permission::ACTION_STARTUP_READ, $server)),
             'docker_image' => $server->image,
+            'is_minecraft' => ($server->nest_id === 1)
+                || (stripos($server->egg->name ?? '', 'minecraft') !== false)
+                || (isset($server->egg->nest) && stripos($server->egg->nest->name ?? '', 'minecraft') !== false)
+                || in_array('eula', $server->egg->inherit_features ?? []),
             'egg_features' => $server->egg->inherit_features,
             'feature_limits' => [
                 'databases' => $server->database_limit,

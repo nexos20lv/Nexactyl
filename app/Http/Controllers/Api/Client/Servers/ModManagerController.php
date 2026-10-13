@@ -18,6 +18,7 @@ class ModManagerController extends ClientApiController
 
     public function search(Request $request, Server $server): JsonResponse
     {
+        $this->assertMinecraftServer($server);
         $query = $request->query('query', '');
         $loader = $request->query('loader', 'paper');
         $version = $request->query('version', '1.21.1');
@@ -46,6 +47,7 @@ class ModManagerController extends ClientApiController
 
     public function install(Request $request, Server $server): JsonResponse
     {
+        $this->assertMinecraftServer($server);
         $request->validate([
             'project_id' => 'required|string',
             'loader' => 'required|string',
@@ -91,4 +93,17 @@ class ModManagerController extends ClientApiController
             'directory' => $directory,
         ]);
     }
+
+    protected function assertMinecraftServer(Server $server): void
+    {
+        $isMinecraft = ($server->nest_id === 1)
+            || (stripos($server->egg->name ?? '', 'minecraft') !== false)
+            || (isset($server->egg->nest) && stripos($server->egg->nest->name ?? '', 'minecraft') !== false)
+            || in_array('eula', $server->egg->inherit_features ?? []);
+
+        if (!$isMinecraft) {
+            abort(400, 'Ce gestionnaire de mods et plugins est réservé exclusivement aux serveurs Minecraft.');
+        }
+    }
+
 }

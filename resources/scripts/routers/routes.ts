@@ -13,34 +13,44 @@ import AccountApiContainer from '@/components/dashboard/AccountApiContainer';
 import AccountSSHContainer from '@/components/dashboard/ssh/AccountSSHContainer';
 import ActivityLogContainer from '@/components/dashboard/activity/ActivityLogContainer';
 import ServerActivityLogContainer from '@/components/server/ServerActivityLogContainer';
+import {
+    faTerminal,
+    faFolderOpen,
+    faDatabase,
+    faClock,
+    faUsers,
+    faArchive,
+    faNetworkWired,
+    faPlayCircle,
+    faCubes,
+    faBolt,
+    faCog,
+    faHistory,
+    faUser,
+    faKey,
+} from '@fortawesome/free-solid-svg-icons';
 
-// Each of the router files is already code split out appropriately — so
-// all of the items above will only be loaded in when that router is loaded.
-//
-// These specific lazy loaded routes are to avoid loading in heavy screens
-// for the server dashboard when they're only needed for specific instances.
 const VersionContainer = lazy(() => import('@/components/server/versions/VersionContainer'));
 const BoosterStoreContainer = lazy(() => import('@/components/server/store/BoosterStoreContainer'));
 const FileEditContainer = lazy(() => import('@/components/server/files/FileEditContainer'));
 const ScheduleEditContainer = lazy(() => import('@/components/server/schedules/ScheduleEditContainer'));
 
-interface RouteDefinition {
+export interface RouteDefinition {
     path: string;
-    // If undefined is passed this route is still rendered into the router itself
-    // but no navigation link is displayed in the sub-navigation menu.
     name: string | undefined;
     component: React.ComponentType;
     exact?: boolean;
+    icon?: any;
+    category?: string;
 }
 
-interface ServerRouteDefinition extends RouteDefinition {
+export interface ServerRouteDefinition extends RouteDefinition {
     permission: string | string[] | null;
+    minecraftOnly?: boolean;
 }
 
 interface Routes {
-    // All of the routes available under "/account"
     account: RouteDefinition[];
-    // All of the routes available under "/server/:id"
     server: ServerRouteDefinition[];
 }
 
@@ -48,23 +58,31 @@ export default {
     account: [
         {
             path: '/',
-            name: 'Account',
+            name: 'Mon Profil',
+            icon: faUser,
+            category: 'COMPTE',
             component: AccountOverviewContainer,
             exact: true,
         },
         {
             path: '/api',
-            name: 'API Credentials',
+            name: 'Clés API',
+            icon: faKey,
+            category: 'COMPTE',
             component: AccountApiContainer,
         },
         {
             path: '/ssh',
-            name: 'SSH Keys',
+            name: 'Clés SSH',
+            icon: faTerminal,
+            category: 'COMPTE',
             component: AccountSSHContainer,
         },
         {
             path: '/activity',
-            name: 'Activity',
+            name: 'Activité',
+            icon: faHistory,
+            category: 'COMPTE',
             component: ActivityLogContainer,
         },
     ],
@@ -73,13 +91,17 @@ export default {
             path: '/',
             permission: null,
             name: 'Console',
+            icon: faTerminal,
+            category: 'GESTION',
             component: ServerConsole,
             exact: true,
         },
         {
             path: '/files',
             permission: 'file.*',
-            name: 'Files',
+            name: 'Fichiers',
+            icon: faFolderOpen,
+            category: 'GESTION',
             component: FileManagerContainer,
         },
         {
@@ -91,13 +113,17 @@ export default {
         {
             path: '/databases',
             permission: 'database.*',
-            name: 'Databases',
+            name: 'Bases de données',
+            icon: faDatabase,
+            category: 'GESTION',
             component: DatabasesContainer,
         },
         {
             path: '/schedules',
             permission: 'schedule.*',
-            name: 'Schedules',
+            name: 'Tâches planifiées',
+            icon: faClock,
+            category: 'GESTION',
             component: ScheduleContainer,
         },
         {
@@ -109,49 +135,66 @@ export default {
         {
             path: '/users',
             permission: 'user.*',
-            name: 'Users',
+            name: 'Utilisateurs',
+            icon: faUsers,
+            category: 'GESTION',
             component: UsersContainer,
         },
         {
             path: '/backups',
             permission: 'backup.*',
-            name: 'Backups',
+            name: 'Sauvegardes',
+            icon: faArchive,
+            category: 'GESTION',
             component: BackupContainer,
         },
         {
             path: '/network',
             permission: 'allocation.*',
-            name: 'Network',
+            name: 'Réseau & Ports',
+            icon: faNetworkWired,
+            category: 'GESTION',
             component: NetworkContainer,
         },
         {
             path: '/startup',
             permission: 'startup.*',
-            name: 'Startup',
+            name: 'Démarrage & JVM',
+            icon: faPlayCircle,
+            category: 'GESTION',
             component: StartupContainer,
         },
         {
             path: '/versions',
             permission: 'startup.*',
             name: 'Versions & Mods',
+            icon: faCubes,
+            category: 'EXTENSIONS',
+            minecraftOnly: true,
             component: VersionContainer,
         },
         {
             path: '/store',
             permission: null,
             name: 'Boutique Hardware',
+            icon: faBolt,
+            category: 'EXTENSIONS',
             component: BoosterStoreContainer,
         },
         {
             path: '/settings',
             permission: ['settings.*', 'file.sftp'],
-            name: 'Settings',
+            name: 'Paramètres',
+            icon: faCog,
+            category: 'CONFIGURATION',
             component: SettingsContainer,
         },
         {
             path: '/activity',
             permission: 'activity.*',
-            name: 'Activity',
+            name: 'Activité',
+            icon: faHistory,
+            category: 'CONFIGURATION',
             component: ServerActivityLogContainer,
         },
     ],

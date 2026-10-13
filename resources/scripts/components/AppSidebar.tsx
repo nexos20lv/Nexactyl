@@ -1,0 +1,276 @@
+import React, { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faTerminal,
+    faChevronLeft,
+    faCoins,
+    faSignOutAlt,
+    faExternalLinkAlt,
+    faServer,
+    faBolt,
+} from '@fortawesome/free-solid-svg-icons';
+import { useStoreState } from 'easy-peasy';
+import { ApplicationStore } from '@/state';
+import { Server } from '@/api/server/getServer';
+import routes from '@/routers/routes';
+import Can from '@/components/elements/Can';
+import http from '@/api/http';
+import Avatar from '@/components/Avatar';
+
+interface Props {
+    context: 'dashboard' | 'server';
+    server?: Server;
+    onCloseMobile?: () => void;
+}
+
+const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
+    const user = useStoreState((state: ApplicationStore) => state.user.data);
+    const rootAdmin = user?.rootAdmin ?? false;
+    const credits = user?.credits ?? 0;
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+    const onTriggerLogout = () => {
+        setIsLoggingOut(true);
+        http.post('/auth/logout').finally(() => {
+            // @ts-expect-error valid navigation
+            window.location = '/';
+        });
+    };
+
+    const serverCategories = ['GESTION', 'EXTENSIONS', 'CONFIGURATION'];
+
+    return (
+        <aside className='w-64 h-full bg-[#08070e] border-r border-[#1a1728] flex flex-col justify-between select-none'>
+            {/* Top Brand */}
+            <div className='shrink-0'>
+                <div className='flex items-center gap-3 px-5 py-4 border-b border-[#181622]'>
+                    <div className='w-9 h-9 rounded-xl bg-violet-600/20 border border-violet-500/40 flex items-center justify-center text-violet-400 shadow-[0_0_15px_rgba(139,92,246,0.25)]'>
+                        <FontAwesomeIcon icon={faTerminal} className='text-sm' />
+                    </div>
+                    <div className='flex flex-col'>
+                        <div className='flex items-center gap-1.5'>
+                            <span className='font-extrabold tracking-wider text-sm text-neutral-100 font-mono'>
+                                OBSIDIAN
+                            </span>
+                            <span className='text-[10px] uppercase font-bold bg-violet-500/20 text-violet-300 border border-violet-500/30 px-1.5 py-0.2 rounded'>
+                                PRO
+                            </span>
+                        </div>
+                        <span className='text-[11px] text-neutral-500 font-mono'>Gaming Cloud v1.12</span>
+                    </div>
+                </div>
+
+                {/* Server Quick Info & Back Button */}
+                {context === 'server' && server && (
+                    <div className='p-3 border-b border-[#181622] bg-[#0c0a17]/50'>
+                        <Link
+                            to='/'
+                            onClick={onCloseMobile}
+                            className='flex items-center gap-2 px-2.5 py-1.5 text-xs font-medium text-neutral-400 hover:text-neutral-100 bg-neutral-900/60 hover:bg-neutral-900 border border-[#1f1d2e] rounded-lg transition-all mb-2.5'
+                        >
+                            <FontAwesomeIcon icon={faChevronLeft} className='text-[10px]' />
+                            <span>Tous mes serveurs</span>
+                        </Link>
+                        <div className='p-2.5 rounded-lg bg-[#0e0d16] border border-[#1f1d2e] shadow-sm'>
+                            <div className='flex items-center justify-between mb-1'>
+                                <span
+                                    className='text-xs font-semibold text-neutral-200 truncate max-w-[140px]'
+                                    title={server.name}
+                                >
+                                    {server.name}
+                                </span>
+                                <span className='flex h-2 w-2 relative'>
+                                    <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75' />
+                                    <span className='relative inline-flex rounded-full h-2 w-2 bg-emerald-500' />
+                                </span>
+                            </div>
+                            <div className='flex items-center justify-between text-[10px] text-neutral-500 font-mono'>
+                                <span>Node: {server.node}</span>
+                                {server.isMinecraft && (
+                                    <span className='text-violet-400 bg-violet-500/10 px-1.5 py-0.5 rounded border border-violet-500/20'>
+                                        Minecraft
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Navigation Links Area */}
+            <div className='flex-1 overflow-y-auto py-3 px-2 space-y-4'>
+                {context === 'server' && server ? (
+                    serverCategories.map((cat) => {
+                        const catRoutes = routes.server.filter((r) => {
+                            if (!r.name) return false;
+                            if (r.category !== cat) return false;
+                            if (r.minecraftOnly && !server.isMinecraft) return false;
+                            return true;
+                        });
+
+                        if (catRoutes.length === 0) return null;
+
+                        return (
+                            <div key={cat} className='space-y-0.5'>
+                                <div className='text-[10px] font-bold text-neutral-500 tracking-wider uppercase px-3 py-1'>
+                                    {cat}
+                                </div>
+                                {catRoutes.map((route) => {
+                                    const path =
+                                        route.path === '/'
+                                            ? `/server/${server.id}`
+                                            : `/server/${server.id}/${route.path.replace(/^\//, '')}`;
+
+                                    const content = (
+                                        <NavLink
+                                            key={route.path}
+                                            to={path}
+                                            exact={route.exact}
+                                            onClick={onCloseMobile}
+                                            activeClassName='bg-violet-600/15 text-violet-300 font-semibold border-l-2 border-violet-500 shadow-[inset_3px_0_10px_rgba(139,92,246,0.15)]'
+                                            className='flex items-center justify-between px-3 py-2 text-xs font-medium text-neutral-400 hover:text-neutral-100 hover:bg-neutral-900/50 rounded-lg transition-all group'
+                                        >
+                                            <div className='flex items-center gap-2.5 truncate'>
+                                                {route.icon && (
+                                                    <FontAwesomeIcon
+                                                        icon={route.icon}
+                                                        className='w-4 text-center text-neutral-500 group-hover:text-violet-400 transition-colors'
+                                                    />
+                                                )}
+                                                <span className='truncate'>{route.name}</span>
+                                            </div>
+                                            {route.path === '/store' && (
+                                                <span className='text-[9px] font-bold uppercase tracking-wider bg-violet-600/30 text-violet-300 border border-violet-500/40 px-1.5 py-0.5 rounded shadow-[0_0_8px_rgba(139,92,246,0.3)]'>
+                                                    BOOST
+                                                </span>
+                                            )}
+                                        </NavLink>
+                                    );
+
+                                    return route.permission ? (
+                                        <Can key={route.path} action={route.permission} matchAny>
+                                            {content}
+                                        </Can>
+                                    ) : (
+                                        content
+                                    );
+                                })}
+                            </div>
+                        );
+                    })
+                ) : (
+                    <div className='space-y-4'>
+                        <div className='space-y-0.5'>
+                            <div className='text-[10px] font-bold text-neutral-500 tracking-wider uppercase px-3 py-1'>
+                                PRINCIPAL
+                            </div>
+                            <NavLink
+                                to='/'
+                                exact
+                                onClick={onCloseMobile}
+                                activeClassName='bg-violet-600/15 text-violet-300 font-semibold border-l-2 border-violet-500 shadow-[inset_3px_0_10px_rgba(139,92,246,0.15)]'
+                                className='flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-neutral-400 hover:text-neutral-100 hover:bg-neutral-900/50 rounded-lg transition-all group'
+                            >
+                                <FontAwesomeIcon
+                                    icon={faServer}
+                                    className='w-4 text-center text-neutral-500 group-hover:text-violet-400 transition-colors'
+                                />
+                                <span>Mes Serveurs</span>
+                            </NavLink>
+                        </div>
+
+                        <div className='space-y-0.5'>
+                            <div className='text-[10px] font-bold text-neutral-500 tracking-wider uppercase px-3 py-1'>
+                                MON COMPTE
+                            </div>
+                            {routes.account.map((route) => (
+                                <NavLink
+                                    key={route.path}
+                                    to={`/account/${route.path}`.replace('//', '/')}
+                                    exact={route.exact}
+                                    onClick={onCloseMobile}
+                                    activeClassName='bg-violet-600/15 text-violet-300 font-semibold border-l-2 border-violet-500 shadow-[inset_3px_0_10px_rgba(139,92,246,0.15)]'
+                                    className='flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-neutral-400 hover:text-neutral-100 hover:bg-neutral-900/50 rounded-lg transition-all group'
+                                >
+                                    {route.icon && (
+                                        <FontAwesomeIcon
+                                            icon={route.icon}
+                                            className='w-4 text-center text-neutral-500 group-hover:text-violet-400 transition-colors'
+                                        />
+                                    )}
+                                    <span>{route.name}</span>
+                                </NavLink>
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Bottom Credits & User Profile */}
+            <div className='shrink-0 border-t border-[#181622] bg-[#06050a] p-3 space-y-2.5'>
+                {/* Credits Card */}
+                <div className='p-2.5 rounded-lg bg-gradient-to-r from-violet-950/40 to-purple-950/20 border border-violet-500/30 flex items-center justify-between shadow-sm'>
+                    <div className='flex items-center gap-2'>
+                        <div className='w-6 h-6 rounded bg-violet-500/20 flex items-center justify-center text-violet-300 text-xs'>
+                            <FontAwesomeIcon icon={faCoins} />
+                        </div>
+                        <div className='flex flex-col'>
+                            <span className='text-[10px] text-neutral-400 font-medium'>Solde de Crédits</span>
+                            <span className='text-xs font-bold text-violet-300 font-mono'>
+                                {credits.toLocaleString()} cr
+                            </span>
+                        </div>
+                    </div>
+                    {context === 'server' && server && (
+                        <Link
+                            to={`/server/${server.id}/store`}
+                            onClick={onCloseMobile}
+                            className='text-[10px] font-bold bg-violet-600 hover:bg-violet-500 text-white px-2 py-1 rounded transition-colors shadow-sm flex items-center gap-1'
+                        >
+                            <FontAwesomeIcon icon={faBolt} className='text-[9px]' />
+                            <span>Store</span>
+                        </Link>
+                    )}
+                </div>
+
+                {/* User Row */}
+                <div className='flex items-center justify-between pt-1'>
+                    <div className='flex items-center gap-2.5 min-w-0'>
+                        <div className='w-8 h-8 rounded-lg overflow-hidden border border-violet-500/30 shrink-0'>
+                            <Avatar.User />
+                        </div>
+                        <div className='flex flex-col min-w-0'>
+                            <span className='text-xs font-semibold text-neutral-200 truncate'>{user?.username}</span>
+                            <span className='text-[10px] text-neutral-500'>
+                                {rootAdmin ? 'Administrateur' : 'Client'}
+                            </span>
+                        </div>
+                    </div>
+                    <div className='flex items-center gap-1 shrink-0'>
+                        {rootAdmin && (
+                            <a
+                                href='/admin'
+                                title='Panel Administration'
+                                className='p-1.5 rounded-md text-neutral-400 hover:text-violet-300 hover:bg-violet-500/10 transition-colors'
+                            >
+                                <FontAwesomeIcon icon={faExternalLinkAlt} className='text-xs' />
+                            </a>
+                        )}
+                        <button
+                            type='button'
+                            onClick={onTriggerLogout}
+                            disabled={isLoggingOut}
+                            title='Déconnexion'
+                            className='p-1.5 rounded-md text-neutral-400 hover:text-red-400 hover:bg-red-500/10 transition-colors'
+                        >
+                            <FontAwesomeIcon icon={faSignOutAlt} className='text-xs' />
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    );
+};
+
+export default AppSidebar;

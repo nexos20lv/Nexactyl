@@ -83,6 +83,23 @@
             </div>
         </div>
         <div class="col-md-6">
+            <div class="box box-warning" style="border-top-color: #8b5cf6;">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-diamond" style="color: #c084fc;"></i> Solde de Crédits (Boutique Hardware)</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="credits" class="control-label">Solde de Crédits Actuel</label>
+                        <div class="input-group">
+                            <input type="number" step="1" min="0" id="credits" name="credits" value="{{ $user->credits ?? 0 }}" class="form-control">
+                            <span class="input-group-addon" style="background:#141124;color:#c084fc;border-color:#201c34;"><i class="fa fa-diamond"></i> Crédits</span>
+                        </div>
+                        <p class="text-muted"><small>Modifiez directement le solde de l'utilisateur. Ces crédits sont utilisés dans la Boutique Hardware pour booster RAM, CPU et Stockage NVMe.</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title">Permissions</h3>

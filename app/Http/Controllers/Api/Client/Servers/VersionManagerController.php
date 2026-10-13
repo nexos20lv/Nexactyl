@@ -31,6 +31,7 @@ class VersionManagerController extends ClientApiController
 
     public function versions(Request $request, Server $server): JsonResponse
     {
+        $this->assertMinecraftServer($server);
         $loader = $request->query('loader', 'paper');
 
         $versions = Cache::remember("mc_versions_{$loader}", 3600, function () use ($loader) {
@@ -93,6 +94,7 @@ class VersionManagerController extends ClientApiController
 
     public function install(Request $request, Server $server): JsonResponse
     {
+        $this->assertMinecraftServer($server);
         $request->validate([
             'loader' => 'required|string|in:paper,purpur,fabric,vanilla',
             'version' => 'required|string',
@@ -149,4 +151,17 @@ class VersionManagerController extends ClientApiController
             'version' => $version,
         ]);
     }
+
+    protected function assertMinecraftServer(Server $server): void
+    {
+        $isMinecraft = ($server->nest_id === 1)
+            || (stripos($server->egg->name ?? '', 'minecraft') !== false)
+            || (isset($server->egg->nest) && stripos($server->egg->nest->name ?? '', 'minecraft') !== false)
+            || in_array('eula', $server->egg->inherit_features ?? []);
+
+        if (!$isMinecraft) {
+            abort(400, 'Ce gestionnaire de versions est réservé exclusivement aux serveurs Minecraft.');
+        }
+    }
+
 }
