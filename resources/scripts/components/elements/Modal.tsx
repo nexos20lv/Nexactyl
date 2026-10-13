@@ -130,7 +130,9 @@ const Modal: React.FC<ModalProps> = ({
                         </Fade>
                     )}
                     <div
-                        className={"bg-[#0e0c18] border border-violet-500/20 p-5 sm:p-6 md:p-8 rounded-2xl shadow-2xl shadow-black/80 overflow-y-scroll transition-all duration-150"}
+                        className={
+                            'bg-[#0e0c18] border border-violet-500/20 p-5 sm:p-6 md:p-8 rounded-2xl shadow-2xl shadow-black/80 overflow-y-scroll transition-all duration-150'
+                        }
                     >
                         {children}
                     </div>

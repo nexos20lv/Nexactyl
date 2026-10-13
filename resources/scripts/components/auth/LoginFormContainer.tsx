@@ -42,7 +42,9 @@ export default forwardRef<HTMLFormElement, Props>(({ title, ...props }, ref) => 
         </div>
         <FlashMessageRender css={tw`mb-4 px-1`} />
         <div
-            className={"w-full bg-[#0e0c18]/95 border border-violet-500/20 shadow-2xl shadow-violet-950/40 rounded-3xl p-6 sm:p-8 backdrop-blur-xl"}
+            className={
+                'w-full bg-[#0e0c18]/95 border border-violet-500/20 shadow-2xl shadow-violet-950/40 rounded-3xl p-6 sm:p-8 backdrop-blur-xl'
+            }
         >
             {title && (
                 <div css={tw`mb-6 pb-4 border-b border-violet-500/10`}>

@@ -93,7 +93,9 @@ class DropdownMenu extends React.PureComponent<Props, State> {
                             this.setState({ visible: false });
                         }}
                         style={{ width: '13rem' }}
-                        className={"absolute bg-[#100e1c] p-1.5 rounded-xl border border-violet-500/25 shadow-2xl shadow-black/80 text-neutral-300 z-50 backdrop-blur-md"}
+                        className={
+                            'absolute bg-[#100e1c] p-1.5 rounded-xl border border-violet-500/25 shadow-2xl shadow-black/80 text-neutral-300 z-50 backdrop-blur-md'
+                        }
                     >
                         {this.props.children}
                     </div>

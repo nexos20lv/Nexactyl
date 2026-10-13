@@ -102,7 +102,9 @@ const MassActionsBar = () => {
                     <div className={'pointer-events-none fixed bottom-0 mb-8 flex justify-center w-full z-50'}>
                         <Fade timeout={75} in={selectedFiles.length > 0} unmountOnExit>
                             <div
-                                className={"flex items-center gap-3 pointer-events-auto rounded-2xl px-5 py-3 bg-[#0e0c18]/95 border border-violet-500/30 backdrop-blur-md shadow-2xl shadow-violet-950/40"}
+                                className={
+                                    'flex items-center gap-3 pointer-events-auto rounded-2xl px-5 py-3 bg-[#0e0c18]/95 border border-violet-500/30 backdrop-blur-md shadow-2xl shadow-violet-950/40'
+                                }
                             >
                                 <span css={tw`text-xs font-semibold text-violet-300 mr-2`}>
                                     {selectedFiles.length} sélectionné(s)

@@ -44,26 +44,36 @@ export default ({ activity, children }: Props) => {
     const properties = wrapProperties(activity.properties);
 
     return (
-        <div className={'grid grid-cols-10 py-4 border-b-2 border-gray-800 last:rounded-b last:border-0 group'}>
+        <div
+            className={
+                'grid grid-cols-10 py-3.5 px-4 border-b border-[#1f1d2e] last:border-0 hover:bg-[#141124]/50 transition-colors duration-150 group items-center'
+            }
+        >
             <div className={'hidden sm:flex sm:col-span-1 items-center justify-center select-none'}>
-                <div className={'flex items-center w-10 h-10 rounded-full bg-gray-600 overflow-hidden'}>
+                <div
+                    className={
+                        'flex items-center w-10 h-10 rounded-xl bg-violet-600/15 border border-violet-500/25 overflow-hidden shadow-inner'
+                    }
+                >
                     <Avatar name={actor?.uuid || 'system'} />
                 </div>
             </div>
-            <div className={'col-span-10 sm:col-span-9 flex'}>
-                <div className={'flex-1 px-4 sm:px-0'}>
-                    <div className={'flex items-center text-gray-50'}>
+            <div className={'col-span-10 sm:col-span-9 flex items-center justify-between'}>
+                <div className={'flex-1 px-2 sm:px-0'}>
+                    <div className={'flex items-center flex-wrap gap-2 text-neutral-100'}>
                         <Tooltip placement={'top'} content={actor?.email || 'System User'}>
-                            <span>{actor?.username || 'System'}</span>
+                            <span className={'font-semibold text-white'}>{actor?.username || 'System'}</span>
                         </Tooltip>
-                        <span className={'text-gray-400'}>&nbsp;&mdash;&nbsp;</span>
+                        <span className={'text-neutral-600 text-xs'}>&bull;</span>
                         <Link
                             to={`#${pathTo({ event: activity.event })}`}
-                            className={'transition-colors duration-75 active:text-cyan-400 hover:text-cyan-400'}
+                            className={
+                                'text-xs font-mono bg-violet-500/10 text-violet-300 border border-violet-500/20 px-2 py-0.5 rounded hover:bg-violet-500/25 hover:text-violet-200 transition-colors'
+                            }
                         >
                             {activity.event}
                         </Link>
-                        <div className={classNames(style.icons, 'group-hover:text-gray-300')}>
+                        <div className={classNames(style.icons, 'group-hover:text-neutral-300')}>
                             {activity.isApi && (
                                 <Tooltip placement={'top'} content={'Using API Key'}>
                                     <TerminalIcon />
@@ -80,15 +90,20 @@ export default ({ activity, children }: Props) => {
                     <p className={style.description}>
                         <Translate ns={'activity'} values={properties} i18nKey={activity.event.replace(':', '.')} />
                     </p>
-                    <div className={'mt-1 flex items-center text-sm'}>
+                    <div className={'mt-1.5 flex items-center text-xs text-neutral-400'}>
                         {activity.ip && (
-                            <span>
+                            <span
+                                className={
+                                    'font-mono bg-[#141124] border border-[#25213b] px-1.5 py-0.5 rounded text-neutral-300 mr-2'
+                                }
+                            >
                                 {activity.ip}
-                                <span className={'text-gray-400'}>&nbsp;|&nbsp;</span>
                             </span>
                         )}
                         <Tooltip placement={'right'} content={format(activity.timestamp, 'MMM do, yyyy H:mm:ss')}>
-                            <span>{formatDistanceToNowStrict(activity.timestamp, { addSuffix: true })}</span>
+                            <span className={'text-neutral-500'}>
+                                {formatDistanceToNowStrict(activity.timestamp, { addSuffix: true })}
+                            </span>
                         </Tooltip>
                     </div>
                 </div>
