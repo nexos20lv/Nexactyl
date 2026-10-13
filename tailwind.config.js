@@ -1,16 +1,16 @@
 const colors = require('tailwindcss/colors');
 
-const gray = {
-    50: 'hsl(216, 33%, 97%)',
-    100: 'hsl(214, 15%, 91%)',
-    200: 'hsl(210, 16%, 82%)',
-    300: 'hsl(211, 13%, 65%)',
-    400: 'hsl(211, 10%, 53%)',
-    500: 'hsl(211, 12%, 43%)',
-    600: 'hsl(209, 14%, 37%)',
-    700: 'hsl(209, 18%, 30%)',
-    800: 'hsl(209, 20%, 25%)',
-    900: 'hsl(210, 24%, 16%)',
+const obsidianGray = {
+    50: '#f5f3ff',
+    100: '#ede9fe',
+    200: '#ddd6fe',
+    300: '#c4b5fd',
+    400: '#9d96c4',
+    500: '#6d6792',
+    600: '#2b2640',
+    700: '#1c182c',
+    800: '#120f1e',
+    900: '#0b0914',
 };
 
 module.exports = {
@@ -23,13 +23,12 @@ module.exports = {
                 header: ['"IBM Plex Sans"', '"Roboto"', 'system-ui', 'sans-serif'],
             },
             colors: {
-                black: '#131a20',
-                // "primary" and "neutral" are deprecated, prefer the use of "blue" and "gray"
-                // in new code.
-                primary: colors.blue,
-                gray: gray,
-                neutral: gray,
-                cyan: colors.cyan,
+                black: '#07060a',
+                primary: colors.violet,
+                gray: obsidianGray,
+                neutral: obsidianGray,
+                cyan: colors.fuchsia,
+                violet: colors.violet,
             },
             fontSize: {
                 '2xs': '0.625rem',
@@ -38,7 +37,7 @@ module.exports = {
                 250: '250ms',
             },
             borderColor: theme => ({
-                default: theme('colors.neutral.400', 'currentColor'),
+                default: theme('colors.neutral.600', 'rgba(255, 255, 255, 0.08)'),
             }),
         },
     },

@@ -14,8 +14,9 @@ export default createGlobalStyle`
     }
 
     body {
-        ${tw`font-sans bg-neutral-800 text-neutral-200`};
+        ${tw`font-sans bg-black text-neutral-200`};
         letter-spacing: 0.015em;
+        background-color: #07060a;
     }
 
     h1, h2, h3, h4, h5, h6 {
@@ -44,31 +45,21 @@ export default createGlobalStyle`
         -moz-appearance: textfield !important;
     }
 
-    /* Scroll Bar Style */
+    /* Refined Obsidian & Violet Scroll Bar */
     ::-webkit-scrollbar {
-        background: none;
-        width: 16px;
-        height: 16px;
+        background: #07060a;
+        width: 10px;
+        height: 10px;
     }
 
     ::-webkit-scrollbar-thumb {
-        border: solid 0 rgb(0 0 0 / 0%);
-        border-right-width: 4px;
-        border-left-width: 4px;
-        -webkit-border-radius: 9px 4px;
-        -webkit-box-shadow: inset 0 0 0 1px hsl(211, 10%, 53%), inset 0 0 0 4px hsl(209deg 18% 30%);
+        background: #231b38;
+        border-radius: 5px;
+        border: 2px solid #07060a;
     }
 
-    ::-webkit-scrollbar-track-piece {
-        margin: 4px 0;
-    }
-
-    ::-webkit-scrollbar-thumb:horizontal {
-        border-right-width: 0;
-        border-left-width: 0;
-        border-top-width: 4px;
-        border-bottom-width: 4px;
-        -webkit-border-radius: 4px 9px;
+    ::-webkit-scrollbar-thumb:hover {
+        background: #7c3aed;
     }
 
     ::-webkit-scrollbar-corner {

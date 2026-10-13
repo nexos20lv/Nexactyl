@@ -17,17 +17,18 @@ const RightNavigation = styled.div`
     & > a,
     & > button,
     & > .navigation-link {
-        ${tw`flex items-center h-full no-underline text-neutral-300 px-6 cursor-pointer transition-all duration-150`};
+        ${tw`flex items-center h-full no-underline text-neutral-400 px-5 cursor-pointer transition-all duration-150`};
 
         &:active,
         &:hover {
-            ${tw`text-neutral-100 bg-black`};
+            ${tw`text-neutral-100 bg-neutral-900/60`};
         }
 
         &:active,
         &:hover,
         &.active {
-            box-shadow: inset 0 -2px ${theme`colors.cyan.600`.toString()};
+            box-shadow: inset 0 -2px ${theme`colors.violet.500`.toString()};
+            ${tw`text-violet-300`};
         }
     }
 `;
@@ -46,17 +47,20 @@ export default () => {
     };
 
     return (
-        <div className={'w-full bg-neutral-900 shadow-md overflow-x-auto'}>
+        <div className={'w-full bg-[#0b0914] border-b border-white/[0.08] shadow-lg overflow-x-auto'}>
             <SpinnerOverlay visible={isLoggingOut} />
-            <div className={'mx-auto w-full flex items-center h-[3.5rem] max-w-[1200px]'}>
-                <div id={'logo'} className={'flex-1'}>
+            <div className={'mx-auto w-full flex items-center h-[3.5rem] max-w-[1200px] px-4'}>
+                <div id={'logo'} className={'flex-1 flex items-center gap-3'}>
+                    <div className={'w-7 h-7 rounded-lg bg-violet-600/20 border border-violet-500/40 flex items-center justify-center text-violet-400 font-bold text-sm shadow-[0_0_10px_rgba(168,85,247,0.25)]'}>
+                        ⚡
+                    </div>
                     <Link
                         to={'/'}
                         className={
-                            'text-2xl font-header font-medium px-4 no-underline text-neutral-200 hover:text-neutral-100 transition-colors duration-150'
+                            'text-xl font-header font-semibold no-underline text-neutral-100 hover:text-white transition-colors duration-150 tracking-tight'
                         }
                     >
-                        {name}
+                        {name || 'PTERODACTYL'}<span className={'text-violet-400'}>.</span>
                     </Link>
                 </div>
                 <RightNavigation className={'flex h-full items-center justify-center'}>
@@ -67,21 +71,21 @@ export default () => {
                         </NavLink>
                     </Tooltip>
                     {rootAdmin && (
-                        <Tooltip placement={'bottom'} content={'Admin'}>
+                        <Tooltip placement={'bottom'} content={'Administration'}>
                             <a href={'/admin'} rel={'noreferrer'}>
                                 <FontAwesomeIcon icon={faCogs} />
                             </a>
                         </Tooltip>
                     )}
-                    <Tooltip placement={'bottom'} content={'Account Settings'}>
+                    <Tooltip placement={'bottom'} content={'Mon Compte'}>
                         <NavLink to={'/account'}>
-                            <span className={'flex items-center w-5 h-5'}>
+                            <span className={'flex items-center w-5 h-5 ring-1 ring-violet-500/30 rounded-full'}>
                                 <Avatar.User />
                             </span>
                         </NavLink>
                     </Tooltip>
-                    <Tooltip placement={'bottom'} content={'Sign Out'}>
-                        <button onClick={onTriggerLogout}>
+                    <Tooltip placement={'bottom'} content={'Déconnexion'}>
+                        <button onClick={onTriggerLogout} className={'hover:text-red-400'}>
                             <FontAwesomeIcon icon={faSignOutAlt} />
                         </button>
                     </Tooltip>
