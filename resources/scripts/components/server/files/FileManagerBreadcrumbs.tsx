@@ -41,7 +41,9 @@ export default ({ renderLeft, withinFileEditor, isNewFile }: Props) => {
 
     return (
         <div
-            css={tw`flex flex-wrap items-center gap-1.5 text-xs text-neutral-400 bg-neutral-900/80 border border-violet-500/20 px-3 py-2 rounded-xl shadow-sm`}
+            className={
+                'flex flex-wrap items-center gap-2 text-xs text-neutral-400 bg-[#0e0c18] border border-violet-500/20 px-3.5 py-2 rounded-xl shadow-sm'
+            }
         >
             {renderLeft}
             <NavLink

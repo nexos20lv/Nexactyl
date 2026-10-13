@@ -77,23 +77,25 @@ const FileObjectRow = ({ file }: { file: FileObject }) => (
             window.dispatchEvent(new CustomEvent(`pterodactyl:files:ctx:${file.key}`, { detail: e.clientX }));
         }}
     >
-        <div css={tw`pl-3`}>
+        <div className={'pl-4 pr-1.5 flex items-center flex-shrink-0'}>
             <SelectFileCheckbox name={file.name} />
         </div>
         <Clickable file={file}>
-            <div css={tw`flex-none ml-3 mr-3.5 w-6 text-center`}>{getFileIcon(file)}</div>
-            <div css={tw`flex-1 font-medium text-neutral-200 truncate group-hover:text-white`}>{file.name}</div>
+            <div className={'flex-none mr-3 w-5 text-center flex items-center justify-center'}>{getFileIcon(file)}</div>
+            <div className={'flex-1 font-medium text-neutral-200 truncate group-hover:text-white'}>{file.name}</div>
             {file.isFile && (
-                <div css={tw`mr-4 hidden sm:block`}>
+                <div className={'mr-4 hidden sm:block flex-shrink-0'}>
                     <span
-                        css={tw`text-xs font-mono bg-neutral-800/80 border border-white/5 px-2 py-0.5 rounded-md text-neutral-300`}
+                        className={
+                            'text-xs font-mono bg-neutral-800/80 border border-white/5 px-2 py-0.5 rounded-md text-neutral-300'
+                        }
                     >
                         {bytesToString(file.size)}
                     </span>
                 </div>
             )}
             <div
-                css={tw`w-1/5 text-right mr-4 hidden md:block text-xs text-neutral-400`}
+                className={'w-1/5 text-right mr-4 hidden md:block text-xs text-neutral-400 flex-shrink-0'}
                 title={file.modifiedAt.toString()}
             >
                 {Math.abs(differenceInHours(file.modifiedAt, new Date())) > 48
@@ -101,7 +103,7 @@ const FileObjectRow = ({ file }: { file: FileObject }) => (
                     : formatDistanceToNow(file.modifiedAt, { addSuffix: true })}
             </div>
         </Clickable>
-        <div css={tw`pr-2`}>
+        <div className={'pr-3 flex items-center flex-shrink-0'}>
             <FileDropdownMenu file={file} />
         </div>
     </div>
