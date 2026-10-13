@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArchive, faEllipsisH, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faArchive, faEllipsisH, faLock, faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { format, formatDistanceToNow } from 'date-fns';
 import Spinner from '@/components/elements/Spinner';
 import { bytesToString } from '@/lib/formatters';
@@ -50,44 +50,70 @@ export default ({ backup, className }: Props) => {
     return (
         <GreyRowBox css={tw`flex-wrap md:flex-nowrap items-center`} className={className}>
             <div css={tw`flex items-center truncate w-full md:flex-1`}>
-                <div css={tw`mr-4`}>
+                <div css={tw`mr-4 flex-none`}>
                     {backup.completedAt !== null ? (
                         backup.isLocked ? (
-                            <FontAwesomeIcon icon={faLock} css={tw`text-yellow-500`} />
+                            <div
+                                css={tw`w-10 h-10 rounded-xl bg-amber-950/40 border border-amber-500/25 flex items-center justify-center text-amber-400`}
+                            >
+                                <FontAwesomeIcon icon={faLock} />
+                            </div>
                         ) : (
-                            <FontAwesomeIcon icon={faArchive} css={tw`text-neutral-300`} />
+                            <div
+                                css={tw`w-10 h-10 rounded-xl bg-violet-950/40 border border-violet-500/20 flex items-center justify-center text-violet-400`}
+                            >
+                                <FontAwesomeIcon icon={faArchive} />
+                            </div>
                         )
                     ) : (
-                        <Spinner size={'small'} />
+                        <div css={tw`w-10 h-10 rounded-xl bg-neutral-800 flex items-center justify-center`}>
+                            <Spinner size={'small'} />
+                        </div>
                     )}
                 </div>
                 <div css={tw`flex flex-col truncate`}>
                     <div css={tw`flex items-center text-sm mb-1`}>
                         {backup.completedAt !== null && !backup.isSuccessful && (
                             <span
-                                css={tw`bg-red-500 py-px px-2 rounded-full text-white text-xs uppercase border border-red-600 mr-2`}
+                                css={tw`bg-rose-500/20 py-0.5 px-2.5 rounded-lg text-rose-300 text-xs font-semibold border border-rose-500/30 mr-2 flex items-center gap-1`}
                             >
-                                Failed
+                                <FontAwesomeIcon icon={faExclamationCircle} css={tw`text-xs`} />
+                                Échec
                             </span>
                         )}
-                        <p css={tw`break-words truncate`}>{backup.name}</p>
                         {backup.completedAt !== null && backup.isSuccessful && (
-                            <span css={tw`ml-3 text-neutral-300 text-xs font-extralight hidden sm:inline`}>
+                            <span
+                                css={tw`bg-emerald-500/20 py-0.5 px-2.5 rounded-lg text-emerald-300 text-xs font-semibold border border-emerald-500/30 mr-2 flex items-center gap-1`}
+                            >
+                                <FontAwesomeIcon icon={faCheckCircle} css={tw`text-xs`} />
+                                Prête
+                            </span>
+                        )}
+                        <p css={tw`font-semibold text-neutral-200 truncate`}>{backup.name}</p>
+                        {backup.completedAt !== null && backup.isSuccessful && (
+                            <span
+                                css={tw`ml-3 text-xs font-mono bg-neutral-800/80 px-2 py-0.5 rounded text-neutral-300 hidden sm:inline`}
+                            >
                                 {bytesToString(backup.bytes)}
                             </span>
                         )}
                     </div>
-                    <p css={tw`mt-1 md:mt-0 text-xs text-neutral-400 font-mono truncate`}>{backup.checksum}</p>
+                    <p css={tw`text-2xs text-neutral-400 font-mono truncate`}>
+                        {backup.checksum || 'En cours de calcul...'}
+                    </p>
                 </div>
             </div>
-            <div css={tw`flex-1 md:flex-none md:w-48 mt-4 md:mt-0 md:ml-8 md:text-center`}>
-                <p title={format(backup.createdAt, 'ddd, MMMM do, yyyy HH:mm:ss')} css={tw`text-sm`}>
+            <div css={tw`flex-1 md:flex-none md:w-48 mt-4 md:mt-0 md:ml-8 md:text-right`}>
+                <p
+                    title={format(backup.createdAt, 'dd/MM/yyyy HH:mm:ss')}
+                    css={tw`text-xs text-neutral-300 font-medium`}
+                >
                     {formatDistanceToNow(backup.createdAt, { includeSeconds: true, addSuffix: true })}
                 </p>
-                <p css={tw`text-2xs text-neutral-500 uppercase mt-1`}>Created</p>
+                <p css={tw`text-2xs text-neutral-400 uppercase tracking-wider mt-0.5`}>Création</p>
             </div>
             <Can action={['backup.download', 'backup.restore', 'backup.delete']} matchAny>
-                <div css={tw`mt-4 md:mt-0 ml-6`} style={{ marginRight: '-0.5rem' }}>
+                <div css={tw`mt-4 md:mt-0 ml-4`}>
                     {!backup.completedAt ? (
                         <div css={tw`p-2 invisible`}>
                             <FontAwesomeIcon icon={faEllipsisH} />

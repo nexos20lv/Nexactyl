@@ -11,45 +11,52 @@ type Props = React.DetailedHTMLProps<React.FormHTMLAttributes<HTMLFormElement>, 
 
 const Container = styled.div`
     ${breakpoint('sm')`
-        ${tw`w-4/5 mx-auto`}
+        ${tw`w-full max-w-md mx-auto`}
     `};
 
     ${breakpoint('md')`
-        ${tw`p-10`}
+        ${tw`max-w-lg`}
     `};
 
-    ${breakpoint('lg')`
-        ${tw`w-3/5`}
-    `};
-
-    ${breakpoint('xl')`
-        ${tw`w-full`}
-        max-width: 700px;
-    `};
+    ${tw`w-full max-w-md mx-auto px-4 py-8`}
 `;
 
 export default forwardRef<HTMLFormElement, Props>(({ title, ...props }, ref) => (
     <Container>
-        {title && <h2 css={tw`text-3xl text-center text-neutral-100 font-medium py-4`}>{title}</h2>}
-        <FlashMessageRender css={tw`mb-2 px-1`} />
-        <Form {...props} ref={ref}>
-            <div css={tw`md:flex w-full bg-white shadow-lg rounded-lg p-6 md:pl-0 mx-1`}>
-                <div css={tw`flex-none select-none mb-6 md:mb-0 self-center`}>
-                    <img src={'/assets/svgs/pterodactyl.svg'} css={tw`block w-48 md:w-64 mx-auto`} />
-                </div>
-                <div css={tw`flex-1`}>{props.children}</div>
-            </div>
-        </Form>
-        <p css={tw`text-center text-neutral-500 text-xs mt-4`}>
-            &copy; 2015 - {new Date().getFullYear()}&nbsp;
-            <a
-                rel={'noopener nofollow noreferrer'}
-                href={'https://pterodactyl.io'}
-                target={'_blank'}
-                css={tw`no-underline text-neutral-500 hover:text-neutral-300`}
+        <div css={tw`text-center mb-8`}>
+            <div
+                css={tw`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-violet-600 via-fuchsia-600 to-indigo-500 shadow-xl mb-4 border border-violet-400/30`}
             >
-                Pterodactyl Software
-            </a>
+                <svg className={'w-9 h-9 text-white'} fill={'currentColor'} viewBox={'0 0 24 24'}>
+                    <path d={'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'} />
+                </svg>
+            </div>
+            <h1
+                css={tw`text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-300 to-indigo-400 tracking-wider`}
+            >
+                NXSLab
+            </h1>
+            <p css={tw`text-xs text-neutral-400 font-mono tracking-widest uppercase mt-1`}>
+                Plateforme Cloud Gaming Haute Performance
+            </p>
+        </div>
+        <FlashMessageRender css={tw`mb-4 px-1`} />
+        <div
+            className={"w-full bg-[#0e0c18]/95 border border-violet-500/20 shadow-2xl shadow-violet-950/40 rounded-3xl p-6 sm:p-8 backdrop-blur-xl"}
+        >
+            {title && (
+                <div css={tw`mb-6 pb-4 border-b border-violet-500/10`}>
+                    <h2 css={tw`text-xl font-bold text-white tracking-tight`}>{title}</h2>
+                    <p css={tw`text-xs text-neutral-400 mt-1`}>Accédez en toute sécurité à vos serveurs de jeu</p>
+                </div>
+            )}
+            <Form {...props} ref={ref}>
+                <div css={tw`w-full space-y-4`}>{props.children}</div>
+            </Form>
+        </div>
+        <p css={tw`text-center text-neutral-500 text-xs font-mono mt-6`}>
+            &copy; {new Date().getFullYear()} <span css={tw`text-violet-400 font-semibold`}>NXSLab</span> &bull; Tous
+            droits réservés
         </p>
     </Container>
 ));

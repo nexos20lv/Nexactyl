@@ -31,14 +31,12 @@ export default () => {
     const handleSubmission = ({ email }: Values, { setSubmitting, resetForm }: FormikHelpers<Values>) => {
         clearFlashes();
 
-        // If there is no token in the state yet, request the token and then abort this submit request
-        // since it will be re-submitted when the recaptcha data is returned by the component.
         if (recaptchaEnabled && !token) {
             ref.current!.execute().catch((error) => {
                 console.error(error);
 
                 setSubmitting(false);
-                addFlash({ type: 'error', title: 'Error', message: httpErrorToHuman(error) });
+                addFlash({ type: 'error', title: 'Erreur', message: httpErrorToHuman(error) });
             });
 
             return;
@@ -47,11 +45,11 @@ export default () => {
         requestPasswordResetEmail(email, token)
             .then((response) => {
                 resetForm();
-                addFlash({ type: 'success', title: 'Success', message: response });
+                addFlash({ type: 'success', title: 'Succès', message: response });
             })
             .catch((error) => {
                 console.error(error);
-                addFlash({ type: 'error', title: 'Error', message: httpErrorToHuman(error) });
+                addFlash({ type: 'error', title: 'Erreur', message: httpErrorToHuman(error) });
             })
             .then(() => {
                 setToken('');
@@ -67,24 +65,21 @@ export default () => {
             initialValues={{ email: '' }}
             validationSchema={object().shape({
                 email: string()
-                    .email('A valid email address must be provided to continue.')
-                    .required('A valid email address must be provided to continue.'),
+                    .email('Veuillez entrer une adresse email valide.')
+                    .required('Veuillez entrer votre adresse email.'),
             })}
         >
             {({ isSubmitting, setSubmitting, submitForm }) => (
-                <LoginFormContainer title={'Request Password Reset'} css={tw`w-full flex`}>
+                <LoginFormContainer title={'Réinitialisation du mot de passe'} css={tw`w-full flex`}>
                     <Field
-                        light
-                        label={'Email'}
-                        description={
-                            'Enter your account email address to receive instructions on resetting your password.'
-                        }
+                        label={'Adresse Email'}
+                        description={"Entrez l'adresse email associée à votre compte pour recevoir les instructions."}
                         name={'email'}
                         type={'email'}
                     />
                     <div css={tw`mt-6`}>
                         <Button type={'submit'} size={'xlarge'} disabled={isSubmitting} isLoading={isSubmitting}>
-                            Send Email
+                            Envoyer le lien
                         </Button>
                     </div>
                     {recaptchaEnabled && (
@@ -105,9 +100,9 @@ export default () => {
                     <div css={tw`mt-6 text-center`}>
                         <Link
                             to={'/auth/login'}
-                            css={tw`text-xs text-neutral-500 tracking-wide uppercase no-underline hover:text-neutral-700`}
+                            css={tw`text-xs text-violet-400 font-medium tracking-wide no-underline hover:text-violet-300 transition-colors`}
                         >
-                            Return to Login
+                            Retour à la connexion
                         </Link>
                     </div>
                 </LoginFormContainer>

@@ -11,6 +11,8 @@ import deleteFiles from '@/api/server/files/deleteFiles';
 import RenameFileModal from '@/components/server/files/RenameFileModal';
 import Portal from '@/components/elements/Portal';
 import { Dialog } from '@/components/elements/dialog';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileArchive, faLevelUpAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 const MassActionsBar = () => {
     const uuid = ServerContext.useStoreState((state) => state.server.data!.uuid);
@@ -33,7 +35,7 @@ const MassActionsBar = () => {
     const onClickCompress = () => {
         setLoading(true);
         clearFlashes('files');
-        setLoadingMessage('Archiving files...');
+        setLoadingMessage('Archivage en cours...');
 
         compressFiles(uuid, directory, selectedFiles)
             .then(() => mutate())
@@ -46,7 +48,7 @@ const MassActionsBar = () => {
         setLoading(true);
         setShowConfirm(false);
         clearFlashes('files');
-        setLoadingMessage('Deleting files...');
+        setLoadingMessage('Suppression en cours...');
 
         deleteFiles(uuid, directory, selectedFiles)
             .then(() => {
@@ -67,21 +69,25 @@ const MassActionsBar = () => {
                     {loadingMessage}
                 </SpinnerOverlay>
                 <Dialog.Confirm
-                    title={'Delete Files'}
+                    title={'Supprimer les fichiers'}
                     open={showConfirm}
-                    confirm={'Delete'}
+                    confirm={'Supprimer'}
                     onClose={() => setShowConfirm(false)}
                     onConfirmed={onClickConfirmDeletion}
                 >
                     <p className={'mb-2'}>
-                        Are you sure you want to delete&nbsp;
-                        <span className={'font-semibold text-gray-50'}>{selectedFiles.length} files</span>? This is a
-                        permanent action and the files cannot be recovered.
+                        Êtes-vous sûr de vouloir supprimer&nbsp;
+                        <span className={'font-semibold text-white'}>{selectedFiles.length} fichier(s)</span> ? Cette
+                        action est irréversible.
                     </p>
                     {selectedFiles.slice(0, 15).map((file) => (
-                        <li key={file}>{file}</li>
+                        <li key={file} className={'text-xs text-neutral-400 font-mono'}>
+                            {file}
+                        </li>
                     ))}
-                    {selectedFiles.length > 15 && <li>and {selectedFiles.length - 15} others</li>}
+                    {selectedFiles.length > 15 && (
+                        <li className={'text-xs text-neutral-500'}>et {selectedFiles.length - 15} autre(s)</li>
+                    )}
                 </Dialog.Confirm>
                 {showMove && (
                     <RenameFileModal
@@ -93,13 +99,25 @@ const MassActionsBar = () => {
                     />
                 )}
                 <Portal>
-                    <div className={'pointer-events-none fixed bottom-0 mb-6 flex justify-center w-full z-50'}>
+                    <div className={'pointer-events-none fixed bottom-0 mb-8 flex justify-center w-full z-50'}>
                         <Fade timeout={75} in={selectedFiles.length > 0} unmountOnExit>
-                            <div css={tw`flex items-center space-x-4 pointer-events-auto rounded p-4 bg-black/50`}>
-                                <Button onClick={() => setShowMove(true)}>Move</Button>
-                                <Button onClick={onClickCompress}>Archive</Button>
+                            <div
+                                className={"flex items-center gap-3 pointer-events-auto rounded-2xl px-5 py-3 bg-[#0e0c18]/95 border border-violet-500/30 backdrop-blur-md shadow-2xl shadow-violet-950/40"}
+                            >
+                                <span css={tw`text-xs font-semibold text-violet-300 mr-2`}>
+                                    {selectedFiles.length} sélectionné(s)
+                                </span>
+                                <Button onClick={() => setShowMove(true)}>
+                                    <FontAwesomeIcon icon={faLevelUpAlt} css={tw`mr-2 text-xs`} />
+                                    Déplacer
+                                </Button>
+                                <Button onClick={onClickCompress}>
+                                    <FontAwesomeIcon icon={faFileArchive} css={tw`mr-2 text-xs`} />
+                                    Archiver
+                                </Button>
                                 <Button.Danger variant={Button.Variants.Secondary} onClick={() => setShowConfirm(true)}>
-                                    Delete
+                                    <FontAwesomeIcon icon={faTrashAlt} css={tw`mr-2 text-xs`} />
+                                    Supprimer
                                 </Button.Danger>
                             </div>
                         </Fade>

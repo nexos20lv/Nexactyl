@@ -21,8 +21,8 @@ export interface ModalProps extends RequiredModalProps {
 }
 
 export const ModalMask = styled.div`
-    ${tw`fixed z-50 overflow-auto flex w-full inset-0`};
-    background: rgba(0, 0, 0, 0.7);
+    ${tw`fixed z-50 overflow-auto flex w-full inset-0 backdrop-blur-sm`};
+    background: rgba(7, 6, 10, 0.85);
 `;
 
 const ModalContainer = styled.div<{ alignTop?: boolean }>`
@@ -42,7 +42,7 @@ const ModalContainer = styled.div<{ alignTop?: boolean }>`
     margin-bottom: auto;
 
     & > .close-icon {
-        ${tw`absolute right-0 p-2 text-white cursor-pointer opacity-50 transition-all duration-150 ease-linear hover:opacity-100`};
+        ${tw`absolute right-0 p-2 text-neutral-400 cursor-pointer opacity-70 transition-all duration-150 ease-linear hover:text-white hover:opacity-100`};
         top: -2.5rem;
 
         &:hover {
@@ -122,15 +122,15 @@ const Modal: React.FC<ModalProps> = ({
                     {showSpinnerOverlay && (
                         <Fade timeout={150} appear in>
                             <div
-                                css={tw`absolute w-full h-full rounded flex items-center justify-center`}
-                                style={{ background: 'hsla(211, 10%, 53%, 0.35)', zIndex: 9999 }}
+                                css={tw`absolute w-full h-full rounded-2xl flex items-center justify-center`}
+                                style={{ background: 'rgba(7, 6, 10, 0.7)', zIndex: 9999 }}
                             >
                                 <Spinner />
                             </div>
                         </Fade>
                     )}
                     <div
-                        css={tw`bg-neutral-800 p-3 sm:p-4 md:p-6 rounded shadow-md overflow-y-scroll transition-all duration-150`}
+                        className={"bg-[#0e0c18] border border-violet-500/20 p-5 sm:p-6 md:p-8 rounded-2xl shadow-2xl shadow-black/80 overflow-y-scroll transition-all duration-150"}
                     >
                         {children}
                     </div>

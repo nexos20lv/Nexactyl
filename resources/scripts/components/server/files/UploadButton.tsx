@@ -13,6 +13,8 @@ import { WithClassname } from '@/components/types';
 import Portal from '@/components/elements/Portal';
 import { CloudUploadIcon } from '@heroicons/react/outline';
 import { useSignal } from '@preact/signals-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 
 function isFileOrDirectory(event: DragEvent): boolean {
     if (!event.dataTransfer?.types) {
@@ -65,7 +67,7 @@ export default ({ className }: WithClassname) => {
         clearAndAddHttpError();
         const list = Array.from(files);
         if (list.some((file) => !file.type && (!file.size || file.size === 4096))) {
-            return addError('Folder uploads are not supported.', 'Error');
+            return addError('Les dossiers ne peuvent pas être téléversés directement.', 'Erreur');
         }
 
         const uploads = list.map((file) => {
@@ -120,12 +122,12 @@ export default ({ className }: WithClassname) => {
                         <div className={'w-full flex items-center justify-center pointer-events-none'}>
                             <div
                                 className={
-                                    'flex items-center space-x-4 bg-black w-full ring-4 ring-blue-200 ring-opacity-60 rounded p-6 mx-10 max-w-sm'
+                                    'flex items-center space-x-4 bg-[#0e0c18] border border-violet-500/30 ring-4 ring-violet-500/20 rounded-2xl p-6 mx-10 max-w-sm shadow-2xl text-violet-400'
                                 }
                             >
                                 <CloudUploadIcon className={'w-10 h-10 flex-shrink-0'} />
-                                <p className={'font-header flex-1 text-lg text-neutral-100 text-center'}>
-                                    Drag and drop files to upload.
+                                <p className={'font-header flex-1 text-base text-neutral-100 text-center'}>
+                                    Glissez-déposez vos fichiers pour les téléverser.
                                 </p>
                             </div>
                         </div>
@@ -147,6 +149,7 @@ export default ({ className }: WithClassname) => {
                 multiple
             />
             <Button className={className} onClick={() => fileUploadInput.current && fileUploadInput.current.click()}>
+                <FontAwesomeIcon icon={faCloudUploadAlt} css={tw`mr-2 text-xs`} />
                 Upload
             </Button>
         </>

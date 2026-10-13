@@ -1,5 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileAlt, faFileArchive, faFileImport, faFolder } from '@fortawesome/free-solid-svg-icons';
+import {
+    faCube,
+    faFileAlt,
+    faFileArchive,
+    faFileCode,
+    faFileImport,
+    faFolder,
+    faTerminal,
+} from '@fortawesome/free-solid-svg-icons';
 import { encodePathSegments } from '@/helpers';
 import { differenceInHours, format, formatDistanceToNow } from 'date-fns';
 import React, { memo } from 'react';
@@ -34,6 +42,32 @@ const Clickable: React.FC<{ file: FileObject }> = memo(({ file, children }) => {
     );
 }, isEqual);
 
+const getFileIcon = (file: FileObject) => {
+    if (!file.isFile) {
+        return <FontAwesomeIcon icon={faFolder} css={tw`text-violet-400 text-lg`} />;
+    }
+    if (file.isSymlink) {
+        return <FontAwesomeIcon icon={faFileImport} css={tw`text-cyan-400 text-lg`} />;
+    }
+    const ext = file.name.split('.').pop()?.toLowerCase() || '';
+    if (ext === 'jar' || ext === 'war') {
+        return <FontAwesomeIcon icon={faCube} css={tw`text-fuchsia-400 text-lg`} />;
+    }
+    if (['json', 'yml', 'yaml', 'toml', 'properties', 'env', 'ini', 'conf', 'cfg', 'xml'].includes(ext)) {
+        return <FontAwesomeIcon icon={faFileCode} css={tw`text-indigo-400 text-lg`} />;
+    }
+    if (['sh', 'bash', 'bat', 'cmd', 'ps1'].includes(ext)) {
+        return <FontAwesomeIcon icon={faTerminal} css={tw`text-emerald-400 text-lg`} />;
+    }
+    if (file.isArchiveType() || ['zip', 'tar', 'gz', 'tgz', 'rar', '7z'].includes(ext)) {
+        return <FontAwesomeIcon icon={faFileArchive} css={tw`text-amber-400 text-lg`} />;
+    }
+    if (['log', 'txt', 'md'].includes(ext)) {
+        return <FontAwesomeIcon icon={faFileAlt} css={tw`text-neutral-400 text-lg`} />;
+    }
+    return <FontAwesomeIcon icon={faFileAlt} css={tw`text-neutral-400 text-lg`} />;
+};
+
 const FileObjectRow = ({ file }: { file: FileObject }) => (
     <div
         className={styles.file_row}
@@ -43,26 +77,33 @@ const FileObjectRow = ({ file }: { file: FileObject }) => (
             window.dispatchEvent(new CustomEvent(`pterodactyl:files:ctx:${file.key}`, { detail: e.clientX }));
         }}
     >
-        <SelectFileCheckbox name={file.name} />
+        <div css={tw`pl-3`}>
+            <SelectFileCheckbox name={file.name} />
+        </div>
         <Clickable file={file}>
-            <div css={tw`flex-none text-neutral-400 ml-6 mr-4 text-lg pl-3`}>
-                {file.isFile ? (
-                    <FontAwesomeIcon
-                        icon={file.isSymlink ? faFileImport : file.isArchiveType() ? faFileArchive : faFileAlt}
-                    />
-                ) : (
-                    <FontAwesomeIcon icon={faFolder} />
-                )}
-            </div>
-            <div css={tw`flex-1 truncate`}>{file.name}</div>
-            {file.isFile && <div css={tw`w-1/6 text-right mr-4 hidden sm:block`}>{bytesToString(file.size)}</div>}
-            <div css={tw`w-1/5 text-right mr-4 hidden md:block`} title={file.modifiedAt.toString()}>
+            <div css={tw`flex-none ml-3 mr-3.5 w-6 text-center`}>{getFileIcon(file)}</div>
+            <div css={tw`flex-1 font-medium text-neutral-200 truncate group-hover:text-white`}>{file.name}</div>
+            {file.isFile && (
+                <div css={tw`mr-4 hidden sm:block`}>
+                    <span
+                        css={tw`text-xs font-mono bg-neutral-800/80 border border-white/5 px-2 py-0.5 rounded-md text-neutral-300`}
+                    >
+                        {bytesToString(file.size)}
+                    </span>
+                </div>
+            )}
+            <div
+                css={tw`w-1/5 text-right mr-4 hidden md:block text-xs text-neutral-400`}
+                title={file.modifiedAt.toString()}
+            >
                 {Math.abs(differenceInHours(file.modifiedAt, new Date())) > 48
                     ? format(file.modifiedAt, 'MMM do, yyyy h:mma')
                     : formatDistanceToNow(file.modifiedAt, { addSuffix: true })}
             </div>
         </Clickable>
-        <FileDropdownMenu file={file} />
+        <div css={tw`pr-2`}>
+            <FileDropdownMenu file={file} />
+        </div>
     </div>
 );
 

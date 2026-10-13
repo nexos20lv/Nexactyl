@@ -25,31 +25,37 @@ export default () => {
     }, [error]);
 
     return (
-        <PageContentBlock title={'SSH Keys'}>
+        <PageContentBlock title={'Clés SSH'}>
             <FlashMessageRender byKey={'account'} />
-            <div css={tw`md:flex flex-nowrap my-10`}>
-                <ContentBox title={'Add SSH Key'} css={tw`flex-none w-full md:w-1/2`}>
+            <div css={tw`md:flex flex-nowrap my-10 gap-8`}>
+                <ContentBox title={'Ajouter une clé SSH'} css={tw`flex-none w-full md:w-1/2`}>
                     <CreateSSHKeyForm />
                 </ContentBox>
-                <ContentBox title={'SSH Keys'} css={tw`flex-1 overflow-hidden mt-8 md:mt-0 md:ml-8`}>
+                <ContentBox title={'Clés SSH Enregistrées'} css={tw`flex-1 overflow-hidden mt-8 md:mt-0`}>
                     <SpinnerOverlay visible={!data && isValidating} />
                     {!data || !data.length ? (
-                        <p css={tw`text-center text-sm`}>
-                            {!data ? 'Loading...' : 'No SSH Keys exist for this account.'}
+                        <p css={tw`text-center text-sm text-neutral-400 py-8`}>
+                            {!data ? 'Chargement...' : 'Aucune clé SSH enregistrée.'}
                         </p>
                     ) : (
                         data.map((key, index) => (
                             <GreyRowBox
                                 key={key.fingerprint}
-                                css={[tw`bg-neutral-600 flex space-x-4 items-center`, index > 0 && tw`mt-2`]}
+                                css={[tw`flex space-x-4 items-center`, index > 0 && tw`mt-2.5`]}
                             >
-                                <FontAwesomeIcon icon={faKey} css={tw`text-neutral-300`} />
+                                <div
+                                    css={tw`w-10 h-10 rounded-xl bg-violet-950/40 border border-violet-500/20 flex items-center justify-center text-violet-400 mr-2 flex-none`}
+                                >
+                                    <FontAwesomeIcon icon={faKey} />
+                                </div>
                                 <div css={tw`flex-1`}>
-                                    <p css={tw`text-sm break-words font-medium`}>{key.name}</p>
-                                    <p css={tw`text-xs mt-1 font-mono truncate`}>SHA256:{key.fingerprint}</p>
-                                    <p css={tw`text-xs mt-1 text-neutral-300 uppercase`}>
-                                        Added on:&nbsp;
-                                        {format(key.createdAt, 'MMM do, yyyy HH:mm')}
+                                    <p css={tw`text-sm font-semibold text-white break-words`}>{key.name}</p>
+                                    <p css={tw`text-xs mt-1 font-mono text-violet-300 truncate`}>
+                                        SHA256:{key.fingerprint}
+                                    </p>
+                                    <p css={tw`text-2xs mt-0.5 text-neutral-400 uppercase tracking-wider`}>
+                                        Ajoutée le :&nbsp;
+                                        {format(key.createdAt, 'dd/MM/yyyy HH:mm')}
                                     </p>
                                 </div>
                                 <DeleteSSHKeyButton name={key.name} fingerprint={key.fingerprint} />

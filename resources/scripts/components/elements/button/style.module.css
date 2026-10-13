@@ -1,19 +1,19 @@
 .button {
     @apply px-4 py-2 inline-flex items-center justify-center;
-    @apply rounded text-base font-semibold transition-all duration-100;
-    @apply focus:ring-[3px] focus:ring-offset-2 focus:ring-offset-gray-700 focus:ring-opacity-50;
+    @apply rounded-xl text-sm font-semibold transition-all duration-150 cursor-pointer;
+    @apply focus:ring-[3px] focus:ring-offset-2 focus:ring-offset-neutral-900 focus:ring-opacity-50;
 
     /* Sizing Controls */
     &.small {
-        @apply px-4 py-0 h-8 font-normal text-sm focus:ring-2;
+        @apply px-3 py-1 h-8 font-medium text-xs focus:ring-2;
     }
 
     &.large {
-        @apply px-5 py-3;
+        @apply px-6 py-3 text-base;
     }
 
     &.secondary {
-        @apply text-gray-50 bg-transparent;
+        @apply text-neutral-200 bg-neutral-800/80 border border-violet-500/20 hover:border-violet-500/40 hover:bg-neutral-800 hover:text-white;
 
         &:disabled {
             background: transparent !important;
@@ -21,11 +21,11 @@
     }
 
     &:disabled {
-        @apply cursor-not-allowed;
+        @apply cursor-not-allowed opacity-50;
     }
 
     &.square {
-        @apply p-0 w-12 h-12;
+        @apply p-0 w-10 h-10;
 
         &.small {
             @apply w-8 h-8;
@@ -34,40 +34,40 @@
 }
 
 .primary {
-    @apply bg-blue-600 text-blue-50;
-    @apply hover:bg-blue-500 active:bg-blue-500 focus:ring-blue-400 focus:ring-opacity-75;
+    @apply bg-gradient-to-r from-violet-600 to-violet-700 text-white shadow-lg shadow-violet-600/25 border border-violet-500/30;
+    @apply hover:from-violet-500 hover:to-violet-600 active:from-violet-700 active:to-violet-800 focus:ring-violet-400 focus:ring-opacity-75;
 
     &.secondary {
-        @apply hover:bg-blue-600 active:bg-blue-600;
+        @apply hover:bg-violet-600/20 active:bg-violet-600/30 text-violet-300 border border-violet-500/30;
     }
 
     &:disabled {
-        @apply bg-blue-500/75 text-blue-200/75;
+        @apply bg-neutral-800 text-neutral-500 border-white/5 shadow-none;
     }
 }
 
 .text {
-    @apply bg-gray-500 text-gray-50;
-    @apply hover:bg-gray-400 active:bg-gray-400 focus:ring-gray-300 focus:ring-opacity-50;
+    @apply bg-neutral-800/80 text-neutral-200 border border-white/10;
+    @apply hover:bg-neutral-700 active:bg-neutral-800 focus:ring-violet-400 focus:ring-opacity-50;
 
     &.secondary {
-        @apply hover:bg-gray-500 active:bg-gray-500;
+        @apply hover:bg-neutral-800 active:bg-neutral-800;
     }
 
     &:disabled {
-        @apply bg-gray-500/75 text-gray-200/75;
+        @apply bg-neutral-900 text-neutral-500;
     }
 }
 
 .danger {
-    @apply bg-red-600 text-gray-50;
-    @apply hover:bg-red-500 active:bg-red-500 focus:ring-red-400 focus:ring-opacity-75;
+    @apply bg-gradient-to-r from-rose-600 to-rose-700 text-white shadow-lg shadow-rose-600/25 border border-rose-500/30;
+    @apply hover:from-rose-500 hover:to-rose-600 active:from-rose-700 active:to-rose-800 focus:ring-rose-400 focus:ring-opacity-75;
 
     &.secondary {
-        @apply hover:bg-red-600 active:bg-red-600;
+        @apply hover:bg-rose-600/20 active:bg-rose-600/30 text-rose-300 border border-rose-500/30;
     }
 
     &:disabled {
-        @apply bg-red-600/75 text-red-50/75;
+        @apply bg-neutral-800 text-neutral-500 border-white/5;
     }
 }

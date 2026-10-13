@@ -29,12 +29,20 @@ module.exports = {
                 neutral: obsidianGray,
                 cyan: colors.fuchsia,
                 violet: colors.violet,
+                emerald: colors.emerald,
+                rose: colors.rose,
+                amber: colors.amber,
+                fuchsia: colors.fuchsia,
             },
             fontSize: {
                 '2xs': '0.625rem',
             },
             transitionDuration: {
                 250: '250ms',
+            },
+            opacity: {
+                15: '0.15',
+                35: '0.35',
             },
             borderColor: theme => ({
                 default: theme('colors.neutral.600', 'rgba(255, 255, 255, 0.08)'),

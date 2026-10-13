@@ -21,6 +21,8 @@ import { useStoreActions } from '@/state/hooks';
 import ErrorBoundary from '@/components/elements/ErrorBoundary';
 import { FileActionCheckbox } from '@/components/server/files/SelectFileCheckbox';
 import { hashToPath } from '@/helpers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFolderOpen, faPlus } from '@fortawesome/free-solid-svg-icons';
 import style from './style.module.css';
 
 const sortFiles = (files: FileObject[]): FileObject[] => {
@@ -60,14 +62,14 @@ export default () => {
     }
 
     return (
-        <ServerContentBlock title={'File Manager'} showFlashKey={'files'}>
+        <ServerContentBlock title={'Gestionnaire de Fichiers'} showFlashKey={'files'}>
             <ErrorBoundary>
-                <div className={'flex flex-wrap-reverse md:flex-nowrap mb-4'}>
+                <div className={'flex flex-wrap-reverse md:flex-nowrap items-center justify-between gap-4 mb-4'}>
                     <FileManagerBreadcrumbs
                         renderLeft={
                             <FileActionCheckbox
                                 type={'checkbox'}
-                                css={tw`mx-4`}
+                                css={tw`mr-2`}
                                 checked={selectedFilesLength === (files?.length === 0 ? -1 : files?.length)}
                                 onChange={onSelectAllClick}
                             />
@@ -79,7 +81,14 @@ export default () => {
                             <NewDirectoryButton />
                             <UploadButton />
                             <NavLink to={`/server/${id}/files/new${window.location.hash}`}>
-                                <Button>New File</Button>
+                                <Button
+                                    className={
+                                        '!bg-gradient-to-r !from-violet-600 !to-fuchsia-600 !shadow-lg !shadow-violet-600/30'
+                                    }
+                                >
+                                    <FontAwesomeIcon icon={faPlus} css={tw`mr-2 text-xs`} />
+                                    Nouveau fichier
+                                </Button>
                             </NavLink>
                         </div>
                     </Can>
@@ -90,16 +99,19 @@ export default () => {
             ) : (
                 <>
                     {!files.length ? (
-                        <p css={tw`text-sm text-neutral-400 text-center`}>This directory seems to be empty.</p>
+                        <div css={tw`text-center py-16 bg-neutral-900/60 border border-violet-500/10 rounded-2xl`}>
+                            <FontAwesomeIcon icon={faFolderOpen} css={tw`text-neutral-600 text-4xl mb-3`} />
+                            <p css={tw`text-sm text-neutral-400 font-medium`}>Ce dossier est actuellement vide.</p>
+                        </div>
                     ) : (
                         <CSSTransition classNames={'fade'} timeout={150} appear in>
                             <div>
                                 {files.length > 250 && (
-                                    <div css={tw`rounded bg-yellow-400 mb-px p-3`}>
-                                        <p css={tw`text-yellow-900 text-sm text-center`}>
-                                            This directory is too large to display in the browser, limiting the output
-                                            to the first 250 files.
-                                        </p>
+                                    <div
+                                        css={tw`rounded-xl bg-amber-950/40 border border-amber-500/30 mb-3 p-3 text-amber-200 text-sm text-center`}
+                                    >
+                                        Ce répertoire contient plus de 250 fichiers. L&apos;affichage est limité aux 250
+                                        premiers éléments.
                                     </div>
                                 )}
                                 {sortFiles(files.slice(0, 250)).map((file) => (
