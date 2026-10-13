@@ -51,7 +51,7 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
                     <div className='flex flex-col'>
                         <div className='flex items-center gap-1.5'>
                             <span className='font-extrabold tracking-wider text-sm text-neutral-100 font-mono'>
-                                OBSIDIAN
+                                NXSLab
                             </span>
                             <span className='text-[10px] uppercase font-bold bg-violet-500/20 text-violet-300 border border-violet-500/30 px-1.5 py-0.2 rounded'>
                                 PRO
