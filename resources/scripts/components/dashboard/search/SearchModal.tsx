@@ -22,10 +22,19 @@ interface Values {
 }
 
 const ServerResult = styled(Link)`
-    ${tw`flex items-center bg-neutral-900 p-4 rounded border-l-4 border-neutral-900 no-underline transition-all duration-150`};
+    ${tw`flex items-center p-3.5 rounded-2xl no-underline transition-all`};
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
 
     &:hover {
-        ${tw`shadow border-cyan-500`};
+        background: rgba(124, 58, 237, 0.15);
+        border-color: rgba(139, 92, 246, 0.4);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    &:active {
+        transform: scale(0.99);
     }
 
     &:not(:last-of-type) {
@@ -56,7 +65,6 @@ export default ({ ...props }: Props) => {
     const search = debounce(({ term }: Values, { setSubmitting }: FormikHelpers<Values>) => {
         clearFlashes('search');
 
-        // if (ref.current) ref.current.focus();
         getServers({ query: term, type: isAdmin ? 'admin-all' : undefined })
             .then((servers) => setServers(servers.items.filter((_, index) => index < 5)))
             .catch((error) => {
@@ -73,14 +81,13 @@ export default ({ ...props }: Props) => {
         }
     }, [props.visible]);
 
-    // Formik does not support an innerRef on custom components.
     const InputWithRef = (props: any) => <Input autoFocus {...props} ref={ref} />;
 
     return (
         <Formik
             onSubmit={search}
             validationSchema={object().shape({
-                term: string().min(3, 'Please enter at least three characters to begin searching.'),
+                term: string().min(3, 'Saisissez au moins 3 caractères pour lancer la recherche.'),
             })}
             initialValues={{ term: '' } as Values}
         >
@@ -89,17 +96,21 @@ export default ({ ...props }: Props) => {
                     <Form>
                         <FormikFieldWrapper
                             name={'term'}
-                            label={'Search term'}
-                            description={'Enter a server name, uuid, or allocation to begin searching.'}
+                            label={'Recherche rapide Spotlight'}
+                            description={'Recherchez par nom de serveur, UUID ou adresse IP'}
                         >
                             <SearchWatcher />
                             <InputSpinner visible={isSubmitting}>
-                                <Field as={InputWithRef} name={'term'} />
+                                <Field
+                                    as={InputWithRef}
+                                    name={'term'}
+                                    placeholder={'ex: Skyblock, 127.0.0.1, survival...'}
+                                />
                             </InputSpinner>
                         </FormikFieldWrapper>
                     </Form>
                     {servers.length > 0 && (
-                        <div css={tw`mt-6`}>
+                        <div css={tw`mt-5`}>
                             {servers.map((server) => (
                                 <ServerResult
                                     key={server.uuid}
@@ -107,8 +118,10 @@ export default ({ ...props }: Props) => {
                                     onClick={() => props.onDismissed()}
                                 >
                                     <div css={tw`flex-1 mr-4`}>
-                                        <p css={tw`text-sm`}>{server.name}</p>
-                                        <p css={tw`mt-1 text-xs text-neutral-400`}>
+                                        <p css={tw`text-sm font-semibold text-neutral-100 tracking-tight`}>
+                                            {server.name}
+                                        </p>
+                                        <p css={tw`mt-0.5 text-xs text-neutral-400 font-mono`}>
                                             {server.allocations
                                                 .filter((alloc) => alloc.isDefault)
                                                 .map((allocation) => (
@@ -119,7 +132,9 @@ export default ({ ...props }: Props) => {
                                         </p>
                                     </div>
                                     <div css={tw`flex-none text-right`}>
-                                        <span css={tw`text-xs py-1 px-2 bg-cyan-800 text-cyan-100 rounded`}>
+                                        <span
+                                            css={tw`text-xs py-1 px-2.5 bg-violet-600/20 text-violet-300 border border-violet-500/30 rounded-full font-mono`}
+                                        >
                                             {server.node}
                                         </span>
                                     </div>

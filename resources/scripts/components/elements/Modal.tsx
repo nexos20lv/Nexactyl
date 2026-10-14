@@ -21,36 +21,38 @@ export interface ModalProps extends RequiredModalProps {
 }
 
 export const ModalMask = styled.div`
-    ${tw`fixed z-50 overflow-auto flex w-full inset-0 backdrop-blur-sm`};
-    background: rgba(7, 6, 10, 0.85);
+    ${tw`fixed z-50 overflow-auto flex w-full inset-0`};
+    background: rgba(7, 6, 10, 0.72);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
 `;
 
 const ModalContainer = styled.div<{ alignTop?: boolean }>`
     max-width: 95%;
-    max-height: calc(100vh - 8rem);
+    max-height: calc(100vh - 6rem);
     ${breakpoint('md')`max-width: 75%`};
-    ${breakpoint('lg')`max-width: 50%`};
+    ${breakpoint('lg')`max-width: 52%`};
 
     ${tw`relative flex flex-col w-full m-auto`};
     ${(props) =>
         props.alignTop &&
         css`
-            margin-top: 20%;
-            ${breakpoint('md')`margin-top: 10%`};
+            margin-top: 15%;
+            ${breakpoint('md')`margin-top: 8%`};
         `};
 
     margin-bottom: auto;
 
     & > .close-icon {
-        ${tw`absolute right-0 p-2 text-neutral-400 cursor-pointer opacity-70 transition-all duration-150 ease-linear hover:text-white hover:opacity-100`};
-        top: -2.5rem;
+        ${tw`absolute right-0 w-8 h-8 rounded-full bg-white/[0.08] hover:bg-white/[0.18] flex items-center justify-center text-neutral-300 hover:text-white cursor-pointer transition-all duration-150`};
+        top: -2.75rem;
 
-        &:hover {
-            ${tw`transform rotate-90`}
+        &:active {
+            transform: scale(0.92);
         }
 
         & > svg {
-            ${tw`w-6 h-6`};
+            ${tw`w-4 h-4`};
         }
     }
 `;
@@ -103,7 +105,7 @@ const Modal: React.FC<ModalProps> = ({
             >
                 <ModalContainer alignTop={top}>
                     {isDismissable && (
-                        <div className={'close-icon'} onClick={() => setRender(false)}>
+                        <div className={'close-icon'} onClick={() => setRender(false)} title={'Fermer'}>
                             <svg
                                 xmlns={'http://www.w3.org/2000/svg'}
                                 fill={'none'}
@@ -122,16 +124,27 @@ const Modal: React.FC<ModalProps> = ({
                     {showSpinnerOverlay && (
                         <Fade timeout={150} appear in>
                             <div
-                                css={tw`absolute w-full h-full rounded-2xl flex items-center justify-center`}
-                                style={{ background: 'rgba(7, 6, 10, 0.7)', zIndex: 9999 }}
+                                css={tw`absolute w-full h-full rounded-3xl flex items-center justify-center`}
+                                style={{
+                                    background: 'rgba(7, 6, 10, 0.75)',
+                                    zIndex: 9999,
+                                    backdropFilter: 'blur(8px)',
+                                }}
                             >
                                 <Spinner />
                             </div>
                         </Fade>
                     )}
                     <div
+                        style={{
+                            background: 'rgba(14, 12, 24, 0.94)',
+                            backdropFilter: 'blur(28px) saturate(160%)',
+                            WebkitBackdropFilter: 'blur(28px) saturate(160%)',
+                            boxShadow:
+                                'inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(124, 58, 237, 0.15)',
+                        }}
                         className={
-                            'bg-[#0e0c18] border border-violet-500/20 p-5 sm:p-6 md:p-8 rounded-2xl shadow-2xl shadow-black/80 overflow-y-scroll transition-all duration-150'
+                            'border border-white/10 p-6 sm:p-8 rounded-3xl overflow-y-auto max-h-[calc(100vh-10rem)] transition-all'
                         }
                     >
                         {children}

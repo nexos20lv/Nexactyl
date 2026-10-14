@@ -2,11 +2,28 @@ import styled from 'styled-components/macro';
 import tw from 'twin.macro';
 
 export default styled.div<{ $hoverable?: boolean }>`
-    ${tw`flex rounded-xl no-underline text-neutral-200 items-center bg-neutral-900/90 p-4 border border-violet-500/20 shadow-md transition-all duration-200 overflow-hidden`};
+    ${tw`flex rounded-2xl no-underline text-neutral-200 items-center p-4 sm:p-5 shadow-lg overflow-hidden select-none`};
+    background: #0d0b16;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
 
-    ${(props) => props.$hoverable !== false && tw`hover:border-violet-500/40 hover:bg-neutral-800/80`};
+    ${(props) =>
+        props.$hoverable !== false &&
+        `
+        &:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(139, 92, 246, 0.15);
+        }
+
+        &:active {
+            transform: scale(0.99) translateY(0);
+        }
+    `};
 
     & .icon {
-        ${tw`rounded-xl w-11 h-11 flex items-center justify-center bg-violet-950/40 border border-violet-500/20 p-2 text-violet-400`};
+        ${tw`rounded-2xl w-12 h-12 flex items-center justify-center p-2.5 flex-shrink-0 mr-4 text-violet-300`};
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(147, 51, 234, 0.1) 100%);
+        border: 1px solid rgba(139, 92, 246, 0.3);
     }
 `;

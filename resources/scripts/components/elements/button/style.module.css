@@ -1,19 +1,28 @@
 .button {
     @apply px-4 py-2 inline-flex items-center justify-center;
-    @apply rounded-xl text-sm font-semibold transition-all duration-150 cursor-pointer;
-    @apply focus:ring-[3px] focus:ring-offset-2 focus:ring-offset-neutral-900 focus:ring-opacity-50;
+    @apply rounded-xl text-sm font-semibold cursor-pointer select-none;
+    @apply focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#07060a] focus:ring-violet-500/60;
+    transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+
+    &:active:not(:disabled) {
+        transform: scale(0.97);
+        transition-duration: 0.08s;
+    }
 
     /* Sizing Controls */
     &.small {
-        @apply px-3 py-1 h-8 font-medium text-xs focus:ring-2;
+        @apply px-3 py-1.5 h-8 font-medium text-xs focus:ring-2 rounded-lg;
     }
 
     &.large {
-        @apply px-6 py-3 text-base;
+        @apply px-6 py-3 text-base rounded-2xl;
     }
 
     &.secondary {
-        @apply text-neutral-200 bg-neutral-800/80 border border-violet-500/20 hover:border-violet-500/40 hover:bg-neutral-800 hover:text-white;
+        @apply text-neutral-200 bg-white/[0.05] border border-white/[0.08] hover:border-violet-500/40 hover:bg-white/[0.09] hover:text-white;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
         &:disabled {
             background: transparent !important;
@@ -21,24 +30,28 @@
     }
 
     &:disabled {
-        @apply cursor-not-allowed opacity-50;
+        @apply cursor-not-allowed opacity-45;
+        box-shadow: none !important;
+        transform: none !important;
     }
 
     &.square {
-        @apply p-0 w-10 h-10;
+        @apply p-0 w-10 h-10 rounded-xl;
 
         &.small {
-            @apply w-8 h-8;
+            @apply w-8 h-8 rounded-lg;
         }
     }
 }
 
 .primary {
-    @apply bg-gradient-to-r from-violet-600 to-violet-700 text-white shadow-lg shadow-violet-600/25 border border-violet-500/30;
-    @apply hover:from-violet-500 hover:to-violet-600 active:from-violet-700 active:to-violet-800 focus:ring-violet-400 focus:ring-opacity-75;
+    @apply bg-gradient-to-r from-violet-600 to-violet-700 text-white border border-violet-400/30;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 4px 14px rgba(124, 58, 237, 0.35);
+    @apply hover:from-violet-500 hover:to-violet-600 active:from-violet-700 active:to-violet-800;
 
     &.secondary {
         @apply hover:bg-violet-600/20 active:bg-violet-600/30 text-violet-300 border border-violet-500/30;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
     &:disabled {
@@ -47,11 +60,12 @@
 }
 
 .text {
-    @apply bg-neutral-800/80 text-neutral-200 border border-white/10;
-    @apply hover:bg-neutral-700 active:bg-neutral-800 focus:ring-violet-400 focus:ring-opacity-50;
+    @apply bg-white/[0.04] text-neutral-200 border border-white/[0.06];
+    @apply hover:bg-white/[0.08] hover:text-white active:bg-white/[0.1];
+    backdrop-filter: blur(12px);
 
     &.secondary {
-        @apply hover:bg-neutral-800 active:bg-neutral-800;
+        @apply hover:bg-white/[0.06] active:bg-white/[0.08];
     }
 
     &:disabled {
@@ -60,14 +74,16 @@
 }
 
 .danger {
-    @apply bg-gradient-to-r from-rose-600 to-rose-700 text-white shadow-lg shadow-rose-600/25 border border-rose-500/30;
-    @apply hover:from-rose-500 hover:to-rose-600 active:from-rose-700 active:to-rose-800 focus:ring-rose-400 focus:ring-opacity-75;
+    @apply bg-gradient-to-r from-rose-600 to-rose-700 text-white border border-rose-400/30;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 14px rgba(244, 63, 94, 0.35);
+    @apply hover:from-rose-500 hover:to-rose-600 active:from-rose-700 active:to-rose-800 focus:ring-rose-400;
 
     &.secondary {
         @apply hover:bg-rose-600/20 active:bg-rose-600/30 text-rose-300 border border-rose-500/30;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
     &:disabled {
-        @apply bg-neutral-800 text-neutral-500 border-white/5;
+        @apply bg-neutral-800 text-neutral-500 border-white/5 shadow-none;
     }
 }

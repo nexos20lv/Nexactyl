@@ -6,32 +6,48 @@ import Label from '@/components/elements/Label';
 import Input from '@/components/elements/Input';
 
 const ToggleContainer = styled.div`
-    ${tw`relative select-none w-12 leading-normal`};
+    ${tw`relative select-none leading-normal`};
+    width: 44px;
+    height: 24px;
 
     & > input[type='checkbox'] {
         ${tw`hidden`};
 
         &:checked + label {
-            ${tw`bg-primary-500 border-primary-700 shadow-none`};
+            background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
+            border-color: rgba(147, 51, 234, 0.5);
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.35);
         }
 
         &:checked + label:before {
-            right: 0.125rem;
+            transform: translateX(20px);
         }
     }
 
     & > label {
-        ${tw`mb-0 block overflow-hidden cursor-pointer bg-neutral-400 border border-neutral-700 rounded-full h-6 shadow-inner`};
-        transition: all 75ms linear;
+        ${tw`mb-0 block overflow-hidden cursor-pointer rounded-full`};
+        width: 44px;
+        height: 24px;
+        background: #1c182c;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: background 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
 
         &::before {
-            ${tw`absolute block bg-white border h-5 w-5 rounded-full`};
-            top: 0.125rem;
-            right: calc(50% + 0.125rem);
-            //width: 1.25rem;
-            //height: 1.25rem;
+            position: absolute;
+            display: block;
+            background: #ffffff;
+            width: 20px;
+            height: 20px;
+            border-radius: 9999px;
+            top: 2px;
+            left: 2px;
             content: '';
-            transition: all 75ms ease-in;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.45);
+            transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), width 0.15s ease;
+        }
+
+        &:active::before {
+            width: 24px;
         }
     }
 `;
@@ -65,13 +81,16 @@ const Switch = ({ name, label, description, defaultChecked, readOnly, onChange, 
                 <Label htmlFor={uuid} />
             </ToggleContainer>
             {(label || description) && (
-                <div css={tw`ml-4 w-full`}>
+                <div css={tw`ml-3.5 w-full`}>
                     {label && (
-                        <Label css={[tw`cursor-pointer`, !!description && tw`mb-0`]} htmlFor={uuid}>
+                        <Label
+                            css={[tw`cursor-pointer text-sm font-medium text-neutral-200`, !!description && tw`mb-0.5`]}
+                            htmlFor={uuid}
+                        >
                             {label}
                         </Label>
                     )}
-                    {description && <p css={tw`text-neutral-400 text-sm mt-2`}>{description}</p>}
+                    {description && <p css={tw`text-neutral-400 text-xs`}>{description}</p>}
                 </div>
             )}
         </div>

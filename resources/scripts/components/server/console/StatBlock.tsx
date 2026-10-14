@@ -16,26 +16,34 @@ interface StatBlockProps {
 }
 
 export default ({ title, copyOnClick, icon, color, className, children }: StatBlockProps) => {
-    const { fontSize, ref } = useFitText({ minFontSize: 8, maxFontSize: 500 });
+    const { fontSize, ref } = useFitText({ minFontSize: 10, maxFontSize: 24 });
 
     return (
         <CopyOnClick text={copyOnClick}>
-            <div className={classNames(styles.stat_block, 'bg-gray-600', className)}>
-                <div className={classNames(styles.status_bar, color || 'bg-gray-700')} />
-                <div className={classNames(styles.icon, color || 'bg-gray-700')}>
+            <div
+                style={{
+                    transition:
+                        'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease',
+                }}
+                className={classNames(styles.stat_block, 'cursor-pointer active:scale-[0.98]', className)}
+            >
+                <div className={classNames(styles.status_bar, color || 'bg-violet-600')} />
+                <div className={classNames(styles.icon, color || 'bg-violet-600/15')}>
                     <Icon
                         icon={icon}
                         className={classNames({
-                            'text-gray-100': !color || color === 'bg-gray-700',
-                            'text-gray-50': color && color !== 'bg-gray-700',
+                            'text-violet-300': !color,
+                            'text-white': color,
                         })}
                     />
                 </div>
                 <div className={'flex flex-col justify-center overflow-hidden w-full'}>
-                    <p className={'font-header font-medium leading-tight text-xs md:text-sm text-gray-200'}>{title}</p>
+                    <p className={'font-medium leading-tight text-xs text-neutral-400 tracking-tight'}>{title}</p>
                     <div
                         ref={ref}
-                        className={'h-[1.75rem] w-full font-semibold text-gray-50 truncate'}
+                        className={
+                            'h-[1.75rem] w-full font-bold text-neutral-100 font-mono truncate flex items-center mt-0.5'
+                        }
                         style={{ fontSize }}
                     >
                         {children}

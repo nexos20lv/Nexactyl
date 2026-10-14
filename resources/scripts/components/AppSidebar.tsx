@@ -41,41 +41,50 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
     const serverCategories = ['GESTION', 'EXTENSIONS', 'CONFIGURATION'];
 
     return (
-        <aside className='w-64 h-full bg-[#08070e] border-r border-[#1a1728] flex flex-col justify-between select-none'>
+        <aside
+            style={{
+                background: 'rgba(8, 7, 14, 0.95)',
+                backdropFilter: 'blur(24px) saturate(160%)',
+                WebkitBackdropFilter: 'blur(24px) saturate(160%)',
+            }}
+            className='w-64 h-full border-r border-white/[0.06] flex flex-col justify-between select-none shadow-2xl'
+        >
             {/* Top Brand */}
             <div className='shrink-0'>
-                <div className='flex items-center gap-3 px-5 py-4 border-b border-[#181622]'>
-                    <div className='w-9 h-9 rounded-xl bg-violet-600/20 border border-violet-500/40 flex items-center justify-center text-violet-400 shadow-[0_0_15px_rgba(139,92,246,0.25)]'>
+                <div className='flex items-center gap-3 px-5 py-4 border-b border-white/[0.06]'>
+                    <div className='w-9 h-9 rounded-2xl bg-gradient-to-br from-violet-600/30 to-purple-800/20 border border-violet-500/40 flex items-center justify-center text-violet-300 shadow-[0_0_15px_rgba(139,92,246,0.3)]'>
                         <FontAwesomeIcon icon={faTerminal} className='text-sm' />
                     </div>
                     <div className='flex flex-col'>
                         <div className='flex items-center gap-1.5'>
-                            <span className='font-extrabold tracking-wider text-sm text-neutral-100 font-mono'>
-                                NXSLab
-                            </span>
-                            <span className='text-[10px] uppercase font-bold bg-violet-500/20 text-violet-300 border border-violet-500/30 px-1.5 py-0.2 rounded'>
+                            <span className='font-extrabold tracking-tight text-sm text-neutral-100'>NXSLab</span>
+                            <span className='text-[9px] uppercase font-bold bg-violet-600/20 text-violet-300 border border-violet-500/30 px-1.5 py-0.2 rounded-full'>
                                 PRO
                             </span>
                         </div>
-                        <span className='text-[11px] text-neutral-500 font-mono'>Gaming Cloud v1.12</span>
+                        <span className='text-[10px] text-neutral-500 font-mono'>Gaming Cloud v1.12</span>
                     </div>
                 </div>
 
                 {/* Server Quick Info & Back Button */}
                 {context === 'server' && server && (
-                    <div className='p-3 border-b border-[#181622] bg-[#0c0a17]/50'>
+                    <div className='p-3 border-b border-white/[0.06] bg-white/[0.02]'>
                         <Link
                             to='/'
                             onClick={onCloseMobile}
-                            className='flex items-center gap-2 px-2.5 py-1.5 text-xs font-medium text-neutral-400 hover:text-neutral-100 bg-neutral-900/60 hover:bg-neutral-900 border border-[#1f1d2e] rounded-lg transition-all mb-2.5'
+                            style={{
+                                transition:
+                                    'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease',
+                            }}
+                            className='flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-neutral-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] active:scale-95 border border-white/[0.06] rounded-xl transition-all mb-2.5 no-underline'
                         >
                             <FontAwesomeIcon icon={faChevronLeft} className='text-[10px]' />
                             <span>Tous mes serveurs</span>
                         </Link>
-                        <div className='p-2.5 rounded-lg bg-[#0e0d16] border border-[#1f1d2e] shadow-sm'>
+                        <div className='p-3 rounded-2xl bg-[#0e0c18] border border-white/[0.07] shadow-sm'>
                             <div className='flex items-center justify-between mb-1'>
                                 <span
-                                    className='text-xs font-semibold text-neutral-200 truncate max-w-[140px]'
+                                    className='text-xs font-bold text-neutral-100 truncate max-w-[140px]'
                                     title={server.name}
                                 >
                                     {server.name}
@@ -85,10 +94,10 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
                                     <span className='relative inline-flex rounded-full h-2 w-2 bg-emerald-500' />
                                 </span>
                             </div>
-                            <div className='flex items-center justify-between text-[10px] text-neutral-500 font-mono'>
+                            <div className='flex items-center justify-between text-[10px] text-neutral-400 font-mono'>
                                 <span>Node: {server.node}</span>
                                 {server.isMinecraft && (
-                                    <span className='text-violet-400 bg-violet-500/10 px-1.5 py-0.5 rounded border border-violet-500/20'>
+                                    <span className='text-violet-300 bg-violet-600/15 px-2 py-0.5 rounded-full border border-violet-500/30 text-[9px] font-semibold'>
                                         Minecraft
                                     </span>
                                 )}
@@ -113,7 +122,7 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
 
                         return (
                             <div key={cat} className='space-y-0.5'>
-                                <div className='text-[10px] font-bold text-neutral-500 tracking-wider uppercase px-3 py-1'>
+                                <div className='text-[10px] font-bold text-neutral-400 tracking-wider uppercase px-3 py-1 opacity-75'>
                                     {cat}
                                 </div>
                                 {catRoutes.map((route) => {
@@ -128,20 +137,24 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
                                             to={path}
                                             exact={route.exact}
                                             onClick={onCloseMobile}
-                                            activeClassName='bg-violet-600/15 text-violet-300 font-semibold border-l-2 border-violet-500 shadow-[inset_3px_0_10px_rgba(139,92,246,0.15)]'
-                                            className='flex items-center justify-between px-3 py-2 text-xs font-medium text-neutral-400 hover:text-neutral-100 hover:bg-neutral-900/50 rounded-lg transition-all group'
+                                            activeClassName='bg-gradient-to-r from-violet-600 to-violet-700 text-white font-semibold shadow-[0_4px_14px_rgba(124,58,237,0.35),inset_0_1px_0_rgba(255,255,255,0.22)]'
+                                            style={{
+                                                transition:
+                                                    'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease',
+                                            }}
+                                            className='flex items-center justify-between px-3 py-2 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/[0.06] rounded-xl transition-all active:scale-[0.98] group no-underline'
                                         >
                                             <div className='flex items-center gap-2.5 truncate'>
                                                 {route.icon && (
                                                     <FontAwesomeIcon
                                                         icon={route.icon}
-                                                        className='w-4 text-center text-neutral-500 group-hover:text-violet-400 transition-colors'
+                                                        className='w-4 text-center text-neutral-400 group-hover:text-violet-300 transition-colors'
                                                     />
                                                 )}
                                                 <span className='truncate'>{route.name}</span>
                                             </div>
                                             {route.path === '/store' && (
-                                                <span className='text-[9px] font-bold uppercase tracking-wider bg-violet-600/30 text-violet-300 border border-violet-500/40 px-1.5 py-0.5 rounded shadow-[0_0_8px_rgba(139,92,246,0.3)]'>
+                                                <span className='text-[9px] font-bold uppercase tracking-wider bg-violet-600/30 text-violet-300 border border-violet-500/40 px-1.5 py-0.5 rounded-full shadow-[0_0_8px_rgba(139,92,246,0.3)]'>
                                                     BOOST
                                                 </span>
                                             )}
@@ -162,26 +175,30 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
                 ) : (
                     <div className='space-y-4'>
                         <div className='space-y-0.5'>
-                            <div className='text-[10px] font-bold text-neutral-500 tracking-wider uppercase px-3 py-1'>
+                            <div className='text-[10px] font-bold text-neutral-400 tracking-wider uppercase px-3 py-1 opacity-75'>
                                 PRINCIPAL
                             </div>
                             <NavLink
                                 to='/'
                                 exact
                                 onClick={onCloseMobile}
-                                activeClassName='bg-violet-600/15 text-violet-300 font-semibold border-l-2 border-violet-500 shadow-[inset_3px_0_10px_rgba(139,92,246,0.15)]'
-                                className='flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-neutral-400 hover:text-neutral-100 hover:bg-neutral-900/50 rounded-lg transition-all group'
+                                activeClassName='bg-gradient-to-r from-violet-600 to-violet-700 text-white font-semibold shadow-[0_4px_14px_rgba(124,58,237,0.35),inset_0_1px_0_rgba(255,255,255,0.22)]'
+                                style={{
+                                    transition:
+                                        'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease',
+                                }}
+                                className='flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/[0.06] rounded-xl transition-all active:scale-[0.98] group no-underline'
                             >
                                 <FontAwesomeIcon
                                     icon={faServer}
-                                    className='w-4 text-center text-neutral-500 group-hover:text-violet-400 transition-colors'
+                                    className='w-4 text-center text-neutral-400 group-hover:text-violet-300 transition-colors'
                                 />
                                 <span>Mes Serveurs</span>
                             </NavLink>
                         </div>
 
                         <div className='space-y-0.5'>
-                            <div className='text-[10px] font-bold text-neutral-500 tracking-wider uppercase px-3 py-1'>
+                            <div className='text-[10px] font-bold text-neutral-400 tracking-wider uppercase px-3 py-1 opacity-75'>
                                 MON COMPTE
                             </div>
                             {routes.account.map((route) => (
@@ -190,13 +207,17 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
                                     to={`/account/${route.path}`.replace('//', '/')}
                                     exact={route.exact}
                                     onClick={onCloseMobile}
-                                    activeClassName='bg-violet-600/15 text-violet-300 font-semibold border-l-2 border-violet-500 shadow-[inset_3px_0_10px_rgba(139,92,246,0.15)]'
-                                    className='flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-neutral-400 hover:text-neutral-100 hover:bg-neutral-900/50 rounded-lg transition-all group'
+                                    activeClassName='bg-gradient-to-r from-violet-600 to-violet-700 text-white font-semibold shadow-[0_4px_14px_rgba(124,58,237,0.35),inset_0_1px_0_rgba(255,255,255,0.22)]'
+                                    style={{
+                                        transition:
+                                            'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease',
+                                    }}
+                                    className='flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/[0.06] rounded-xl transition-all active:scale-[0.98] group no-underline'
                                 >
                                     {route.icon && (
                                         <FontAwesomeIcon
                                             icon={route.icon}
-                                            className='w-4 text-center text-neutral-500 group-hover:text-violet-400 transition-colors'
+                                            className='w-4 text-center text-neutral-400 group-hover:text-violet-300 transition-colors'
                                         />
                                     )}
                                     <span>{route.name}</span>
@@ -208,11 +229,11 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
             </div>
 
             {/* Bottom Credits & User Profile */}
-            <div className='shrink-0 border-t border-[#181622] bg-[#06050a] p-3 space-y-2.5'>
+            <div className='shrink-0 border-t border-white/[0.06] bg-[#06050a] p-3 space-y-2.5'>
                 {/* Credits Card */}
-                <div className='p-2.5 rounded-lg bg-gradient-to-r from-violet-950/40 to-purple-950/20 border border-violet-500/30 flex items-center justify-between shadow-sm'>
+                <div className='p-2.5 rounded-2xl bg-gradient-to-r from-violet-950/40 to-purple-950/20 border border-violet-500/30 flex items-center justify-between shadow-sm'>
                     <div className='flex items-center gap-2'>
-                        <div className='w-6 h-6 rounded bg-violet-500/20 flex items-center justify-center text-violet-300 text-xs'>
+                        <div className='w-6 h-6 rounded-lg bg-violet-500/20 flex items-center justify-center text-violet-300 text-xs'>
                             <FontAwesomeIcon icon={faCoins} />
                         </div>
                         <div className='flex flex-col'>
@@ -226,7 +247,11 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
                         <Link
                             to={`/server/${server.id}/store`}
                             onClick={onCloseMobile}
-                            className='text-[10px] font-bold bg-violet-600 hover:bg-violet-500 text-white px-2 py-1 rounded transition-colors shadow-sm flex items-center gap-1'
+                            style={{
+                                transition:
+                                    'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease',
+                            }}
+                            className='text-[10px] font-bold bg-violet-600 hover:bg-violet-500 active:scale-95 text-white px-2.5 py-1 rounded-lg transition-colors shadow-sm flex items-center gap-1 no-underline'
                         >
                             <FontAwesomeIcon icon={faBolt} className='text-[9px]' />
                             <span>Store</span>
@@ -237,7 +262,7 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
                 {/* User Row */}
                 <div className='flex items-center justify-between pt-1'>
                     <div className='flex items-center gap-2.5 min-w-0'>
-                        <div className='w-8 h-8 rounded-lg overflow-hidden border border-violet-500/30 shrink-0'>
+                        <div className='w-8 h-8 rounded-xl overflow-hidden border border-violet-500/30 shrink-0'>
                             <Avatar.User />
                         </div>
                         <div className='flex flex-col min-w-0'>
@@ -252,7 +277,11 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
                             <a
                                 href='/admin'
                                 title='Panel Administration'
-                                className='p-1.5 rounded-md text-neutral-400 hover:text-violet-300 hover:bg-violet-500/10 transition-colors'
+                                style={{
+                                    transition:
+                                        'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease',
+                                }}
+                                className='p-1.5 rounded-lg text-neutral-400 hover:text-violet-300 hover:bg-violet-500/10 active:scale-90 transition-all'
                             >
                                 <FontAwesomeIcon icon={faExternalLinkAlt} className='text-xs' />
                             </a>
@@ -262,7 +291,11 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
                             onClick={onTriggerLogout}
                             disabled={isLoggingOut}
                             title='Déconnexion'
-                            className='p-1.5 rounded-md text-neutral-400 hover:text-red-400 hover:bg-red-500/10 transition-colors'
+                            style={{
+                                transition:
+                                    'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease',
+                            }}
+                            className='p-1.5 rounded-lg text-neutral-400 hover:text-red-400 hover:bg-red-500/10 active:scale-90 transition-all cursor-pointer'
                         >
                             <FontAwesomeIcon icon={faSignOutAlt} className='text-xs' />
                         </button>

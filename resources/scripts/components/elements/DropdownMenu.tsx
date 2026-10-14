@@ -9,10 +9,15 @@ interface Props {
 }
 
 export const DropdownButtonRow = styled.button<{ danger?: boolean }>`
-    ${tw`p-2.5 flex items-center rounded-lg w-full text-xs font-medium text-neutral-300 transition-all duration-150`};
+    ${tw`p-2.5 flex items-center rounded-xl w-full text-xs font-medium text-neutral-300 transition-all cursor-pointer select-none`};
+    transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease, color 0.15s ease;
+
+    &:active {
+        transform: scale(0.98);
+    }
 
     &:hover {
-        ${(props) => (props.danger ? tw`text-rose-300 bg-rose-950/40` : tw`text-violet-200 bg-violet-900/30`)};
+        ${(props) => (props.danger ? tw`text-white bg-rose-600 shadow-md` : tw`text-white bg-violet-600 shadow-md`)};
     }
 `;
 
@@ -92,9 +97,13 @@ class DropdownMenu extends React.PureComponent<Props, State> {
                             e.stopPropagation();
                             this.setState({ visible: false });
                         }}
-                        style={{ width: '13rem' }}
+                        style={{
+                            width: '13rem',
+                            backdropFilter: 'blur(24px) saturate(160%)',
+                            WebkitBackdropFilter: 'blur(24px) saturate(160%)',
+                        }}
                         className={
-                            'absolute bg-[#100e1c] p-1.5 rounded-xl border border-violet-500/25 shadow-2xl shadow-black/80 text-neutral-300 z-50 backdrop-blur-md'
+                            'absolute bg-[#0e0c18]/95 p-1.5 rounded-2xl border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_16px_40px_rgba(0,0,0,0.7),0_0_20px_rgba(124,58,237,0.15)] text-neutral-300 z-50'
                         }
                     >
                         {this.props.children}
