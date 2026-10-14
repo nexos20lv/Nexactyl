@@ -2,15 +2,15 @@
 @include('partials/admin.settings.nav', ['activeTab' => 'nxslab'])
 
 @section('title')
-    NXSLab & Sous-domaines
+    NXSLab & Personnalisation
 @endsection
 
 @section('content-header')
-    <h1>Configuration Globale NXSLab<small>Gérez les sous-domaines, l'API Cloudflare, le Store et les intégrations Gaming.</small></h1>
+    <h1>Configuration Globale &amp; Marque Blanche<small>Personnalisez l'identité visuelle, les thèmes, les sous-domaines et la boutique.</small></h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('admin.index') }}">Admin</a></li>
         <li><a href="{{ route('admin.settings') }}">Settings</a></li>
-        <li class="active">NXSLab & Sous-domaines</li>
+        <li class="active">NXSLab &amp; Personnalisation</li>
     </ol>
 @endsection
 
@@ -21,12 +21,97 @@
         {!! csrf_field() !!}
         {!! method_field('PATCH') !!}
 
+        {{-- BOX 0: IDENTITÉ VISUELLE & MARQUE BLANCHE (WHITELABEL) --}}
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary" style="border-top-color: #8b5cf6;">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" style="color: #c084fc;"><i class="fa fa-paint-brush"></i> Identité Visuelle &amp; Marque Blanche (Whitelabel Engine)</h3>
+                    </div>
+                    <div class="box-body">
+                        <p class="text-muted" style="margin-bottom: 20px;">
+                            Configurez l'apparence de votre panel pour vos clients. Personnalisez le nom de votre hébergeur, vos logos, la monnaie du store et la couleur d'accent par défaut.
+                        </p>
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                <label class="control-label">Nom de la Plateforme / Marque</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                    <input type="text" class="form-control" name="brand_name" value="{{ old('brand_name', $settings['brand_name']) }}" placeholder="NXSLab" required />
+                                </div>
+                                <p class="text-muted"><small>Affiché dans la barre de titre, la sidebar, le header et le footer client.</small></p>
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label class="control-label">Slogan / Sous-titre</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-quote-left"></i></span>
+                                    <input type="text" class="form-control" name="brand_tagline" value="{{ old('brand_tagline', $settings['brand_tagline']) }}" placeholder="Plateforme Cloud Gaming Haute Performance" />
+                                </div>
+                                <p class="text-muted"><small>Affiché sous le nom dans la sidebar et en pied de page.</small></p>
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label class="control-label">URL du Logo Personnalisé</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-image"></i></span>
+                                    <input type="url" class="form-control" name="brand_logo_url" value="{{ old('brand_logo_url', $settings['brand_logo_url']) }}" placeholder="https://monsite.com/logo.png" />
+                                </div>
+                                <p class="text-muted"><small>Lien HTTPS direct vers votre logo (PNG/SVG transparent). Laissez vide pour l'icône par défaut.</small></p>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-4 form-group">
+                                <label class="control-label">Couleur d'Accent par Défaut</label>
+                                <select class="form-control" name="brand_default_accent" required>
+                                    <option value="violet" @if ($settings['brand_default_accent'] === 'violet') selected @endif>🟣 Obsidian Violet (Défaut Apple)</option>
+                                    <option value="azure" @if ($settings['brand_default_accent'] === 'azure') selected @endif>🔵 Neon Azure (Bleu Cyan)</option>
+                                    <option value="emerald" @if ($settings['brand_default_accent'] === 'emerald') selected @endif>🟢 Matrix Emerald (Vert Émeraude)</option>
+                                    <option value="crimson" @if ($settings['brand_default_accent'] === 'crimson') selected @endif>🔴 Cyber Crimson (Pourpre Carmin)</option>
+                                    <option value="amber" @if ($settings['brand_default_accent'] === 'amber') selected @endif>🟠 Sunset Amber (Ambre Solaire)</option>
+                                    <option value="fuchsia" @if ($settings['brand_default_accent'] === 'fuchsia') selected @endif>🌸 Neon Fuchsia (Fuchsia Cyberpunk)</option>
+                                </select>
+                                <p class="text-muted"><small>Appliquée aux nouveaux visiteurs. Chaque utilisateur peut aussi choisir son accent favori dans son profil.</small></p>
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label class="control-label">Nom de la Monnaie</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-coins"></i></span>
+                                    <input type="text" class="form-control" name="brand_currency_name" value="{{ old('brand_currency_name', $settings['brand_currency_name']) }}" placeholder="Crédits" required />
+                                </div>
+                                <p class="text-muted"><small>Exemples : Crédits, Coins, Points, Gemmes.</small></p>
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label class="control-label">Symbole ou Abréviation Monétaire</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-money"></i></span>
+                                    <input type="text" class="form-control" name="brand_currency_symbol" value="{{ old('brand_currency_symbol', $settings['brand_currency_symbol']) }}" placeholder="cr" required />
+                                </div>
+                                <p class="text-muted"><small>Exemples : <code>cr</code>, <code>🪙</code>, <code>💎</code>, <code>pts</code>.</small></p>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-xs-12 form-group">
+                                <label class="control-label">Texte de Bas de Page Personnalisé (Footer)</label>
+                                <input type="text" class="form-control" name="brand_footer_text" value="{{ old('brand_footer_text', $settings['brand_footer_text']) }}" placeholder="MonHébergeur • Tous droits réservés" />
+                                <p class="text-muted"><small>Texte affiché au bas des pages du tableau de bord client.</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             {{-- BOX 1: SOUS-DOMAINES & CLOUDFLARE --}}
             <div class="col-md-6">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-cloud text-aqua"></i> Sous-domaines & Cloudflare DNS</h3>
+                        <h3 class="box-title"><i class="fa fa-cloud text-aqua"></i> Sous-domaines &amp; Cloudflare DNS</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
@@ -109,20 +194,6 @@
 
             {{-- BOX 2 & 3: GAMING & BOUTIQUE --}}
             <div class="col-md-6">
-                {{-- GAMING INTEGRATIONS --}}
-                <div class="box box-warning">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-gamepad text-orange"></i> Intégrations Gaming &amp; CurseForge</h3>
-                    </div>
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label class="control-label">Clé API CurseForge Eternal</label>
-                            <input type="text" class="form-control" name="curseforge_key" value="{{ old('curseforge_key', $settings['curseforge_key']) }}" placeholder="Clé API CurseForge..." />
-                            <p class="text-muted"><small>Permet la recherche et le téléchargement direct de mods et plugins CurseForge dans le gestionnaire de versions.</small></p>
-                        </div>
-                    </div>
-                </div>
-
                 {{-- BOUTIQUE HARDWARE & CREDITS --}}
                 <div class="box box-success">
                     <div class="box-header with-border">
@@ -146,7 +217,10 @@
 
                         <div class="form-group">
                             <label class="control-label">Crédits de Bienvenue (Offerts aux nouveaux comptes)</label>
-                            <input type="number" class="form-control" name="starting_credits" value="{{ old('starting_credits', $settings['starting_credits']) }}" min="0" required />
+                            <div class="input-group">
+                                <input type="number" class="form-control" name="starting_credits" value="{{ old('starting_credits', $settings['starting_credits']) }}" min="0" required />
+                                <span class="input-group-addon">{{ $settings['brand_currency_symbol'] }}</span>
+                            </div>
                             <p class="text-muted"><small>Nombre de crédits crédités automatiquement à chaque nouvel utilisateur.</small></p>
                         </div>
 
@@ -155,14 +229,14 @@
                                 <label class="control-label">Coût RAM (+1 Go)</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="cost_ram_1gb" value="{{ old('cost_ram_1gb', $settings['cost_ram_1gb']) }}" min="0" required />
-                                    <span class="input-group-addon">cr</span>
+                                    <span class="input-group-addon">{{ $settings['brand_currency_symbol'] }}</span>
                                 </div>
                             </div>
                             <div class="col-xs-6 form-group">
                                 <label class="control-label">Coût CPU (+25%)</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="cost_cpu_25" value="{{ old('cost_cpu_25', $settings['cost_cpu_25']) }}" min="0" required />
-                                    <span class="input-group-addon">cr</span>
+                                    <span class="input-group-addon">{{ $settings['brand_currency_symbol'] }}</span>
                                 </div>
                             </div>
                         </div>
@@ -172,16 +246,30 @@
                                 <label class="control-label">Coût Disque (+10 Go NVMe)</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="cost_disk_10gb" value="{{ old('cost_disk_10gb', $settings['cost_disk_10gb']) }}" min="0" required />
-                                    <span class="input-group-addon">cr</span>
+                                    <span class="input-group-addon">{{ $settings['brand_currency_symbol'] }}</span>
                                 </div>
                             </div>
                             <div class="col-xs-6 form-group">
                                 <label class="control-label">Coût Sauvegardes (+2 Slots)</label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="cost_backups_2" value="{{ old('cost_backups_2', $settings['cost_backups_2']) }}" min="0" required />
-                                    <span class="input-group-addon">cr</span>
+                                    <span class="input-group-addon">{{ $settings['brand_currency_symbol'] }}</span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- GAMING INTEGRATIONS --}}
+                <div class="box box-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-gamepad text-orange"></i> Intégrations Gaming &amp; CurseForge</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="control-label">Clé API CurseForge Eternal</label>
+                            <input type="text" class="form-control" name="curseforge_key" value="{{ old('curseforge_key', $settings['curseforge_key']) }}" placeholder="Clé API CurseForge..." />
+                            <p class="text-muted"><small>Permet la recherche et le téléchargement direct de mods et plugins CurseForge dans le gestionnaire de versions.</small></p>
                         </div>
                     </div>
                 </div>
@@ -189,7 +277,7 @@
                 {{-- SAUVEGARDER --}}
                 <div class="box box-solid">
                     <div class="box-body">
-                        <button type="submit" class="btn btn-primary btn-block btn-lg">
+                        <button type="submit" class="btn btn-primary btn-block btn-lg" style="background: linear-gradient(135deg, #7c3aed, #6d28d9); border-color: #8b5cf6;">
                             <i class="fa fa-save"></i> Enregistrer tous les paramètres
                         </button>
                     </div>

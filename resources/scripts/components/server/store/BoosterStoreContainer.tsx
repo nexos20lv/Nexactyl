@@ -16,7 +16,8 @@ import http from '@/api/http';
 import Spinner from '@/components/elements/Spinner';
 import Button from '@/components/elements/Button';
 import useFlash from '@/plugins/useFlash';
-import { useStoreActions } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import { ApplicationStore } from '@/state';
 import { bytesToString, mbToBytes } from '@/lib/formatters';
 
 interface Tier {
@@ -56,6 +57,9 @@ interface StoreData {
 const BoosterStoreContainer = () => {
     const uuid = ServerContext.useStoreState((state) => state.server.data!.uuid);
     const updateUserData = useStoreActions((actions: any) => actions.user.updateUserData);
+    const settings = useStoreState((state: ApplicationStore) => state.settings.data);
+    const currencyName = settings?.currencyName || 'Crédits';
+    const currencySymbol = settings?.currencySymbol || 'cr';
     const { addFlash, clearFlashes } = useFlash();
 
     const [loading, setLoading] = useState(true);
@@ -100,7 +104,7 @@ const BoosterStoreContainer = () => {
             addFlash({
                 key: 'store',
                 type: 'error',
-                message: `Solde insuffisant ! Vous disposez de ${storeData.credits} crédits (${item.cost} requis).`,
+                message: `Solde insuffisant ! Vous disposez de ${storeData.credits} ${currencyName} (${item.cost} requis).`,
             });
             return;
         }
@@ -173,10 +177,11 @@ const BoosterStoreContainer = () => {
                         </div>
                         <div className='flex flex-col'>
                             <span className='text-xs text-neutral-400 uppercase tracking-wider font-medium'>
-                                Vos Crédits
+                                Vos {currencyName}
                             </span>
                             <span className='text-2xl font-bold font-mono text-neutral-100'>
-                                {credits.toLocaleString()} <span className='text-violet-400 text-sm font-sans'>cr</span>
+                                {credits.toLocaleString()}{' '}
+                                <span className='text-violet-400 text-sm font-sans'>{currencySymbol}</span>
                             </span>
                         </div>
                     </div>
@@ -229,7 +234,7 @@ const BoosterStoreContainer = () => {
                                             >
                                                 <div className='font-bold'>{tier.amount / 1024} Go</div>
                                                 <div className='text-[10px] text-violet-400 font-mono'>
-                                                    {tier.cost} cr
+                                                    {tier.cost} {currencySymbol}
                                                 </div>
                                             </button>
                                         );
@@ -261,7 +266,7 @@ const BoosterStoreContainer = () => {
                                 <span className='text-[11px] text-neutral-400 block'>Prix du Booster</span>
                                 <span className='font-mono font-bold text-lg text-neutral-100'>
                                     {catalog.ram[selectedRamTier]?.cost}{' '}
-                                    <span className='text-violet-400 text-xs'>Crédits</span>
+                                    <span className='text-violet-400 text-xs'>{currencyName}</span>
                                 </span>
                             </div>
                             <Button
@@ -319,7 +324,7 @@ const BoosterStoreContainer = () => {
                                             >
                                                 <div className='font-bold'>+{tier.amount}%</div>
                                                 <div className='text-[10px] text-violet-400 font-mono'>
-                                                    {tier.cost} cr
+                                                    {tier.cost} {currencySymbol}
                                                 </div>
                                             </button>
                                         );
@@ -347,7 +352,7 @@ const BoosterStoreContainer = () => {
                                 <span className='text-[11px] text-neutral-400 block'>Prix du Booster</span>
                                 <span className='font-mono font-bold text-lg text-neutral-100'>
                                     {catalog.cpu[selectedCpuTier]?.cost}{' '}
-                                    <span className='text-violet-400 text-xs'>Crédits</span>
+                                    <span className='text-violet-400 text-xs'>{currencyName}</span>
                                 </span>
                             </div>
                             <Button
@@ -403,7 +408,7 @@ const BoosterStoreContainer = () => {
                                             >
                                                 <div className='font-bold'>+{Math.round(tier.amount / 1024)} Go</div>
                                                 <div className='text-[10px] text-violet-400 font-mono'>
-                                                    {tier.cost} cr
+                                                    {tier.cost} {currencySymbol}
                                                 </div>
                                             </button>
                                         );
@@ -435,7 +440,7 @@ const BoosterStoreContainer = () => {
                                 <span className='text-[11px] text-neutral-400 block'>Prix du Booster</span>
                                 <span className='font-mono font-bold text-lg text-neutral-100'>
                                     {catalog.disk[selectedDiskTier]?.cost}{' '}
-                                    <span className='text-violet-400 text-xs'>Crédits</span>
+                                    <span className='text-violet-400 text-xs'>{currencyName}</span>
                                 </span>
                             </div>
                             <Button
@@ -493,7 +498,7 @@ const BoosterStoreContainer = () => {
                                             >
                                                 <div className='font-bold'>+{tier.amount} Slots</div>
                                                 <div className='text-[10px] text-violet-400 font-mono'>
-                                                    {tier.cost} cr
+                                                    {tier.cost} {currencySymbol}
                                                 </div>
                                             </button>
                                         );
@@ -521,7 +526,7 @@ const BoosterStoreContainer = () => {
                                 <span className='text-[11px] text-neutral-400 block'>Prix du Booster</span>
                                 <span className='font-mono font-bold text-lg text-neutral-100'>
                                     {catalog.backups[selectedBackupTier]?.cost}{' '}
-                                    <span className='text-violet-400 text-xs'>Crédits</span>
+                                    <span className='text-violet-400 text-xs'>{currencyName}</span>
                                 </span>
                             </div>
                             <Button
@@ -569,7 +574,9 @@ const BoosterStoreContainer = () => {
                                             {b.type === 'disk' ? `+${Math.round(b.amount / 1024)} Go NVMe` : ''}
                                             {b.type === 'backups' ? `+${b.amount} Sauvegardes` : ''}
                                         </td>
-                                        <td className='py-2.5 px-3 font-mono text-violet-300 font-bold'>{b.cost} cr</td>
+                                        <td className='py-2.5 px-3 font-mono text-violet-300 font-bold'>
+                                            {b.cost} {currencySymbol}
+                                        </td>
                                         <td className='py-2.5 px-3 text-neutral-400'>
                                             {new Date(b.created_at).toLocaleString()}
                                         </td>

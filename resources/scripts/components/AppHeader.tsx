@@ -37,6 +37,7 @@ interface Props {
 
 const AppHeader: React.FC<Props> = ({ context, server, onToggleMobileSidebar }) => {
     const user = useStoreState((state: ApplicationStore) => state.user.data);
+    const settings = useStoreState((state: ApplicationStore) => state.settings.data);
     const rootAdmin = user?.rootAdmin ?? false;
     const location = useLocation();
 
@@ -137,7 +138,7 @@ const AppHeader: React.FC<Props> = ({ context, server, onToggleMobileSidebar }) 
                         className='text-neutral-400 hover:text-neutral-200 transition-colors font-medium no-underline flex items-center gap-1.5'
                     >
                         <FontAwesomeIcon icon={faHome} className='text-[11px] text-violet-400' />
-                        <span>NXSLab</span>
+                        <span>{settings?.name || 'NXSLab'}</span>
                     </Link>
                     <FontAwesomeIcon icon={faChevronRight} className='text-[8px] text-neutral-600' />
                     {context === 'server' && server ? (

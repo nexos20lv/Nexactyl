@@ -128,7 +128,9 @@ export default ({ ...props }: Props) => {
                                         <p css={tw`text-sm font-semibold text-neutral-100 tracking-tight truncate`}>
                                             {server.name}
                                         </p>
-                                        <p css={tw`mt-0.5 text-xs text-neutral-400 font-mono flex items-center gap-1.5`}>
+                                        <p
+                                            css={tw`mt-0.5 text-xs text-neutral-400 font-mono flex items-center gap-1.5`}
+                                        >
                                             <FontAwesomeIcon
                                                 icon={server.subdomain ? faGlobe : faEthernet}
                                                 className='text-[10px] text-violet-400'
@@ -139,7 +141,8 @@ export default ({ ...props }: Props) => {
                                                         .filter((alloc) => alloc.isDefault)
                                                         .map((allocation) => (
                                                             <span key={allocation.ip + allocation.port.toString()}>
-                                                                {allocation.alias || ip(allocation.ip)}:{allocation.port}
+                                                                {allocation.alias || ip(allocation.ip)}:
+                                                                {allocation.port}
                                                             </span>
                                                         ))}
                                             </span>

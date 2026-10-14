@@ -2,6 +2,7 @@ import React from 'react';
 import TitledGreyBox from '@/components/elements/TitledGreyBox';
 import { ServerContext } from '@/state/server';
 import { useStoreState } from 'easy-peasy';
+import { ApplicationStore } from '@/state';
 import RenameServerBox from '@/components/server/settings/RenameServerBox';
 import FlashMessageRender from '@/components/FlashMessageRender';
 import Can from '@/components/elements/Can';
@@ -19,6 +20,7 @@ import { faTerminal, faInfoCircle, faExternalLinkAlt } from '@fortawesome/free-s
 
 export default () => {
     const username = useStoreState((state) => state.user.data!.username);
+    const brandName = useStoreState((state: ApplicationStore) => state.settings.data?.name || 'NXSLab');
     const id = ServerContext.useStoreState((state) => state.server.data!.id);
     const uuid = ServerContext.useStoreState((state) => state.server.data!.uuid);
     const node = ServerContext.useStoreState((state) => state.server.data!.node);
@@ -48,7 +50,8 @@ export default () => {
                                     css={tw`p-3.5 rounded-xl bg-violet-950/30 border border-violet-500/20 flex items-center justify-between gap-4`}
                                 >
                                     <p css={tw`text-xs text-neutral-300`}>
-                                        Votre mot de passe SFTP est identique au mot de passe de votre compte NXSLab.
+                                        Votre mot de passe SFTP est identique au mot de passe de votre compte{' '}
+                                        {brandName}.
                                     </p>
                                     <a
                                         href={`sftp://${username}.${id}@${ip(sftp.ip)}:${sftp.port}`}

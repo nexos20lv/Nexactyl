@@ -12,6 +12,8 @@ import {
     faSpinner,
     faCheck,
 } from '@fortawesome/free-solid-svg-icons';
+import { useStoreState } from 'easy-peasy';
+import { ApplicationStore } from '@/state';
 import Button from '@/components/elements/Button';
 import Switch from '@/components/elements/Switch';
 import { getServerMinecraftConfig, updateServerMinecraftConfig, MinecraftProperties } from '@/api/server/minecraft';
@@ -20,6 +22,7 @@ import Spinner from '@/components/elements/Spinner';
 
 export default () => {
     const uuid = ServerContext.useStoreState((state) => state.server.data!.uuid);
+    const brandName = useStoreState((state: ApplicationStore) => state.settings.data?.name || 'NXSLab');
     const [properties, setProperties] = useState<MinecraftProperties>({});
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -652,7 +655,7 @@ export default () => {
                                 </label>
                                 <input
                                     type={'text'}
-                                    value={properties['motd'] || 'A Minecraft Server hosted on NXSLab'}
+                                    value={properties['motd'] || `A Minecraft Server hosted on ${brandName}`}
                                     onChange={(e) => updateProp('motd', e.target.value)}
                                     className={
                                         'w-full px-4 py-3 rounded-xl bg-neutral-950 border border-white/10 text-neutral-200 text-xs font-mono focus:outline-none focus:border-violet-500'
@@ -687,7 +690,7 @@ export default () => {
                                             <span className={'text-emerald-400 text-[10px]'}>5 barres (12ms)</span>
                                         </div>
                                         <div className={'text-neutral-400 text-[11px] truncate mt-0.5'}>
-                                            {properties['motd'] || 'A Minecraft Server hosted on NXSLab'}
+                                            {properties['motd'] || `A Minecraft Server hosted on ${brandName}`}
                                         </div>
                                     </div>
                                 </div>

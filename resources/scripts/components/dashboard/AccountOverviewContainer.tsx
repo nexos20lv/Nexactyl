@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ContentBox from '@/components/elements/ContentBox';
 import UpdateAvatarForm from '@/components/dashboard/forms/UpdateAvatarForm';
+import ThemeCustomizerBox from '@/components/dashboard/forms/ThemeCustomizerBox';
 import UpdatePasswordForm from '@/components/dashboard/forms/UpdatePasswordForm';
 import UpdateEmailAddressForm from '@/components/dashboard/forms/UpdateEmailAddressForm';
 import ConfigureTwoFactorForm from '@/components/dashboard/forms/ConfigureTwoFactorForm';
@@ -32,7 +33,7 @@ export default () => {
     const { state } = useLocation<undefined | { twoFactorRedirect?: boolean }>();
 
     return (
-        <PageContentBlock title={'Account Overview'}>
+        <PageContentBlock title={'Mon Compte & Personnalisation'}>
             {state?.twoFactorRedirect && (
                 <MessageBox title={'2-Factor Required'} type={'error'}>
                     Your account must have two-factor authentication enabled in order to continue.
@@ -43,7 +44,11 @@ export default () => {
                 <UpdateAvatarForm />
             </div>
 
-            <Container css={[tw`lg:grid lg:grid-cols-3 mb-10 mt-6`]}>
+            <div className='mt-8'>
+                <ThemeCustomizerBox />
+            </div>
+
+            <Container css={[tw`lg:grid lg:grid-cols-3 mb-10 mt-8`]}>
                 <ContentBox title={'Mot de passe'} icon={faKey} showFlashes={'account:password'}>
                     <UpdatePasswordForm />
                 </ContentBox>

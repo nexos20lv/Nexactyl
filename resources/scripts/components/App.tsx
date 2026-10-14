@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { lazy, useEffect } from 'react';
 import { hot } from 'react-hot-loader/root';
 import { Route, Router, Switch } from 'react-router-dom';
 import { StoreProvider } from 'easy-peasy';
@@ -59,6 +59,14 @@ const App = () => {
     if (!store.getState().settings.data) {
         store.getActions().settings.setSettings(SiteConfiguration!);
     }
+
+    // Hydrate Theme Accent from localStorage or Admin Default
+    useEffect(() => {
+        const storedTheme = localStorage.getItem('nxslab_theme_accent');
+        const defaultTheme = SiteConfiguration?.accentColor || 'violet';
+        const activeTheme = storedTheme || defaultTheme;
+        document.documentElement.setAttribute('data-theme', activeTheme);
+    }, [SiteConfiguration?.accentColor]);
 
     return (
         <>

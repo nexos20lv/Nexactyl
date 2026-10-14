@@ -4,13 +4,69 @@ import { createGlobalStyle } from 'styled-components/macro';
 import font from '@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2';
 
 export default createGlobalStyle`
-    :root {
+    :root, [data-theme="violet"] {
         --spring-settle: cubic-bezier(0.16, 1, 0.3, 1);
         --spring-snappy: cubic-bezier(0.2, 0.8, 0.2, 1);
         --liquid-glass-bg: rgba(14, 12, 24, 0.82);
         --liquid-glass-border: rgba(255, 255, 255, 0.08);
         --liquid-glass-blur: blur(24px) saturate(160%);
-        --violet-glow: 0 0 20px rgba(139, 92, 246, 0.25);
+        --accent-primary: #8b5cf6;
+        --accent-secondary: #7c3aed;
+        --accent-light: #c084fc;
+        --accent-ring: rgba(139, 92, 246, 0.45);
+        --accent-subtle: rgba(139, 92, 246, 0.15);
+        --accent-glow: 0 0 20px rgba(139, 92, 246, 0.35);
+        --accent-gradient: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+    }
+
+    [data-theme="azure"] {
+        --accent-primary: #38bdf8;
+        --accent-secondary: #0284c7;
+        --accent-light: #7dd3fc;
+        --accent-ring: rgba(56, 189, 248, 0.45);
+        --accent-subtle: rgba(56, 189, 248, 0.15);
+        --accent-glow: 0 0 20px rgba(56, 189, 248, 0.35);
+        --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+    }
+
+    [data-theme="emerald"] {
+        --accent-primary: #34d399;
+        --accent-secondary: #059669;
+        --accent-light: #6ee7b7;
+        --accent-ring: rgba(52, 211, 153, 0.45);
+        --accent-subtle: rgba(52, 211, 153, 0.15);
+        --accent-glow: 0 0 20px rgba(52, 211, 153, 0.35);
+        --accent-gradient: linear-gradient(135deg, #34d399 0%, #059669 100%);
+    }
+
+    [data-theme="crimson"] {
+        --accent-primary: #f43f5e;
+        --accent-secondary: #e11d48;
+        --accent-light: #fda4af;
+        --accent-ring: rgba(244, 63, 94, 0.45);
+        --accent-subtle: rgba(244, 63, 94, 0.15);
+        --accent-glow: 0 0 20px rgba(244, 63, 94, 0.35);
+        --accent-gradient: linear-gradient(135deg, #fb7185 0%, #e11d48 100%);
+    }
+
+    [data-theme="amber"] {
+        --accent-primary: #fbbf24;
+        --accent-secondary: #d97706;
+        --accent-light: #fde68a;
+        --accent-ring: rgba(251, 191, 36, 0.45);
+        --accent-subtle: rgba(251, 191, 36, 0.15);
+        --accent-glow: 0 0 20px rgba(251, 191, 36, 0.35);
+        --accent-gradient: linear-gradient(135deg, #fcd34d 0%, #d97706 100%);
+    }
+
+    [data-theme="fuchsia"] {
+        --accent-primary: #e879f9;
+        --accent-secondary: #c026d3;
+        --accent-light: #f0abfc;
+        --accent-ring: rgba(232, 121, 249, 0.45);
+        --accent-subtle: rgba(232, 121, 249, 0.15);
+        --accent-glow: 0 0 20px rgba(232, 121, 249, 0.35);
+        --accent-gradient: linear-gradient(135deg, #f472b6 0%, #c026d3 100%);
     }
 
     @font-face {
@@ -63,7 +119,7 @@ export default createGlobalStyle`
     }
 
     ::selection {
-        background: rgba(139, 92, 246, 0.4);
+        background: var(--accent-ring);
         color: #ffffff;
     }
 
@@ -79,7 +135,7 @@ export default createGlobalStyle`
     }
 
     ::-webkit-scrollbar-thumb {
-        background-color: rgba(139, 92, 246, 0.22);
+        background-color: var(--accent-ring);
         border-radius: 9999px;
         border: 2px solid transparent;
         background-clip: padding-box;
@@ -87,7 +143,7 @@ export default createGlobalStyle`
     }
 
     ::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(168, 85, 247, 0.6);
+        background-color: var(--accent-primary);
     }
 
     ::-webkit-scrollbar-corner {
@@ -111,9 +167,9 @@ export default createGlobalStyle`
     }
 
     .apple-card:hover {
-        border-color: rgba(139, 92, 246, 0.45);
+        border-color: var(--accent-ring);
         transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(139, 92, 246, 0.15);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), var(--accent-glow);
     }
 
     .apple-card:active {

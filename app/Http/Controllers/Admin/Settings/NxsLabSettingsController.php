@@ -26,6 +26,16 @@ class NxsLabSettingsController extends Controller
     public function index(): View
     {
         $settings = [
+            // Identité Visuelle & Marque Blanche
+            'brand_name' => (string) $this->settings->get('settings::nxslab:brand:name', config('app.name', 'NXSLab')),
+            'brand_tagline' => (string) $this->settings->get('settings::nxslab:brand:tagline', 'Plateforme Cloud Gaming Haute Performance'),
+            'brand_logo_url' => (string) $this->settings->get('settings::nxslab:brand:logo_url', ''),
+            'brand_default_accent' => (string) $this->settings->get('settings::nxslab:brand:default_accent', 'violet'),
+            'brand_currency_name' => (string) $this->settings->get('settings::nxslab:brand:currency_name', 'Crédits'),
+            'brand_currency_symbol' => (string) $this->settings->get('settings::nxslab:brand:currency_symbol', 'cr'),
+            'brand_footer_text' => (string) $this->settings->get('settings::nxslab:brand:footer_text', 'NXSLab • Plateforme Cloud Gaming Haute Performance'),
+
+            // Sous-domaines & Cloudflare
             'subdomain_enabled' => (bool) $this->settings->get('settings::nxslab:subdomain:enabled', true),
             'base_domain' => (string) $this->settings->get('settings::nxslab:subdomain:base_domain', 'nxslab.in'),
             'available_domains' => (string) $this->settings->get('settings::nxslab:subdomain:available_domains', "nxslab.in\nplay.nxslab.in"),
@@ -37,10 +47,14 @@ class NxsLabSettingsController extends Controller
             'cf_api_token' => (string) $this->settings->get('settings::nxslab:cloudflare:api_token', env('CLOUDFLARE_API_TOKEN', '')),
             'cf_zone_id' => (string) $this->settings->get('settings::nxslab:cloudflare:zone_id', env('CLOUDFLARE_ZONE_ID', '')),
             'cf_auto_sync' => (bool) $this->settings->get('settings::nxslab:cloudflare:auto_sync', true),
+
+            // Gaming & CurseForge
             'curseforge_key' => (string) $this->settings->get(
                 'settings::nxslab:gaming:curseforge_key',
                 env('CURSEFORGE_API_KEY', '$2a$10$bL4bIL5pUWqfcO7KQtnMReakwtfHbNKh6v1uTpKlzhwoueEJQnPnm')
             ),
+
+            // Boutique & Crédits
             'store_enabled' => (bool) $this->settings->get('settings::nxslab:store:enabled', true),
             'starting_credits' => (int) $this->settings->get('settings::nxslab:store:starting_credits', 2500),
             'cost_ram_1gb' => (int) $this->settings->get('settings::nxslab:store:cost_ram_1gb', 50),
@@ -58,11 +72,21 @@ class NxsLabSettingsController extends Controller
     }
 
     /**
-     * Update NXSLab & Subdomain settings.
+     * Update NXSLab, Branding & Subdomain settings.
      */
     public function update(Request $request): RedirectResponse
     {
         $data = $request->validate([
+            // Identité Visuelle
+            'brand_name' => 'required|string|max:100',
+            'brand_tagline' => 'nullable|string|max:191',
+            'brand_logo_url' => 'nullable|url|max:255',
+            'brand_default_accent' => 'required|string|in:violet,azure,emerald,crimson,amber,fuchsia',
+            'brand_currency_name' => 'required|string|max:50',
+            'brand_currency_symbol' => 'required|string|max:10',
+            'brand_footer_text' => 'nullable|string|max:191',
+
+            // Sous-domaines
             'subdomain_enabled' => 'nullable|string',
             'base_domain' => 'required|string|max:100',
             'available_domains' => 'required|string',
@@ -71,6 +95,8 @@ class NxsLabSettingsController extends Controller
             'cf_api_token' => 'nullable|string|max:255',
             'cf_zone_id' => 'nullable|string|max:100',
             'cf_auto_sync' => 'nullable|string',
+
+            // Gaming & Boutique
             'curseforge_key' => 'nullable|string|max:255',
             'store_enabled' => 'nullable|string',
             'starting_credits' => 'required|integer|min:0',
@@ -80,18 +106,31 @@ class NxsLabSettingsController extends Controller
             'cost_backups_2' => 'required|integer|min:0',
         ]);
 
+        // Sauvegarde de l'Identité Visuelle
+        $this->settings->set('settings::nxslab:brand:name', trim($data['brand_name']));
+        $this->settings->set('settings::nxslab:brand:tagline', trim($data['brand_tagline'] ?? ''));
+        $this->settings->set('settings::nxslab:brand:logo_url', trim($data['brand_logo_url'] ?? ''));
+        $this->settings->set('settings::nxslab:brand:default_accent', trim($data['brand_default_accent']));
+        $this->settings->set('settings::nxslab:brand:currency_name', trim($data['brand_currency_name']));
+        $this->settings->set('settings::nxslab:brand:currency_symbol', trim($data['brand_currency_symbol']));
+        $this->settings->set('settings::nxslab:brand:footer_text', trim($data['brand_footer_text'] ?? ''));
+
+        // Sauvegarde Sous-domaines
         $this->settings->set('settings::nxslab:subdomain:enabled', !empty($request->input('subdomain_enabled')) ? '1' : '0');
         $this->settings->set('settings::nxslab:subdomain:base_domain', trim($data['base_domain']));
         $this->settings->set('settings::nxslab:subdomain:available_domains', trim($data['available_domains']));
         $this->settings->set('settings::nxslab:subdomain:target_host', trim($data['target_host']));
         $this->settings->set('settings::nxslab:subdomain:reserved', trim($data['reserved_subdomains'] ?? ''));
 
+        // Cloudflare
         $this->settings->set('settings::nxslab:cloudflare:api_token', trim($data['cf_api_token'] ?? ''));
         $this->settings->set('settings::nxslab:cloudflare:zone_id', trim($data['cf_zone_id'] ?? ''));
         $this->settings->set('settings::nxslab:cloudflare:auto_sync', !empty($request->input('cf_auto_sync')) ? '1' : '0');
 
+        // Gaming
         $this->settings->set('settings::nxslab:gaming:curseforge_key', trim($data['curseforge_key'] ?? ''));
 
+        // Boutique
         $this->settings->set('settings::nxslab:store:enabled', !empty($request->input('store_enabled')) ? '1' : '0');
         $this->settings->set('settings::nxslab:store:starting_credits', (string) $data['starting_credits']);
         $this->settings->set('settings::nxslab:store:cost_ram_1gb', (string) $data['cost_ram_1gb']);
@@ -99,7 +138,7 @@ class NxsLabSettingsController extends Controller
         $this->settings->set('settings::nxslab:store:cost_disk_10gb', (string) $data['cost_disk_10gb']);
         $this->settings->set('settings::nxslab:store:cost_backups_2', (string) $data['cost_backups_2']);
 
-        $this->alert->success('Tous les paramètres NXSLab, Cloudflare et Gaming ont été mis à jour avec succès !')->flash();
+        $this->alert->success('Tous les paramètres de personnalisation, sous-domaines et boutique ont été mis à jour avec succès !')->flash();
 
         return redirect()->route('admin.settings.nxslab');
     }

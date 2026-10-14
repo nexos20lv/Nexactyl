@@ -9,6 +9,8 @@ import Button from '@/components/elements/Button';
 
 export default () => {
     const user = useStoreState((state) => state.user.data);
+    const settings = useStoreState((state) => state.settings.data);
+    const brandName = settings?.name || 'NXSLab';
     const updateUserData = useStoreActions((actions) => actions.user.updateUserData);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -210,7 +212,7 @@ export default () => {
                         <div>
                             <h3 className={'text-lg font-bold text-white tracking-tight'}>Photo de profil (PFP)</h3>
                             <p className={'text-xs text-neutral-400 mt-0.5'}>
-                                Personnalisez votre photo de profil visible sur toute la plateforme NXSLab.
+                                Personnalisez votre photo de profil visible sur toute la plateforme {brandName}.
                             </p>
                         </div>
 
