@@ -32,12 +32,14 @@
                         <div class="form-group">
                             <label class="control-label">Système de Sous-domaines Gratuits</label>
                             <div>
-                                <label class="radio-inline">
-                                    <input type="radio" name="subdomain_enabled" value="1" {{ $settings['subdomain_enabled'] ? 'checked' : '' }}> Activé
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="subdomain_enabled" value="0" {{ !$settings['subdomain_enabled'] ? 'checked' : '' }}> Désactivé
-                                </label>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-primary @if ($settings['subdomain_enabled']) active @endif">
+                                        <input type="radio" name="subdomain_enabled" value="1" @if ($settings['subdomain_enabled']) checked @endif> Activé
+                                    </label>
+                                    <label class="btn btn-primary @if (!$settings['subdomain_enabled']) active @endif">
+                                        <input type="radio" name="subdomain_enabled" value="0" @if (!$settings['subdomain_enabled']) checked @endif> Désactivé
+                                    </label>
+                                </div>
                                 <p class="text-muted"><small>Permet aux clients d'assigner un nom de domaine personnalisé gratuit à leur serveur Minecraft.</small></p>
                             </div>
                         </div>
@@ -80,15 +82,16 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="cf_auto_sync" value="1" {{ $settings['cf_auto_sync'] ? 'checked' : '' }}>
-                                    <strong>Création &amp; suppression automatique des enregistrements DNS SRV sur Cloudflare</strong>
+                            <div class="checkbox checkbox-primary no-margin-bottom">
+                                <input id="cf_auto_sync" name="cf_auto_sync" type="checkbox" value="1" @if ($settings['cf_auto_sync']) checked @endif />
+                                <label for="cf_auto_sync" class="strong" style="cursor: pointer; user-select: none;">
+                                    Création &amp; suppression automatique des enregistrements DNS SRV sur Cloudflare
                                 </label>
                             </div>
+                            <p class="text-muted"><small>Crée ou supprime automatiquement l'enregistrement SRV officiel lors des actions des clients.</small></p>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="margin-top: 15px;">
                             <button type="button" class="btn btn-info btn-sm" id="btn-test-cf" onclick="testCloudflareConnection()">
                                 <i class="fa fa-plug"></i> Tester la connexion Cloudflare
                             </button>
@@ -129,12 +132,14 @@
                         <div class="form-group">
                             <label class="control-label">Boutique Hardware</label>
                             <div>
-                                <label class="radio-inline">
-                                    <input type="radio" name="store_enabled" value="1" {{ $settings['store_enabled'] ? 'checked' : '' }}> Activée
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="store_enabled" value="0" {{ !$settings['store_enabled'] ? 'checked' : '' }}> Désactivée
-                                </label>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-primary @if ($settings['store_enabled']) active @endif">
+                                        <input type="radio" name="store_enabled" value="1" @if ($settings['store_enabled']) checked @endif> Activée
+                                    </label>
+                                    <label class="btn btn-primary @if (!$settings['store_enabled']) active @endif">
+                                        <input type="radio" name="store_enabled" value="0" @if (!$settings['store_enabled']) checked @endif> Désactivée
+                                    </label>
+                                </div>
                                 <p class="text-muted"><small>Autorise les clients à améliorer les ressources de leurs serveurs contre leurs crédits.</small></p>
                             </div>
                         </div>
