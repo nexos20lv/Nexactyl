@@ -28,12 +28,18 @@ import {
     faHistory,
     faUser,
     faKey,
+    faGamepad,
+    faSlidersH,
+    faGlobe,
 } from '@fortawesome/free-solid-svg-icons';
 
 const VersionContainer = lazy(() => import('@/components/server/versions/VersionContainer'));
 const BoosterStoreContainer = lazy(() => import('@/components/server/store/BoosterStoreContainer'));
 const FileEditContainer = lazy(() => import('@/components/server/files/FileEditContainer'));
 const ScheduleEditContainer = lazy(() => import('@/components/server/schedules/ScheduleEditContainer'));
+const MinecraftConfigContainer = lazy(() => import('@/components/server/minecraft/MinecraftConfigContainer'));
+const PlayersContainer = lazy(() => import('@/components/server/minecraft/PlayersContainer'));
+const SubdomainContainer = lazy(() => import('@/components/server/subdomain/SubdomainContainer'));
 
 export interface RouteDefinition {
     path: string;
@@ -153,8 +159,16 @@ export default {
             permission: 'allocation.*',
             name: 'Réseau & Ports',
             icon: faNetworkWired,
-            category: 'GESTION',
+            category: 'RÉSEAU',
             component: NetworkContainer,
+        },
+        {
+            path: '/subdomain',
+            permission: ['settings.*', 'allocation.*'],
+            name: 'Sous-domaine',
+            icon: faGlobe,
+            category: 'RÉSEAU',
+            component: SubdomainContainer,
         },
         {
             path: '/startup',
@@ -165,13 +179,31 @@ export default {
             component: StartupContainer,
         },
         {
+            path: '/players',
+            permission: 'control.console',
+            name: 'Joueurs',
+            icon: faGamepad,
+            category: 'MINECRAFT',
+            minecraftOnly: true,
+            component: PlayersContainer,
+        },
+        {
             path: '/versions',
             permission: 'startup.*',
             name: 'Versions & Mods',
             icon: faCubes,
-            category: 'EXTENSIONS',
+            category: 'MINECRAFT',
             minecraftOnly: true,
             component: VersionContainer,
+        },
+        {
+            path: '/minecraft/config',
+            permission: 'file.*',
+            name: 'Configuration',
+            icon: faSlidersH,
+            category: 'MINECRAFT',
+            minecraftOnly: true,
+            component: MinecraftConfigContainer,
         },
         {
             path: '/store',

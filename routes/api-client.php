@@ -167,4 +167,17 @@ Route::group([
         Route::get('/balance', [Client\Servers\BoosterStoreController::class, 'balance']);
         Route::post('/boosters/apply', [Client\Servers\BoosterStoreController::class, 'apply']);
     });
+
+    Route::group(['prefix' => '/minecraft'], function () {
+        Route::get('/config', [Client\Servers\MinecraftConfigController::class, 'index']);
+        Route::post('/config', [Client\Servers\MinecraftConfigController::class, 'update']);
+        Route::get('/players', [Client\Servers\MinecraftPlayersController::class, 'index']);
+        Route::post('/players/action', [Client\Servers\MinecraftPlayersController::class, 'action']);
+    });
+
+    Route::group(['prefix' => '/subdomain'], function () {
+        Route::get('/', [Client\Servers\SubdomainController::class, 'index']);
+        Route::post('/', [Client\Servers\SubdomainController::class, 'store']);
+        Route::delete('/', [Client\Servers\SubdomainController::class, 'delete']);
+    });
 });

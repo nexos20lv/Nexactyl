@@ -38,7 +38,7 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
         });
     };
 
-    const serverCategories = ['GESTION', 'EXTENSIONS', 'CONFIGURATION'];
+    const serverCategories = ['GESTION', 'MINECRAFT', 'RÉSEAU', 'EXTENSIONS', 'CONFIGURATION'];
 
     return (
         <aside
