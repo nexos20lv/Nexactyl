@@ -67,6 +67,9 @@ class ServerTransformer extends BaseClientTransformer
             ],
             'invocation' => $service->handle($server, !$user->can(Permission::ACTION_STARTUP_READ, $server)),
             'docker_image' => $server->image,
+            'subdomain' => ($sub = $server->relationLoaded('subdomain') ? $server->subdomain : \Pterodactyl\Models\ServerSubdomain::where('server_id', $server->id)->first())
+                ? "{$sub->subdomain}.{$sub->domain}"
+                : null,
             'is_minecraft' => ($server->nest_id === 1)
                 || (stripos($server->egg->name ?? '', 'minecraft') !== false)
                 || (isset($server->egg->nest) && stripos($server->egg->nest->name ?? '', 'minecraft') !== false)

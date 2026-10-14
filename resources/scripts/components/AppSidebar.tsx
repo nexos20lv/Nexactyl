@@ -95,7 +95,12 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
                                 </span>
                             </div>
                             <div className='flex items-center justify-between text-[10px] text-neutral-400 font-mono'>
-                                <span>Node: {server.node}</span>
+                                <span
+                                    className='truncate max-w-[130px]'
+                                    title={server.subdomain || `Node: ${server.node}`}
+                                >
+                                    {server.subdomain || `Node: ${server.node}`}
+                                </span>
                                 {server.isMinecraft && (
                                     <span className='text-violet-300 bg-violet-600/15 px-2 py-0.5 rounded-full border border-violet-500/30 text-[9px] font-semibold'>
                                         Minecraft

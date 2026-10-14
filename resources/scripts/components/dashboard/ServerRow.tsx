@@ -1,6 +1,14 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEthernet, faHdd, faMemory, faMicrochip, faServer, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import {
+    faEthernet,
+    faHdd,
+    faMemory,
+    faMicrochip,
+    faServer,
+    faGlobe,
+    faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { Server } from '@/api/server/getServer';
 import getServerResourceUsage, { ServerStats } from '@/api/server/getServerResourceUsage';
@@ -49,7 +57,9 @@ const ServerRow = ({ server, className }: { server: Server; className?: string }
             : 0;
 
     const defaultAlloc = server.allocations.find((a) => a.isDefault);
-    const allocString = defaultAlloc ? `${defaultAlloc.alias || ip(defaultAlloc.ip)}:${defaultAlloc.port}` : 'N/A';
+    const allocString =
+        server.subdomain ||
+        (defaultAlloc ? `${defaultAlloc.alias || ip(defaultAlloc.ip)}:${defaultAlloc.port}` : 'N/A');
 
     const isRunning = stats?.status === 'running';
     const isOffline = !stats || stats?.status === 'offline';
@@ -108,7 +118,10 @@ const ServerRow = ({ server, className }: { server: Server; className?: string }
 
                         <div className='flex items-center gap-2 mt-1.5'>
                             <span className='inline-flex items-center gap-1.5 bg-white/[0.04] border border-white/[0.06] text-neutral-300 font-mono text-[11px] px-2.5 py-0.5 rounded-lg'>
-                                <FontAwesomeIcon icon={faEthernet} className='text-[10px] text-violet-400' />
+                                <FontAwesomeIcon
+                                    icon={server.subdomain ? faGlobe : faEthernet}
+                                    className='text-[10px] text-violet-400'
+                                />
                                 {allocString}
                             </span>
                             {server.description && (

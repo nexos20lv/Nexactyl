@@ -7,6 +7,7 @@ import {
     faMemory,
     faMicrochip,
     faWifi,
+    faGlobe,
 } from '@fortawesome/free-solid-svg-icons';
 import { bytesToString, ip, mbToBytes } from '@/lib/formatters';
 import { ServerContext } from '@/state/server';
@@ -56,11 +57,13 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
         [limits]
     );
 
+    const subdomain = ServerContext.useStoreState((state) => state.server.data!.subdomain);
     const allocation = ServerContext.useStoreState((state) => {
         const match = state.server.data!.allocations.find((allocation) => allocation.isDefault);
 
         return !match ? 'n/a' : `${match.alias || ip(match.ip)}:${match.port}`;
     });
+    const displayAddress = subdomain || allocation;
 
     useEffect(() => {
         if (!connected || !instance) {
@@ -90,8 +93,12 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
 
     return (
         <div className={classNames('grid grid-cols-6 gap-2.5 sm:gap-3', className)}>
-            <StatBlock icon={faWifi} title={'Adresse IP'} copyOnClick={allocation}>
-                {allocation}
+            <StatBlock
+                icon={subdomain ? faGlobe : faWifi}
+                title={subdomain ? 'Domaine du Serveur' : 'Adresse IP'}
+                copyOnClick={displayAddress}
+            >
+                {displayAddress}
             </StatBlock>
             <StatBlock
                 icon={faClock}

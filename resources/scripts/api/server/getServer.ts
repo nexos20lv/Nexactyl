@@ -53,6 +53,7 @@ export interface Server {
     };
     eggFeatures: string[];
     isMinecraft: boolean;
+    subdomain: string | null;
     featureLimits: {
         databases: number;
         allocations: number;
@@ -84,6 +85,7 @@ export const rawDataToServerObject = ({ attributes: data }: FractalResponseData)
     limits: { ...data.limits },
     eggFeatures: data.egg_features || [],
     isMinecraft: Boolean(data.is_minecraft),
+    subdomain: data.subdomain || null,
     featureLimits: { ...data.feature_limits },
     isTransferring: data.is_transferring,
     skipScripts: data.skip_scripts,

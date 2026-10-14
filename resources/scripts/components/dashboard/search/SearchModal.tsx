@@ -122,13 +122,14 @@ export default ({ ...props }: Props) => {
                                             {server.name}
                                         </p>
                                         <p css={tw`mt-0.5 text-xs text-neutral-400 font-mono`}>
-                                            {server.allocations
-                                                .filter((alloc) => alloc.isDefault)
-                                                .map((allocation) => (
-                                                    <span key={allocation.ip + allocation.port.toString()}>
-                                                        {allocation.alias || ip(allocation.ip)}:{allocation.port}
-                                                    </span>
-                                                ))}
+                                            {server.subdomain ||
+                                                server.allocations
+                                                    .filter((alloc) => alloc.isDefault)
+                                                    .map((allocation) => (
+                                                        <span key={allocation.ip + allocation.port.toString()}>
+                                                            {allocation.alias || ip(allocation.ip)}:{allocation.port}
+                                                        </span>
+                                                    ))}
                                         </p>
                                     </div>
                                     <div css={tw`flex-none text-right`}>

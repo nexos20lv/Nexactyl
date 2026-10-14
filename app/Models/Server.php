@@ -429,4 +429,8 @@ class Server extends Model implements Identifiable
             throw new ServerStateConflictException($this);
         }
     }
+    public function subdomain(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(ServerSubdomain::class);
+    }
 }

@@ -24,6 +24,7 @@ import { httpErrorToHuman } from '@/api/http';
 
 export default () => {
     const uuid = ServerContext.useStoreState((state) => state.server.data!.uuid);
+    const setServerFromState = ServerContext.useStoreActions((actions) => actions.server.setServerFromState);
     const [data, setData] = useState<SubdomainResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
@@ -63,6 +64,7 @@ export default () => {
         try {
             const res = await updateServerSubdomain(uuid, subdomainInput.trim(), domainSelect);
             setSuccessMessage(res.message);
+            setServerFromState((s: any) => ({ ...s, subdomain: res.full_domain }));
             loadSubdomain();
         } catch (err) {
             setErrorMessage(httpErrorToHuman(err));
@@ -80,6 +82,7 @@ export default () => {
         try {
             await deleteServerSubdomain(uuid);
             setSuccessMessage('Sous-domaine supprimé avec succès.');
+            setServerFromState((s: any) => ({ ...s, subdomain: null }));
             setSubdomainInput('');
             loadSubdomain();
         } catch (err) {
