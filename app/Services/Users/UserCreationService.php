@@ -10,6 +10,7 @@ use Illuminate\Database\ConnectionInterface;
 use Illuminate\Contracts\Auth\PasswordBroker;
 use Pterodactyl\Notifications\AccountCreated;
 use Pterodactyl\Contracts\Repository\UserRepositoryInterface;
+use Pterodactyl\Contracts\Repository\SettingsRepositoryInterface;
 
 class UserCreationService
 {
@@ -40,6 +41,14 @@ class UserCreationService
         if (!isset($data['password']) || empty($data['password'])) {
             $generateResetToken = true;
             $data['password'] = $this->hasher->make(str_random(30));
+        }
+
+        if (!isset($data['credits'])) {
+            try {
+                $data['credits'] = (int) app(SettingsRepositoryInterface::class)->get('settings::nxslab:store:starting_credits', 2500);
+            } catch (\Throwable) {
+                $data['credits'] = 2500;
+            }
         }
 
         /** @var User $user */

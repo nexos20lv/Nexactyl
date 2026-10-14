@@ -40,6 +40,8 @@ export default () => {
                 if (res.subdomain) {
                     setSubdomainInput(res.subdomain.subdomain);
                     setDomainSelect(res.subdomain.domain);
+                } else if (res.available_domains && res.available_domains.length > 0) {
+                    setDomainSelect(res.available_domains[0]);
                 }
             })
             .catch((err) => setErrorMessage(httpErrorToHuman(err)))
@@ -287,13 +289,22 @@ export default () => {
                                         'flex-1 px-4 py-3 rounded-2xl bg-neutral-950 border border-white/10 text-neutral-100 text-sm font-mono focus:outline-none focus:border-violet-500'
                                     }
                                 />
-                                <div
+                                <select
+                                    value={domainSelect}
+                                    onChange={(e) => setDomainSelect(e.target.value)}
                                     className={
-                                        'flex items-center px-4 py-3 rounded-2xl bg-neutral-900 border border-white/10 text-neutral-400 font-mono text-sm shrink-0'
+                                        'px-4 py-3 rounded-2xl bg-neutral-900 border border-white/10 text-neutral-200 font-mono text-sm shrink-0 focus:outline-none focus:border-violet-500 cursor-pointer'
                                     }
                                 >
-                                    .nxslab.in
-                                </div>
+                                    {(data?.available_domains && data.available_domains.length > 0
+                                        ? data.available_domains
+                                        : ['nxslab.in']
+                                    ).map((d) => (
+                                        <option key={d} value={d} className={'bg-neutral-900 text-neutral-200'}>
+                                            .{d}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
 
                             <div className={'flex justify-end pt-2'}>

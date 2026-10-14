@@ -71,9 +71,13 @@ Route::group(['prefix' => 'settings'], function () {
 
     Route::post('/mail/test', [Admin\Settings\MailController::class, 'test'])->name('admin.settings.mail.test');
 
+    Route::get('/nxslab', [Admin\Settings\NxsLabSettingsController::class, 'index'])->name('admin.settings.nxslab');
     Route::patch('/', [Admin\Settings\IndexController::class, 'update']);
     Route::patch('/mail', [Admin\Settings\MailController::class, 'update']);
     Route::patch('/advanced', [Admin\Settings\AdvancedController::class, 'update']);
+    Route::patch('/nxslab', [Admin\Settings\NxsLabSettingsController::class, 'update']);
+    Route::post('/nxslab/test-cloudflare', [Admin\Settings\NxsLabSettingsController::class, 'testCloudflare'])->name('admin.settings.nxslab.test-cf');
+    Route::delete('/nxslab/subdomains/{id}', [Admin\Settings\NxsLabSettingsController::class, 'deleteSubdomain'])->name('admin.settings.nxslab.delete-sub');
 });
 
 /*
