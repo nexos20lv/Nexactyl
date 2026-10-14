@@ -261,17 +261,23 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
 
                 {/* User Row */}
                 <div className='flex items-center justify-between pt-1'>
-                    <div className='flex items-center gap-2.5 min-w-0'>
-                        <div className='w-8 h-8 rounded-xl overflow-hidden border border-violet-500/30 shrink-0'>
+                    <Link
+                        to='/account'
+                        title='Gérer mon compte & photo de profil'
+                        className='flex items-center gap-2.5 min-w-0 group hover:opacity-95 no-underline transition-opacity'
+                    >
+                        <div className='w-8 h-8 rounded-xl overflow-hidden border border-violet-500/30 group-hover:border-violet-500/70 group-hover:shadow-[0_0_12px_rgba(168,85,247,0.35)] shrink-0 transition-all'>
                             <Avatar.User />
                         </div>
                         <div className='flex flex-col min-w-0'>
-                            <span className='text-xs font-semibold text-neutral-200 truncate'>{user?.username}</span>
-                            <span className='text-[10px] text-neutral-500'>
+                            <span className='text-xs font-semibold text-neutral-200 group-hover:text-white truncate transition-colors'>
+                                {user?.username}
+                            </span>
+                            <span className='text-[10px] text-neutral-500 group-hover:text-violet-400/80 transition-colors'>
                                 {rootAdmin ? 'Administrateur' : 'Client'}
                             </span>
                         </div>
-                    </div>
+                    </Link>
                     <div className='flex items-center gap-1 shrink-0'>
                         {rootAdmin && (
                             <a

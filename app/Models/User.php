@@ -41,6 +41,7 @@ use Pterodactyl\Notifications\SendPasswordReset as ResetPasswordNotification;
  * @property string|null $totp_secret
  * @property \Illuminate\Support\Carbon|null $totp_authenticated_at
  * @property bool $gravatar
+ * @property string|null $avatar_url
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Database\Eloquent\Collection|\Pterodactyl\Models\ApiKey[] $apiKeys
@@ -133,6 +134,7 @@ class User extends Model implements
         'totp_secret',
         'totp_authenticated_at',
         'gravatar',
+        'avatar_url',
         'root_admin',
         'credits',
     ];
@@ -201,7 +203,10 @@ class User extends Model implements
     public function toVueObject(): array
     {
         return Collection::make($this->toArray())->except(['id', 'external_id'])
-            ->merge(['identifier' => $this->identifier])
+            ->merge([
+                'identifier' => $this->identifier,
+                'avatar_url' => $this->avatar_url,
+            ])
             ->toArray();
     }
 

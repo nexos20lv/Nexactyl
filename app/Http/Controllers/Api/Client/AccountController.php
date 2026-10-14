@@ -89,4 +89,100 @@ class AccountController extends ClientApiController
 
         return new JsonResponse([], Response::HTTP_NO_CONTENT);
     }
+
+    /**
+     * Update the authenticated user's avatar (custom image file or URL).
+     */
+    public function updateAvatar(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        if ($request->hasFile('avatar')) {
+            $request->validate([
+                'avatar' => 'required|file|image|mimes:jpeg,jpg,png,webp,gif|max:5120',
+            ]);
+
+            $file = $request->file('avatar');
+            $extension = $file->getClientOriginalExtension() ?: 'png';
+            $filename = sprintf('avatar_%d_%d_%s.%s', $user->id, time(), \Illuminate\Support\Str::random(8), strtolower($extension));
+
+            // Ensure avatars directory exists in public storage
+            if (!\Illuminate\Support\Facades\Storage::disk('public')->exists('avatars')) {
+                \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory('avatars');
+            }
+
+            // Delete old uploaded avatar if it was stored locally
+            if ($user->avatar_url && \Illuminate\Support\Str::startsWith($user->avatar_url, '/storage/avatars/')) {
+                $oldFile = str_replace('/storage/avatars/', 'avatars/', $user->avatar_url);
+                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($oldFile)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($oldFile);
+                }
+            }
+
+            // Store new file
+            $file->storeAs('avatars', $filename, 'public');
+
+            $user->avatar_url = '/storage/avatars/' . $filename;
+            $user->save();
+        } elseif ($request->has('avatar_url')) {
+            $request->validate([
+                'avatar_url' => 'required|string|url|max:1024',
+            ]);
+
+            $url = $request->input('avatar_url');
+            if (!filter_var($url, FILTER_VALIDATE_URL) || (!\Illuminate\Support\Str::startsWith($url, 'https://') && !\Illuminate\Support\Str::startsWith($url, 'http://'))) {
+                return new JsonResponse(['error' => 'L\'URL fournie est invalide.'], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            // Delete old uploaded avatar if it was stored locally
+            if ($user->avatar_url && \Illuminate\Support\Str::startsWith($user->avatar_url, '/storage/avatars/')) {
+                $oldFile = str_replace('/storage/avatars/', 'avatars/', $user->avatar_url);
+                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($oldFile)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($oldFile);
+                }
+            }
+
+            $user->avatar_url = $url;
+            $user->save();
+        } else {
+            return new JsonResponse(['error' => 'Veuillez fournir un fichier image ou une URL valide.'], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        Activity::event('user:account.avatar-changed')
+            ->subject($user)
+            ->property(['avatar_url' => $user->avatar_url])
+            ->log('mise à jour de la photo de profil');
+
+        return new JsonResponse([
+            'avatar_url' => $user->avatar_url,
+            'image' => $user->avatar_url ?: ('https://gravatar.com/avatar/' . md5(\Illuminate\Support\Str::lower($user->email))),
+        ]);
+    }
+
+    /**
+     * Remove the authenticated user's avatar.
+     */
+    public function deleteAvatar(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        if ($user->avatar_url && \Illuminate\Support\Str::startsWith($user->avatar_url, '/storage/avatars/')) {
+            $oldFile = str_replace('/storage/avatars/', 'avatars/', $user->avatar_url);
+            if (\Illuminate\Support\Facades\Storage::disk('public')->exists($oldFile)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldFile);
+            }
+        }
+
+        $user->avatar_url = null;
+        $user->save();
+
+        Activity::event('user:account.avatar-removed')
+            ->subject($user)
+            ->log('suppression de la photo de profil');
+
+        return new JsonResponse([
+            'avatar_url' => null,
+            'image' => 'https://gravatar.com/avatar/' . md5(\Illuminate\Support\Str::lower($user->email)),
+        ]);
+    }
 }

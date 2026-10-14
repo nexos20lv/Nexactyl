@@ -9,6 +9,7 @@ export interface UserData {
     rootAdmin: boolean;
     useTotp: boolean;
     credits?: number;
+    avatarUrl?: string | null;
     createdAt: Date;
     updatedAt: Date;
 }

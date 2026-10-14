@@ -28,6 +28,7 @@ class AccountTransformer extends BaseClientTransformer
             'last_name' => $model->name_last,
             'language' => $model->language,
             'credits' => (int) ($model->credits ?? 0),
+            'avatar_url' => $model->avatar_url,
         ];
     }
 }
