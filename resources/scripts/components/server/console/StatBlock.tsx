@@ -16,7 +16,7 @@ interface StatBlockProps {
 }
 
 export default ({ title, copyOnClick, icon, color, className, children }: StatBlockProps) => {
-    const { fontSize, ref } = useFitText({ minFontSize: 10, maxFontSize: 24 });
+    const { fontSize, ref } = useFitText({ minFontSize: 40, maxFontSize: 500 });
 
     return (
         <CopyOnClick text={copyOnClick}>
@@ -37,13 +37,11 @@ export default ({ title, copyOnClick, icon, color, className, children }: StatBl
                         })}
                     />
                 </div>
-                <div className={'flex flex-col justify-center overflow-hidden w-full'}>
+                <div className={'flex flex-col justify-center overflow-hidden w-full min-w-0'}>
                     <p className={'font-medium leading-tight text-xs text-neutral-400 tracking-tight'}>{title}</p>
                     <div
                         ref={ref}
-                        className={
-                            'h-[1.75rem] w-full font-bold text-neutral-100 font-mono truncate flex items-center mt-0.5'
-                        }
+                        className={'h-[1.75rem] w-full font-bold text-neutral-100 font-mono truncate'}
                         style={{ fontSize }}
                     >
                         {children}

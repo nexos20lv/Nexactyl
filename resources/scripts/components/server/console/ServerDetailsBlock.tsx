@@ -24,9 +24,9 @@ const getBackgroundColor = (value: number, max: number | null): string | undefin
 
     if (delta > 0.8) {
         if (delta > 0.9) {
-            return 'bg-red-500';
+            return 'bg-rose-500';
         }
-        return 'bg-yellow-500';
+        return 'bg-amber-500';
     }
 
     return undefined;
@@ -35,7 +35,7 @@ const getBackgroundColor = (value: number, max: number | null): string | undefin
 const Limit = ({ limit, children }: { limit: string | null; children: React.ReactNode }) => (
     <>
         {children}
-        <span className={'ml-1 text-gray-300 text-[70%] select-none'}>/ {limit || <>&infin;</>}</span>
+        <span className={'ml-1 text-neutral-400 font-normal text-[75%] select-none'}>/ {limit || <>&infin;</>}</span>
     </>
 );
 
@@ -89,49 +89,61 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
     });
 
     return (
-        <div className={classNames('grid grid-cols-6 gap-2 md:gap-4', className)}>
-            <StatBlock icon={faWifi} title={'Address'} copyOnClick={allocation}>
+        <div className={classNames('grid grid-cols-6 gap-2.5 sm:gap-3', className)}>
+            <StatBlock icon={faWifi} title={'Adresse IP'} copyOnClick={allocation}>
                 {allocation}
             </StatBlock>
             <StatBlock
                 icon={faClock}
-                title={'Uptime'}
+                title={"Temps d'activité"}
                 color={getBackgroundColor(status === 'running' ? 0 : status !== 'offline' ? 9 : 10, 10)}
             >
                 {status === null ? (
-                    'Offline'
+                    'Hors ligne'
                 ) : stats.uptime > 0 ? (
                     <UptimeDuration uptime={stats.uptime / 1000} />
                 ) : (
-                    capitalize(status)
+                    capitalize(status === 'offline' ? 'Hors ligne' : status)
                 )}
             </StatBlock>
-            <StatBlock icon={faMicrochip} title={'CPU Load'} color={getBackgroundColor(stats.cpu, limits.cpu)}>
+            <StatBlock icon={faMicrochip} title={'Charge CPU'} color={getBackgroundColor(stats.cpu, limits.cpu)}>
                 {status === 'offline' ? (
-                    <span className={'text-gray-400'}>Offline</span>
+                    <span className={'text-neutral-500'}>Hors ligne</span>
                 ) : (
                     <Limit limit={textLimits.cpu}>{stats.cpu.toFixed(2)}%</Limit>
                 )}
             </StatBlock>
             <StatBlock
                 icon={faMemory}
-                title={'Memory'}
+                title={'Mémoire RAM'}
                 color={getBackgroundColor(stats.memory / 1024, limits.memory * 1024)}
             >
                 {status === 'offline' ? (
-                    <span className={'text-gray-400'}>Offline</span>
+                    <span className={'text-neutral-500'}>Hors ligne</span>
                 ) : (
                     <Limit limit={textLimits.memory}>{bytesToString(stats.memory)}</Limit>
                 )}
             </StatBlock>
-            <StatBlock icon={faHdd} title={'Disk'} color={getBackgroundColor(stats.disk / 1024, limits.disk * 1024)}>
+            <StatBlock
+                icon={faHdd}
+                title={'Stockage Disque'}
+                color={getBackgroundColor(stats.disk / 1024, limits.disk * 1024)}
+            >
                 <Limit limit={textLimits.disk}>{bytesToString(stats.disk)}</Limit>
             </StatBlock>
-            <StatBlock icon={faCloudDownloadAlt} title={'Network (Inbound)'}>
-                {status === 'offline' ? <span className={'text-gray-400'}>Offline</span> : bytesToString(stats.rx)}
+            <StatBlock icon={faCloudDownloadAlt} title={'Réseau (Entrant)'}>
+                {status === 'offline' ? (
+                    <span className={'text-neutral-500'}>Hors ligne</span>
+                ) : (
+                    bytesToString(stats.rx)
+                )}
             </StatBlock>
-            <StatBlock icon={faCloudUploadAlt} title={'Network (Outbound)'}>
-                {status === 'offline' ? <span className={'text-gray-400'}>Offline</span> : bytesToString(stats.tx)}
+            <StatBlock icon={faCloudUploadAlt} title={'Réseau (Sortant)'}>
+                {status === 'offline' ? (
+                    <span className={'text-neutral-500'}>Hors ligne</span>
+                ) : (
+                    bytesToString(stats.tx)
+                )}
             </StatBlock>
         </div>
     );
