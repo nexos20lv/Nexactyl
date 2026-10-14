@@ -123,7 +123,7 @@ class AccountController extends ClientApiController
             $file->storeAs('avatars', $filename, 'public');
 
             $user->avatar_url = '/storage/avatars/' . $filename;
-            $user->save();
+            $user->skipValidation()->save();
         } elseif ($request->has('avatar_url')) {
             $request->validate([
                 'avatar_url' => 'required|string|url|max:1024',
@@ -143,7 +143,7 @@ class AccountController extends ClientApiController
             }
 
             $user->avatar_url = $url;
-            $user->save();
+            $user->skipValidation()->save();
         } else {
             return new JsonResponse(['error' => 'Veuillez fournir un fichier image ou une URL valide.'], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
@@ -174,7 +174,7 @@ class AccountController extends ClientApiController
         }
 
         $user->avatar_url = null;
-        $user->save();
+        $user->skipValidation()->save();
 
         Activity::event('user:account.avatar-removed')
             ->subject($user)
