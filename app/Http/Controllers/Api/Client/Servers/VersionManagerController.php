@@ -7,6 +7,8 @@ use Illuminate\Http\JsonResponse;
 use Pterodactyl\Models\Server;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use Pterodactyl\Models\Permission;
+use Pterodactyl\Facades\Activity;
 use Pterodactyl\Repositories\Wings\DaemonFileRepository;
 use Pterodactyl\Http\Controllers\Api\Client\ClientApiController;
 
@@ -130,7 +132,7 @@ class VersionManagerController extends ClientApiController
             try {
                 // 1. Purpur
                 if ($loader === 'purpur') {
-                    $res = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://api.purpurmc.org/v2/purpur');
+                    $res = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://api.purpurmc.org/v2/purpur');
                     if ($res->successful()) {
                         return array_reverse($res->json('versions') ?? []);
                     }
@@ -138,7 +140,7 @@ class VersionManagerController extends ClientApiController
 
                 // 2. PaperMC
                 if ($loader === 'paper') {
-                    $res = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://fill.papermc.io/v3/projects/paper');
+                    $res = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://fill.papermc.io/v3/projects/paper');
                     if ($res->successful()) {
                         $groups = $res->json('versions') ?? [];
                         $all = [];
@@ -159,7 +161,7 @@ class VersionManagerController extends ClientApiController
 
                 // 3. Fabric
                 if ($loader === 'fabric') {
-                    $res = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://meta.fabricmc.net/v2/versions/game');
+                    $res = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://meta.fabricmc.net/v2/versions/game');
                     if ($res->successful()) {
                         $items = $res->json() ?? [];
                         $versions = [];
@@ -189,7 +191,7 @@ class VersionManagerController extends ClientApiController
 
                 // 6. Mohist (Hybrid Forge + Paper)
                 if ($loader === 'mohist') {
-                    $res = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://mohistmc.com/api/v2/projects/mohist');
+                    $res = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://mohistmc.com/api/v2/projects/mohist');
                     if ($res->successful()) {
                         $list = $res->json('versions') ?? [];
                         if (!empty($list)) {
@@ -215,7 +217,7 @@ class VersionManagerController extends ClientApiController
 
                 // 9. Velocity Proxy
                 if ($loader === 'velocity') {
-                    $res = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://fill.papermc.io/v3/projects/velocity');
+                    $res = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://fill.papermc.io/v3/projects/velocity');
                     if ($res->successful()) {
                         $groups = $res->json('versions') ?? [];
                         $all = [];
@@ -234,7 +236,7 @@ class VersionManagerController extends ClientApiController
                 }
 
                 // 10. Default Mojang Vanilla
-                $res = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://launchermeta.mojang.com/mc/game/version_manifest_v2.json');
+                $res = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://launchermeta.mojang.com/mc/game/version_manifest_v2.json');
                 if ($res->successful()) {
                     $items = $res->json('versions') ?? [];
                     $versions = [];
@@ -263,6 +265,14 @@ class VersionManagerController extends ClientApiController
     public function install(Request $request, Server $server): JsonResponse
     {
         $this->assertMinecraftServer($server);
+
+        // 1. Permission check: user must have file.create or startup.update permission
+        if (!$request->user()->can(Permission::ACTION_FILE_CREATE, $server) && !$request->user()->can(Permission::ACTION_STARTUP_UPDATE, $server)) {
+            return response()->json([
+                'error' => "Vous n'avez pas la permission de modifier ou d'installer des versions sur ce serveur.",
+            ], 403);
+        }
+
         $request->validate([
             'loader' => 'required|string',
             'version' => 'required|string',
@@ -280,12 +290,12 @@ class VersionManagerController extends ClientApiController
         // 2. Paper
         elseif ($loader === 'paper') {
             try {
-                $versionInfo = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
+                $versionInfo = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
                     ->get("https://fill.papermc.io/v3/projects/paper/versions/{$version}")->json();
                 $builds = $versionInfo['builds'] ?? [];
                 if (!empty($builds)) {
                     $latestBuild = $builds[0];
-                    $buildInfo = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
+                    $buildInfo = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
                         ->get("https://fill.papermc.io/v3/projects/paper/versions/{$version}/builds/{$latestBuild}")->json();
                     $downloadUrl = $buildInfo['downloads']['server:default']['url'] ?? null;
                 }
@@ -298,8 +308,8 @@ class VersionManagerController extends ClientApiController
         // 3. Fabric
         elseif ($loader === 'fabric') {
             try {
-                $loaderMeta = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://meta.fabricmc.net/v2/versions/loader')->json();
-                $installerMeta = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://meta.fabricmc.net/v2/versions/installer')->json();
+                $loaderMeta = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://meta.fabricmc.net/v2/versions/loader')->json();
+                $installerMeta = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://meta.fabricmc.net/v2/versions/installer')->json();
                 $loaderVersion = $loaderMeta[0]['version'] ?? '0.16.5';
                 $installerVersion = $installerMeta[0]['version'] ?? '1.0.1';
                 $downloadUrl = "https://meta.fabricmc.net/v2/versions/loader/{$version}/{$loaderVersion}/{$installerVersion}/server/jar";
@@ -354,12 +364,12 @@ class VersionManagerController extends ClientApiController
         // 9. Velocity Proxy
         elseif ($loader === 'velocity') {
             try {
-                $versionInfo = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
+                $versionInfo = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
                     ->get("https://fill.papermc.io/v3/projects/velocity/versions/{$version}")->json();
                 $builds = $versionInfo['builds'] ?? [];
                 if (!empty($builds)) {
                     $latestBuild = $builds[0];
-                    $buildInfo = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
+                    $buildInfo = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
                         ->get("https://fill.papermc.io/v3/projects/velocity/versions/{$version}/builds/{$latestBuild}")->json();
                     $downloadUrl = $buildInfo['downloads']['server:default']['url'] ?? null;
                 }
@@ -369,10 +379,10 @@ class VersionManagerController extends ClientApiController
         // 10. Vanilla Mojang
         else {
             try {
-                $manifest = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://launchermeta.mojang.com/mc/game/version_manifest_v2.json')->json();
+                $manifest = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get('https://launchermeta.mojang.com/mc/game/version_manifest_v2.json')->json();
                 foreach ($manifest['versions'] ?? [] as $item) {
                     if ($item['id'] === $version) {
-                        $verDetail = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get($item['url'])->json();
+                        $verDetail = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])->get($item['url'])->json();
                         $downloadUrl = $verDetail['downloads']['server']['url'] ?? null;
                         break;
                     }
@@ -386,6 +396,16 @@ class VersionManagerController extends ClientApiController
 
         // Trigger Wings daemon pull
         $this->fileRepository->setServer($server)->pull($downloadUrl, '/', ['filename' => 'server.jar']);
+
+        // Log to Activity Log
+        Activity::event('server:version.install')
+            ->subject($server)
+            ->property([
+                'loader' => $loader,
+                'version' => $version,
+                'download_url' => $downloadUrl,
+            ])
+            ->log();
 
         return response()->json([
             'success' => true,

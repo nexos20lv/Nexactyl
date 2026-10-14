@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Pterodactyl\Models\Server;
 use Illuminate\Support\Facades\DB;
+use Pterodactyl\Facades\Activity;
 use Pterodactyl\Services\Servers\BuildModificationService;
 use Pterodactyl\Http\Controllers\Api\Client\ClientApiController;
 
@@ -70,6 +71,14 @@ class BoosterStoreController extends ClientApiController
         ]);
 
         $user = $request->user();
+
+        // 1. Only server owner or root admin can purchase hardware boosters for this server
+        if ($user->id !== $server->owner_id && !$user->root_admin) {
+            return response()->json([
+                'error' => 'Seul le propriétaire de ce serveur peut appliquer des boosters hardware.',
+            ], 403);
+        }
+
         $type = $request->input('type');
         $tier = (int) $request->input('tier');
 
@@ -81,33 +90,58 @@ class BoosterStoreController extends ClientApiController
         $cost = $item['cost'];
         $amount = $item['amount'];
 
-        if (($user->credits ?? 0) < $cost) {
-            return response()->json(['error' => "Solde insuffisant ({$user->credits} cr). Requis : {$cost} cr."], 422);
-        }
+        // 2. Atomic credit verification & deduction to prevent race conditions / double-spending
+        try {
+            DB::transaction(function () use ($user, $server, $type, $amount, $cost) {
+                $affected = DB::table('users')
+                    ->where('id', $user->id)
+                    ->where('credits', '>=', $cost)
+                    ->decrement('credits', $cost);
 
-        DB::transaction(function () use ($user, $server, $type, $amount, $cost) {
-            DB::table('users')->where('id', $user->id)->decrement('credits', $cost);
-            DB::table('server_boosters')->insert([
-                'server_id' => $server->id,
-                'type' => $type,
-                'amount' => $amount,
-                'cost' => $cost,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        });
+                if ($affected === 0) {
+                    throw new \DomainException('INSUFFICIENT_CREDITS');
+                }
+
+                DB::table('server_boosters')->insert([
+                    'server_id' => $server->id,
+                    'type' => $type,
+                    'amount' => $amount,
+                    'cost' => $cost,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            });
+        } catch (\DomainException) {
+            $currentCredits = (int) (DB::table('users')->where('id', $user->id)->value('credits') ?? 0);
+            return response()->json([
+                'error' => "Solde insuffisant ({$currentCredits} cr). Requis : {$cost} cr.",
+            ], 422);
+        }
 
         $newMemory = $server->memory + ($type === 'ram' ? $amount : 0);
         $newCpu = $server->cpu + ($type === 'cpu' ? $amount : 0);
         $newDisk = $server->disk + ($type === 'disk' ? $amount : 0);
         $newBackups = $server->backup_limit + ($type === 'backups' ? $amount : 0);
 
+        // 3. Preserve database_limit and allocation_limit so they are not wiped to 0
         $this->buildModificationService->handle($server, [
             'memory' => $newMemory,
             'cpu' => $newCpu,
             'disk' => $newDisk,
             'backup_limit' => $newBackups,
+            'database_limit' => $server->database_limit,
+            'allocation_limit' => $server->allocation_limit,
         ]);
+
+        // 4. Log event in Pterodactyl activity log
+        Activity::event('server:booster.apply')
+            ->subject($server)
+            ->property([
+                'type' => $type,
+                'amount' => $amount,
+                'cost' => $cost,
+            ])
+            ->log();
 
         return response()->json([
             'success' => true,

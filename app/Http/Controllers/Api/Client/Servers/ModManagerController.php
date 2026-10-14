@@ -6,12 +6,17 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Pterodactyl\Models\Server;
 use Illuminate\Support\Facades\Http;
+use Pterodactyl\Models\Permission;
+use Pterodactyl\Facades\Activity;
 use Pterodactyl\Repositories\Wings\DaemonFileRepository;
 use Pterodactyl\Http\Controllers\Api\Client\ClientApiController;
 
 class ModManagerController extends ClientApiController
 {
-    private const CURSEFORGE_KEY = '$2a$10$bL4bIL5pUWqfcO7KQtnMReakwtfHbNKh6v1uTpKlzhwoueEJQnPnm';
+    private function getCurseForgeKey(): string
+    {
+        return config('services.curseforge.key', env('CURSEFORGE_API_KEY', '$2a$10$bL4bIL5pUWqfcO7KQtnMReakwtfHbNKh6v1uTpKlzhwoueEJQnPnm'));
+    }
 
     public function __construct(private DaemonFileRepository $fileRepository)
     {
@@ -63,9 +68,9 @@ class ModManagerController extends ClientApiController
                     $params['gameVersion'] = $version;
                 }
 
-                $res = Http::withHeaders([
+                $res = Http::timeout(8)->withHeaders([
                     'Accept' => 'application/json',
-                    'x-api-key' => self::CURSEFORGE_KEY,
+                    'x-api-key' => $this->getCurseForgeKey(),
                     'User-Agent' => 'NXSLab-Cloud/1.0',
                 ])->get('https://api.curseforge.com/v1/mods/search', $params);
 
@@ -113,7 +118,7 @@ class ModManagerController extends ClientApiController
             $facets[] = ["versions:{$version}"];
         }
 
-        $res = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
+        $res = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
             ->get('https://api.modrinth.com/v2/search', [
                 'query' => $query,
                 'facets' => json_encode($facets),
@@ -144,6 +149,14 @@ class ModManagerController extends ClientApiController
     public function install(Request $request, Server $server): JsonResponse
     {
         $this->assertMinecraftServer($server);
+
+        // 1. Permission check: user must have file.create permission
+        if (!$request->user()->can(Permission::ACTION_FILE_CREATE, $server)) {
+            return response()->json([
+                'error' => "Vous n'avez pas la permission d'installer des fichiers ou plugins sur ce serveur.",
+            ], 403);
+        }
+
         $request->validate([
             'project_id' => 'required|string',
             'loader' => 'required|string',
@@ -163,9 +176,9 @@ class ModManagerController extends ClientApiController
         // 1. CURSEFORGE INSTALL
         if ($source === 'curseforge') {
             try {
-                $res = Http::withHeaders([
+                $res = Http::timeout(8)->withHeaders([
                     'Accept' => 'application/json',
-                    'x-api-key' => self::CURSEFORGE_KEY,
+                    'x-api-key' => $this->getCurseForgeKey(),
                     'User-Agent' => 'NXSLab-Cloud/1.0',
                 ])->get("https://api.curseforge.com/v1/mods/{$projectId}/files?pageSize=20");
 
@@ -205,12 +218,12 @@ class ModManagerController extends ClientApiController
                     $params['game_versions'] = json_encode([$version]);
                 }
 
-                $res = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
+                $res = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
                     ->get("https://api.modrinth.com/v2/project/{$projectId}/version", $params);
 
                 $versionsList = $res->json() ?? [];
                 if (empty($versionsList)) {
-                    $res = Http::withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
+                    $res = Http::timeout(8)->withHeaders(['User-Agent' => 'NXSLab-Cloud/1.0'])
                         ->get("https://api.modrinth.com/v2/project/{$projectId}/version");
                     $versionsList = $res->json() ?? [];
                 }
@@ -227,7 +240,23 @@ class ModManagerController extends ClientApiController
             return response()->json(['error' => 'Aucun fichier jar compatible trouvé pour cette ressource.'], 422);
         }
 
+        // Sanitize filename to prevent any path traversal
+        $fileName = basename($fileName);
+
         $this->fileRepository->setServer($server)->pull($fileUrl, $directory, ['filename' => $fileName]);
+
+        // Log to Activity Log
+        Activity::event('server:mod.install')
+            ->subject($server)
+            ->property([
+                'project_id' => $projectId,
+                'loader' => $loader,
+                'version' => $version,
+                'filename' => $fileName,
+                'directory' => $directory,
+                'source' => $source,
+            ])
+            ->log();
 
         return response()->json([
             'success' => true,
