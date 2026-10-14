@@ -9,6 +9,8 @@ import createServerBackup from '@/api/server/backups/createServerBackup';
 import FlashMessageRender from '@/components/FlashMessageRender';
 import Button from '@/components/elements/Button';
 import tw from 'twin.macro';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Textarea } from '@/components/elements/Input';
 import getServerBackups from '@/api/swr/getServerBackups';
 import { ServerContext } from '@/state/server';
@@ -109,7 +111,8 @@ export default () => {
                 </Formik>
             )}
             <Button css={tw`w-full sm:w-auto`} onClick={() => setVisible(true)}>
-                Create backup
+                <FontAwesomeIcon icon={faPlus} css={tw`mr-2 text-xs`} />
+                Créer une sauvegarde
             </Button>
         </>
     );

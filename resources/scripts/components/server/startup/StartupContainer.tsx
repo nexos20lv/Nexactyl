@@ -15,6 +15,8 @@ import Input from '@/components/elements/Input';
 import setSelectedDockerImage from '@/api/server/setSelectedDockerImage';
 import InputSpinner from '@/components/elements/InputSpinner';
 import useFlash from '@/plugins/useFlash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTerminal, faLayerGroup, faCogs } from '@fortawesome/free-solid-svg-icons';
 
 const StartupContainer = () => {
     const [loading, setLoading] = useState(false);
@@ -85,12 +87,16 @@ const StartupContainer = () => {
     ) : (
         <ServerContentBlock title={'Startup Settings'} showFlashKey={'startup:image'}>
             <div css={tw`md:flex`}>
-                <TitledGreyBox title={'Startup Command'} css={tw`flex-1`}>
+                <TitledGreyBox icon={faTerminal} title={'Commande de démarrage'} css={tw`flex-1`}>
                     <div css={tw`px-1 py-2`}>
                         <p css={tw`font-mono bg-neutral-900 rounded py-2 px-4`}>{data.invocation}</p>
                     </div>
                 </TitledGreyBox>
-                <TitledGreyBox title={'Docker Image'} css={tw`flex-1 lg:flex-none lg:w-1/3 mt-8 md:mt-0 md:ml-10`}>
+                <TitledGreyBox
+                    icon={faLayerGroup}
+                    title={'Image Docker'}
+                    css={tw`flex-1 lg:flex-none lg:w-1/3 mt-8 md:mt-0 md:ml-10`}
+                >
                     {Object.keys(data.dockerImages).length > 1 && !isCustomImage ? (
                         <>
                             <InputSpinner visible={loading}>
@@ -124,7 +130,10 @@ const StartupContainer = () => {
                     )}
                 </TitledGreyBox>
             </div>
-            <h3 css={tw`mt-8 mb-2 text-2xl`}>Variables</h3>
+            <h3 css={tw`mt-8 mb-4 text-xl font-bold text-white flex items-center gap-2`}>
+                <FontAwesomeIcon icon={faCogs} className='text-violet-400' />
+                <span>Variables de configuration</span>
+            </h3>
             <div css={tw`grid gap-8 md:grid-cols-2`}>
                 {data.variables.map((variable) => (
                     <VariableBox key={variable.envVariable} variable={variable} />

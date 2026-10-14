@@ -14,6 +14,8 @@ import styled from 'styled-components/macro';
 import tw from 'twin.macro';
 import Input from '@/components/elements/Input';
 import { ip } from '@/lib/formatters';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faServer, faGlobe, faEthernet } from '@fortawesome/free-solid-svg-icons';
 
 type Props = RequiredModalProps;
 
@@ -117,19 +119,30 @@ export default ({ ...props }: Props) => {
                                     to={`/server/${server.id}`}
                                     onClick={() => props.onDismissed()}
                                 >
-                                    <div css={tw`flex-1 mr-4`}>
-                                        <p css={tw`text-sm font-semibold text-neutral-100 tracking-tight`}>
+                                    <div
+                                        css={tw`w-9 h-9 rounded-xl bg-violet-600/20 border border-violet-500/30 flex items-center justify-center text-violet-300 text-xs mr-3 flex-shrink-0`}
+                                    >
+                                        <FontAwesomeIcon icon={faServer} />
+                                    </div>
+                                    <div css={tw`flex-1 mr-4 min-w-0`}>
+                                        <p css={tw`text-sm font-semibold text-neutral-100 tracking-tight truncate`}>
                                             {server.name}
                                         </p>
-                                        <p css={tw`mt-0.5 text-xs text-neutral-400 font-mono`}>
-                                            {server.subdomain ||
-                                                server.allocations
-                                                    .filter((alloc) => alloc.isDefault)
-                                                    .map((allocation) => (
-                                                        <span key={allocation.ip + allocation.port.toString()}>
-                                                            {allocation.alias || ip(allocation.ip)}:{allocation.port}
-                                                        </span>
-                                                    ))}
+                                        <p css={tw`mt-0.5 text-xs text-neutral-400 font-mono flex items-center gap-1.5`}>
+                                            <FontAwesomeIcon
+                                                icon={server.subdomain ? faGlobe : faEthernet}
+                                                className='text-[10px] text-violet-400'
+                                            />
+                                            <span className='truncate'>
+                                                {server.subdomain ||
+                                                    server.allocations
+                                                        .filter((alloc) => alloc.isDefault)
+                                                        .map((allocation) => (
+                                                            <span key={allocation.ip + allocation.port.toString()}>
+                                                                {allocation.alias || ip(allocation.ip)}:{allocation.port}
+                                                            </span>
+                                                        ))}
+                                            </span>
                                         </p>
                                     </div>
                                     <div css={tw`flex-none text-right`}>

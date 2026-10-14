@@ -8,6 +8,8 @@ import { httpErrorToHuman } from '@/api/http';
 import tw from 'twin.macro';
 import { Button } from '@/components/elements/button/index';
 import { Dialog } from '@/components/elements/dialog';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRedo, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 export default () => {
     const uuid = ServerContext.useStoreState((state) => state.server.data!.uuid);
@@ -49,28 +51,28 @@ export default () => {
     }
 
     return (
-        <TitledGreyBox title={'Reinstall Server'} css={tw`relative`}>
+        <TitledGreyBox icon={faRedo} title={'Réinstaller le serveur'} css={tw`relative`}>
             <Dialog.Confirm
                 open={modalVisible}
-                title={'Confirm server reinstallation'}
-                confirm={'Yes, reinstall server'}
+                title={'Confirmer la réinstallation du serveur'}
+                confirm={'Oui, réinstaller le serveur'}
                 onClose={() => setModalVisible(false)}
                 onConfirmed={reinstall}
             >
-                Your server will be stopped and some files may be deleted or modified during this process, are you sure
-                you wish to continue?
+                La réinstallation forcée du serveur arrêtera le serveur et certains fichiers pourront être écrasés ou
+                supprimés. Êtes-vous sûr de vouloir continuer ?
             </Dialog.Confirm>
             <p css={tw`text-sm`}>
-                Reinstalling your server will stop it, and then re-run the installation script that initially set it
-                up.&nbsp;
-                <strong css={tw`font-medium`}>
-                    Some files may be deleted or modified during this process, please back up your data before
-                    continuing.
+                La réinstallation du serveur l&apos;arrêtera et relancera le script d&apos;installation officiel.&nbsp;
+                <strong css={tw`font-medium text-rose-300`}>
+                    Certains fichiers peuvent être modifiés ou supprimés lors de ce processus, assurez-vous de posséder
+                    une sauvegarde récente avant de procéder.
                 </strong>
             </p>
             <div css={tw`mt-6 text-right`}>
                 <Button.Danger variant={Button.Variants.Secondary} onClick={() => setModalVisible(true)}>
-                    Reinstall Server
+                    <FontAwesomeIcon icon={faExclamationTriangle} className='mr-2 text-xs' />
+                    Réinstaller le serveur
                 </Button.Danger>
             </div>
         </TitledGreyBox>

@@ -7,6 +7,8 @@ import AllocationRow from '@/components/server/network/AllocationRow';
 import Button from '@/components/elements/Button';
 import createServerAllocation from '@/api/server/network/createServerAllocation';
 import tw from 'twin.macro';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Can from '@/components/elements/Can';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 import getServerAllocations from '@/api/swr/getServerAllocations';
@@ -69,7 +71,8 @@ const NetworkContainer = () => {
                                 </p>
                                 {allocationLimit > data.length && (
                                     <Button css={tw`w-full sm:w-auto`} color={'primary'} onClick={onCreateAllocation}>
-                                        Create Allocation
+                                        <FontAwesomeIcon icon={faPlus} css={tw`mr-2 text-xs`} />
+                                        Créer une allocation
                                     </Button>
                                 )}
                             </div>

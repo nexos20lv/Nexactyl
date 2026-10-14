@@ -10,6 +10,8 @@ import FlashMessageRender from '@/components/FlashMessageRender';
 import useFlash from '@/plugins/useFlash';
 import Button from '@/components/elements/Button';
 import tw from 'twin.macro';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 interface Values {
     databaseName: string;
@@ -106,7 +108,10 @@ export default () => {
                     </Modal>
                 )}
             </Formik>
-            <Button onClick={() => setVisible(true)}>New Database</Button>
+            <Button onClick={() => setVisible(true)}>
+                <FontAwesomeIcon icon={faPlus} css={tw`mr-2 text-xs`} />
+                Nouvelle base de données
+            </Button>
         </>
     );
 };

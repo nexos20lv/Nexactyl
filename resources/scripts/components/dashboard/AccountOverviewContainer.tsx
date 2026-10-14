@@ -10,6 +10,7 @@ import { breakpoint } from '@/theme';
 import styled from 'styled-components/macro';
 import MessageBox from '@/components/MessageBox';
 import { useLocation } from 'react-router-dom';
+import { faKey, faEnvelope, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Container = styled.div`
     ${tw`flex flex-wrap`};
@@ -43,13 +44,18 @@ export default () => {
             </div>
 
             <Container css={[tw`lg:grid lg:grid-cols-3 mb-10 mt-6`]}>
-                <ContentBox title={'Update Password'} showFlashes={'account:password'}>
+                <ContentBox title={'Mot de passe'} icon={faKey} showFlashes={'account:password'}>
                     <UpdatePasswordForm />
                 </ContentBox>
-                <ContentBox css={tw`mt-8 sm:mt-0 sm:ml-8`} title={'Update Email Address'} showFlashes={'account:email'}>
+                <ContentBox
+                    css={tw`mt-8 sm:mt-0 sm:ml-8`}
+                    title={'Adresse Email'}
+                    icon={faEnvelope}
+                    showFlashes={'account:email'}
+                >
                     <UpdateEmailAddressForm />
                 </ContentBox>
-                <ContentBox css={tw`md:ml-8 mt-8 md:mt-0`} title={'Two-Step Verification'}>
+                <ContentBox css={tw`md:ml-8 mt-8 md:mt-0`} title={'Double Authentification (2FA)'} icon={faShieldAlt}>
                     <ConfigureTwoFactorForm />
                 </ContentBox>
             </Container>

@@ -19,9 +19,9 @@
     <div class="col-xs-12">
         <div class="nav-tabs-custom nav-tabs-floating">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="{{ route('admin.nests.egg.view', $egg->id) }}">Configuration</a></li>
-                <li><a href="{{ route('admin.nests.egg.variables', $egg->id) }}">Variables</a></li>
-                <li><a href="{{ route('admin.nests.egg.scripts', $egg->id) }}">Install Script</a></li>
+                <li class="active"><a href="{{ route('admin.nests.egg.view', $egg->id) }}"><i class="fa fa-cogs text-purple"></i> Configuration</a></li>
+                <li><a href="{{ route('admin.nests.egg.variables', $egg->id) }}"><i class="fa fa-sliders"></i> Variables</a></li>
+                <li><a href="{{ route('admin.nests.egg.scripts', $egg->id) }}"><i class="fa fa-terminal"></i> Install Script</a></li>
             </ul>
         </div>
     </div>

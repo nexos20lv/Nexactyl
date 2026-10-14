@@ -18,11 +18,11 @@
     <div class="col-xs-12">
         <div class="nav-tabs-custom nav-tabs-floating">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="{{ route('admin.nodes.view', $node->id) }}">About</a></li>
-                <li><a href="{{ route('admin.nodes.view.settings', $node->id) }}">Settings</a></li>
-                <li><a href="{{ route('admin.nodes.view.configuration', $node->id) }}">Configuration</a></li>
-                <li><a href="{{ route('admin.nodes.view.allocation', $node->id) }}">Allocation</a></li>
-                <li><a href="{{ route('admin.nodes.view.servers', $node->id) }}">Servers</a></li>
+                <li class="active"><a href="{{ route('admin.nodes.view', $node->id) }}"><i class="fa fa-info-circle text-purple"></i> About</a></li>
+                <li><a href="{{ route('admin.nodes.view.settings', $node->id) }}"><i class="fa fa-sliders"></i> Settings</a></li>
+                <li><a href="{{ route('admin.nodes.view.configuration', $node->id) }}"><i class="fa fa-code"></i> Configuration</a></li>
+                <li><a href="{{ route('admin.nodes.view.allocation', $node->id) }}"><i class="fa fa-sitemap"></i> Allocation</a></li>
+                <li><a href="{{ route('admin.nodes.view.servers', $node->id) }}"><i class="fa fa-server"></i> Servers</a></li>
             </ul>
         </div>
     </div>

@@ -24,7 +24,7 @@
                             <input type="text" name="filter[email]" class="form-control pull-right" value="{{ request()->input('filter.email') }}" placeholder="Search">
                             <div class="input-group-btn">
                                 <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                <a href="{{ route('admin.users.new') }}"><button type="button" class="btn btn-sm btn-primary" style="border-radius: 0 3px 3px 0;margin-left:-1px;">Create New</button></a>
+                                <a href="{{ route('admin.users.new') }}"><button type="button" class="btn btn-sm btn-primary" style="border-radius: 0 3px 3px 0;margin-left:-1px;"><i class="fa fa-user-plus"></i> Create New</button></a>
                             </div>
                         </div>
                     </form>
@@ -34,11 +34,11 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Email</th>
-                            <th>Client Name</th>
-                            <th>Username</th>
-                            <th class="text-center">2FA</th>
+                            <th><i class="fa fa-hashtag" style="color: #a855f7; margin-right: 4px;"></i> ID</th>
+                            <th><i class="fa fa-envelope" style="color: #a855f7; margin-right: 4px;"></i> Email</th>
+                            <th><i class="fa fa-user" style="color: #a855f7; margin-right: 4px;"></i> Client Name</th>
+                            <th><i class="fa fa-at" style="color: #a855f7; margin-right: 4px;"></i> Username</th>
+                            <th class="text-center"><i class="fa fa-lock" style="color: #a855f7; margin-right: 4px;"></i> 2FA</th>
                             <th class="text-center"><i class="fa fa-diamond" style="color:#c084fc;"></i> Crédits</th>
                             <th class="text-center"><span data-toggle="tooltip" data-placement="top" title="Servers that this user is marked as the owner of.">Servers Owned</span></th>
                             <th class="text-center"><span data-toggle="tooltip" data-placement="top" title="Servers that this user can access because they are marked as a subuser.">Can Access</span></th>

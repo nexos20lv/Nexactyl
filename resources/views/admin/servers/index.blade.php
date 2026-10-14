@@ -24,7 +24,7 @@
                             <input type="text" name="filter[*]" class="form-control pull-right" value="{{ request()->input()['filter']['*'] ?? '' }}" placeholder="Search Servers">
                             <div class="input-group-btn">
                                 <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                <a href="{{ route('admin.servers.new') }}"><button type="button" class="btn btn-sm btn-primary" style="border-radius: 0 3px 3px 0;margin-left:-1px;">Create New</button></a>
+                                <a href="{{ route('admin.servers.new') }}"><button type="button" class="btn btn-sm btn-primary" style="border-radius: 0 3px 3px 0;margin-left:-1px;"><i class="fa fa-plus"></i> Create New</button></a>
                             </div>
                         </div>
                     </form>
@@ -34,11 +34,11 @@
                 <table class="table table-hover">
                     <tbody>
                         <tr>
-                            <th>Server Name</th>
-                            <th>UUID</th>
-                            <th>Owner</th>
-                            <th>Node</th>
-                            <th>Connection</th>
+                            <th><i class="fa fa-server" style="color: #a855f7; margin-right: 4px;"></i> Server Name</th>
+                            <th><i class="fa fa-fingerprint" style="color: #a855f7; margin-right: 4px;"></i> UUID</th>
+                            <th><i class="fa fa-user" style="color: #a855f7; margin-right: 4px;"></i> Owner</th>
+                            <th><i class="fa fa-sitemap" style="color: #a855f7; margin-right: 4px;"></i> Node</th>
+                            <th><i class="fa fa-network-wired" style="color: #a855f7; margin-right: 4px;"></i> Connection</th>
                             <th></th>
                             <th></th>
                         </tr>

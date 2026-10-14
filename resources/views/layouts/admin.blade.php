@@ -187,6 +187,166 @@
                 color: #c084fc !important;
                 font-weight: 600 !important;
             }
+            .breadcrumb > li:first-child > a:before {
+                content: "\f015 ";
+                font-family: FontAwesome;
+                color: #a855f7;
+                margin-right: 4px;
+            }
+            
+            /* ==========================================================================
+               Obsidian Violet Apple Fluid Tabs & Navbars
+               ========================================================================== */
+            .nav-tabs-custom {
+                background: transparent !important;
+                box-shadow: none !important;
+                border-radius: 16px !important;
+                margin-bottom: 22px !important;
+            }
+            .nav-tabs-custom.nav-tabs-floating {
+                margin-bottom: 22px !important;
+            }
+            .nav-tabs-custom > .nav-tabs {
+                background: rgba(13, 11, 22, 0.85) !important;
+                backdrop-filter: blur(20px) saturate(180%) !important;
+                -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+                border: 1px solid rgba(139, 92, 246, 0.22) !important;
+                border-radius: 16px !important;
+                padding: 6px !important;
+                display: flex !important;
+                flex-wrap: wrap !important;
+                align-items: center !important;
+                gap: 6px !important;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+            }
+            .nav-tabs-custom > .nav-tabs > li {
+                margin: 0 !important;
+                border: none !important;
+                border-top: none !important;
+                float: none !important;
+            }
+            .nav-tabs-custom > .nav-tabs > li > a {
+                color: #94a3b8 !important;
+                font-size: 13px !important;
+                font-weight: 500 !important;
+                padding: 9px 18px !important;
+                border-radius: 11px !important;
+                border: 1px solid transparent !important;
+                margin: 0 !important;
+                background: transparent !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+                letter-spacing: 0.01em !important;
+                transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            }
+            .nav-tabs-custom > .nav-tabs > li > a:hover {
+                color: #ffffff !important;
+                background: rgba(139, 92, 246, 0.12) !important;
+                border-color: rgba(139, 92, 246, 0.25) !important;
+                transform: translateY(-1px) !important;
+            }
+            .nav-tabs-custom > .nav-tabs > li > a:active {
+                transform: scale(0.98) !important;
+            }
+            .nav-tabs-custom > .nav-tabs > li.active {
+                border-top: none !important;
+            }
+            .nav-tabs-custom > .nav-tabs > li.active > a {
+                color: #ffffff !important;
+                background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+                border-color: rgba(168, 85, 247, 0.5) !important;
+                box-shadow: 0 4px 16px rgba(124, 58, 237, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+                font-weight: 600 !important;
+                border-top: none !important;
+            }
+            .nav-tabs-custom > .nav-tabs > li.active > a:hover {
+                background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+                box-shadow: 0 6px 20px rgba(139, 92, 246, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+            }
+            /* Danger Tab (ex: Delete) */
+            .nav-tabs-custom > .nav-tabs > li.tab-danger > a {
+                color: #f87171 !important;
+            }
+            .nav-tabs-custom > .nav-tabs > li.tab-danger > a:hover {
+                background: rgba(239, 68, 68, 0.15) !important;
+                border-color: rgba(239, 68, 68, 0.35) !important;
+                color: #fca5a5 !important;
+            }
+            .nav-tabs-custom > .nav-tabs > li.tab-danger.active > a {
+                background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+                border-color: rgba(248, 113, 113, 0.5) !important;
+                color: #ffffff !important;
+                box-shadow: 0 4px 16px rgba(239, 68, 68, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+            }
+            /* Success Tab (ex: View Client) */
+            .nav-tabs-custom > .nav-tabs > li.tab-success {
+                margin-left: auto !important;
+            }
+            .nav-tabs-custom > .nav-tabs > li.tab-success > a {
+                color: #34d399 !important;
+                background: rgba(16, 185, 129, 0.1) !important;
+                border-color: rgba(16, 185, 129, 0.25) !important;
+            }
+            .nav-tabs-custom > .nav-tabs > li.tab-success > a:hover {
+                background: rgba(16, 185, 129, 0.22) !important;
+                color: #ffffff !important;
+                box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+            }
+            /* Tab Icons */
+            .nav-tabs-custom > .nav-tabs > li > a i.fa {
+                font-size: 14px !important;
+                opacity: 0.9 !important;
+                margin-right: 2px !important;
+                transition: opacity 0.15s ease, transform 0.15s ease !important;
+            }
+            .nav-tabs-custom > .nav-tabs > li > a:hover i.fa,
+            .nav-tabs-custom > .nav-tabs > li.active > a i.fa {
+                opacity: 1 !important;
+                transform: scale(1.1) !important;
+            }
+            /* Content pane */
+            .nav-tabs-custom > .tab-content {
+                background: var(--bg-card) !important;
+                border: 1px solid var(--border-color) !important;
+                border-radius: 16px !important;
+                padding: 24px !important;
+                color: var(--text-primary) !important;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important;
+            }
+
+            /* Navbar items */
+            .navbar-custom-menu .navbar-nav > li > a {
+                border-radius: 10px !important;
+                margin: 8px 4px !important;
+                padding: 8px 14px !important;
+                background: rgba(255, 255, 255, 0.04) !important;
+                border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                color: #cbd5e1 !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+                transition: all 0.2s ease !important;
+            }
+            .navbar-custom-menu .navbar-nav > li > a:hover {
+                background: rgba(139, 92, 246, 0.15) !important;
+                border-color: rgba(139, 92, 246, 0.35) !important;
+                color: #ffffff !important;
+            }
+            .navbar-custom-menu .navbar-nav > li.user-menu > a {
+                background: rgba(139, 92, 246, 0.1) !important;
+                border-color: rgba(139, 92, 246, 0.25) !important;
+            }
+            .navbar-custom-menu .navbar-nav > li.user-menu > a img.user-image {
+                border-radius: 8px !important;
+                border: 1px solid rgba(168, 85, 247, 0.4) !important;
+                float: none !important;
+                margin: 0 !important;
+                width: 24px !important;
+                height: 24px !important;
+                object-fit: cover !important;
+            }
+
             ::-webkit-scrollbar { width: 7px; height: 7px; }
             ::-webkit-scrollbar-track { background: #07060a; }
             ::-webkit-scrollbar-thumb { background: #25213b; border-radius: 4px; }
@@ -216,10 +376,14 @@
                                 </a>
                             </li>
                             <li>
-                                <li><a href="{{ route('index') }}" data-toggle="tooltip" data-placement="bottom" title="Exit Admin Control"><i class="fa fa-server"></i></a></li>
+                                <a href="{{ route('index') }}" data-toggle="tooltip" data-placement="bottom" title="Retour au Panel Client">
+                                    <i class="fa fa-desktop" style="color: #c084fc;"></i> <span class="hidden-xs" style="font-weight: 500;">Panel Client</span>
+                                </a>
                             </li>
                             <li>
-                                <li><a href="{{ route('auth.logout') }}" id="logoutButton" data-toggle="tooltip" data-placement="bottom" title="Logout"><i class="fa fa-sign-out"></i></a></li>
+                                <a href="{{ route('auth.logout') }}" id="logoutButton" data-toggle="tooltip" data-placement="bottom" title="Déconnexion">
+                                    <i class="fa fa-sign-out text-danger"></i> <span class="hidden-xs" style="font-weight: 500;">Déconnexion</span>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -228,7 +392,7 @@
             <aside class="main-sidebar">
                 <section class="sidebar">
                     <ul class="sidebar-menu">
-                        <li class="header">BASIC ADMINISTRATION</li>
+                        <li class="header"><i class="fa fa-compass" style="color: #a855f7; margin-right: 6px;"></i> ADMINISTRATION</li>
                         <li class="{{ Route::currentRouteName() !== 'admin.index' ?: 'active' }}">
                             <a href="{{ route('admin.index') }}">
                                 <i class="fa fa-home"></i> <span>Overview</span>
@@ -249,7 +413,7 @@
                                 <i class="fa fa-gamepad"></i> <span>Application API</span>
                             </a>
                         </li>
-                        <li class="header">MANAGEMENT</li>
+                        <li class="header"><i class="fa fa-cubes" style="color: #a855f7; margin-right: 6px;"></i> INFRASTRUCTURE</li>
                         <li class="{{ ! starts_with(Route::currentRouteName(), 'admin.databases') ?: 'active' }}">
                             <a href="{{ route('admin.databases') }}">
                                 <i class="fa fa-database"></i> <span>Databases</span>
@@ -275,7 +439,7 @@
                                 <i class="fa fa-users"></i> <span>Users</span>
                             </a>
                         </li>
-                        <li class="header">SERVICE MANAGEMENT</li>
+                        <li class="header"><i class="fa fa-puzzle-piece" style="color: #a855f7; margin-right: 6px;"></i> SERVICES &amp; MODÈLES</li>
                         <li class="{{ ! starts_with(Route::currentRouteName(), 'admin.mounts') ?: 'active' }}">
                             <a href="{{ route('admin.mounts') }}">
                                 <i class="fa fa-magic"></i> <span>Mounts</span>

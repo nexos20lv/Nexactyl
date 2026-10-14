@@ -1,6 +1,28 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faChevronRight, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+    faBars,
+    faChevronRight,
+    faShieldAlt,
+    faHome,
+    faServer,
+    faTerminal,
+    faFolderOpen,
+    faDatabase,
+    faClock,
+    faUsers,
+    faArchive,
+    faNetworkWired,
+    faGlobe,
+    faPlayCircle,
+    faCubes,
+    faGamepad,
+    faSlidersH,
+    faBolt,
+    faCog,
+    faHistory,
+    faUser,
+} from '@fortawesome/free-solid-svg-icons';
 import { useStoreState } from 'easy-peasy';
 import { ApplicationStore } from '@/state';
 import { Server } from '@/api/server/getServer';
@@ -37,15 +59,55 @@ const AppHeader: React.FC<Props> = ({ context, server, onToggleMobileSidebar }) 
                 users: 'Utilisateurs',
                 backups: 'Sauvegardes',
                 network: 'Réseau & Ports',
+                subdomain: 'Sous-domaine',
                 startup: 'Démarrage & JVM',
                 versions: 'Versions & Mods',
+                players: 'Joueurs',
                 store: 'Boutique Hardware',
                 settings: 'Paramètres',
                 activity: 'Activité',
             };
+            if (location.pathname.includes('/minecraft/config')) {
+                return 'Configuration';
+            }
             return titles[sub] || sub;
         }
         return 'Tableau de bord';
+    };
+
+    // Determine current section icon
+    const getPageIcon = () => {
+        if (context === 'dashboard') {
+            if (location.pathname.startsWith('/account')) {
+                return faUser;
+            }
+            return faServer;
+        }
+        if (context === 'server') {
+            const parts = location.pathname.split('/');
+            const sub = parts[3];
+            if (!sub) return faTerminal;
+            const icons: Record<string, any> = {
+                files: faFolderOpen,
+                databases: faDatabase,
+                schedules: faClock,
+                users: faUsers,
+                backups: faArchive,
+                network: faNetworkWired,
+                subdomain: faGlobe,
+                startup: faPlayCircle,
+                versions: faCubes,
+                players: faGamepad,
+                store: faBolt,
+                settings: faCog,
+                activity: faHistory,
+            };
+            if (location.pathname.includes('/minecraft/config')) {
+                return faSlidersH;
+            }
+            return icons[sub] || faTerminal;
+        }
+        return faServer;
     };
 
     return (
@@ -72,24 +134,32 @@ const AppHeader: React.FC<Props> = ({ context, server, onToggleMobileSidebar }) 
                 <div className='flex items-center gap-2 text-xs'>
                     <Link
                         to='/'
-                        className='text-neutral-400 hover:text-neutral-200 transition-colors font-medium no-underline'
+                        className='text-neutral-400 hover:text-neutral-200 transition-colors font-medium no-underline flex items-center gap-1.5'
                     >
-                        NXSLab
+                        <FontAwesomeIcon icon={faHome} className='text-[11px] text-violet-400' />
+                        <span>NXSLab</span>
                     </Link>
                     <FontAwesomeIcon icon={faChevronRight} className='text-[8px] text-neutral-600' />
                     {context === 'server' && server ? (
                         <>
                             <Link
                                 to={`/server/${server.id}`}
-                                className='text-neutral-400 hover:text-neutral-200 transition-colors font-medium truncate max-w-[120px] sm:max-w-[180px] no-underline'
+                                className='text-neutral-400 hover:text-neutral-200 transition-colors font-medium truncate max-w-[120px] sm:max-w-[180px] no-underline flex items-center gap-1.5'
                             >
-                                {server.name}
+                                <FontAwesomeIcon icon={faServer} className='text-[10px] text-neutral-500' />
+                                <span className='truncate'>{server.name}</span>
                             </Link>
                             <FontAwesomeIcon icon={faChevronRight} className='text-[8px] text-neutral-600' />
-                            <span className='text-violet-400 font-semibold tracking-tight'>{getPageTitle()}</span>
+                            <span className='text-violet-400 font-semibold tracking-tight flex items-center gap-1.5'>
+                                <FontAwesomeIcon icon={getPageIcon()} className='text-[11px]' />
+                                <span>{getPageTitle()}</span>
+                            </span>
                         </>
                     ) : (
-                        <span className='text-violet-400 font-semibold tracking-tight'>{getPageTitle()}</span>
+                        <span className='text-violet-400 font-semibold tracking-tight flex items-center gap-1.5'>
+                            <FontAwesomeIcon icon={getPageIcon()} className='text-[11px]' />
+                            <span>{getPageTitle()}</span>
+                        </span>
                     )}
                 </div>
             </div>

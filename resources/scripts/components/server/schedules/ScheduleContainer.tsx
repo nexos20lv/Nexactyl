@@ -13,6 +13,8 @@ import tw from 'twin.macro';
 import GreyRowBox from '@/components/elements/GreyRowBox';
 import { Button } from '@/components/elements/button/index';
 import ServerContentBlock from '@/components/elements/ServerContentBlock';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 export default () => {
     const match = useRouteMatch();
@@ -68,7 +70,8 @@ export default () => {
                         <div css={tw`mt-8 flex justify-end`}>
                             <EditScheduleModal visible={visible} onModalDismissed={() => setVisible(false)} />
                             <Button type={'button'} onClick={() => setVisible(true)}>
-                                Create schedule
+                                <FontAwesomeIcon icon={faPlus} className='mr-2 text-xs' />
+                                Créer une tâche
                             </Button>
                         </div>
                     </Can>

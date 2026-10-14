@@ -2,23 +2,34 @@ import React from 'react';
 import FlashMessageRender from '@/components/FlashMessageRender';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 import tw from 'twin.macro';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 type Props = Readonly<
     React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
         title?: string;
+        icon?: IconProp;
         borderColor?: string;
         showFlashes?: string | boolean;
         showLoadingOverlay?: boolean;
     }
 >;
 
-const ContentBox = ({ title, borderColor, showFlashes, showLoadingOverlay, children, ...props }: Props) => (
+const ContentBox = ({ title, icon, borderColor, showFlashes, showLoadingOverlay, children, ...props }: Props) => (
     <div {...props}>
         {title && (
             <div css={tw`flex items-center mb-4 px-1`}>
-                <div
-                    css={tw`w-1.5 h-5 bg-gradient-to-b from-violet-500 to-fuchsia-500 rounded-full mr-3 shadow-[0_0_8px_rgba(139,92,246,0.8)]`}
-                />
+                {icon ? (
+                    <div
+                        css={tw`w-8 h-8 rounded-xl bg-violet-600/20 border border-violet-500/30 flex items-center justify-center text-violet-300 text-sm mr-3 shadow-[0_0_12px_rgba(139,92,246,0.25)]`}
+                    >
+                        <FontAwesomeIcon icon={icon} />
+                    </div>
+                ) : (
+                    <div
+                        css={tw`w-1.5 h-5 bg-gradient-to-b from-violet-500 to-fuchsia-500 rounded-full mr-3 shadow-[0_0_8px_rgba(139,92,246,0.8)]`}
+                    />
+                )}
                 <h2 css={tw`text-white font-bold text-xl tracking-tight`}>{title}</h2>
             </div>
         )}
