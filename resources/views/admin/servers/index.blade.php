@@ -49,7 +49,11 @@
                                 <td><a href="{{ route('admin.users.view', $server->user->id) }}">{{ $server->user->username }}</a></td>
                                 <td><a href="{{ route('admin.nodes.view', $server->node->id) }}">{{ $server->node->name }}</a></td>
                                 <td>
-                                    <code>{{ $server->allocation->alias }}:{{ $server->allocation->port }}</code>
+                                    @if($server->subdomain)
+                                        <code style="color: #7c3aed; font-weight: bold;" title="{{ $server->allocation->alias }}:{{ $server->allocation->port }}"><i class="fa fa-globe"></i> {{ $server->subdomain->subdomain }}.{{ $server->subdomain->domain }}</code>
+                                    @else
+                                        <code>{{ $server->allocation->alias }}:{{ $server->allocation->port }}</code>
+                                    @endif
                                 </td>
                                 <td class="text-center">
                                     @if($server->isSuspended())

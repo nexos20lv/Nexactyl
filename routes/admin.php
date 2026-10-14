@@ -119,6 +119,9 @@ Route::group(['prefix' => 'servers'], function () {
         Route::get('/view/{server:id}/startup', [Admin\Servers\ServerViewController::class, 'startup'])->name('admin.servers.view.startup');
         Route::get('/view/{server:id}/database', [Admin\Servers\ServerViewController::class, 'database'])->name('admin.servers.view.database');
         Route::get('/view/{server:id}/mounts', [Admin\Servers\ServerViewController::class, 'mounts'])->name('admin.servers.view.mounts');
+        Route::get('/view/{server:id}/subdomain', [Admin\Servers\ServerViewController::class, 'subdomain'])->name('admin.servers.view.subdomain');
+        Route::post('/view/{server:id}/subdomain', [Admin\Servers\ServerViewController::class, 'updateSubdomain'])->name('admin.servers.view.subdomain.update');
+        Route::delete('/view/{server:id}/subdomain', [Admin\Servers\ServerViewController::class, 'deleteSubdomain'])->name('admin.servers.view.subdomain.delete');
     });
 
     Route::get('/view/{server:id}/manage', [Admin\Servers\ServerViewController::class, 'manage'])->name('admin.servers.view.manage');

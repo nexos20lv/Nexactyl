@@ -6,6 +6,11 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Pterodactyl\Models\Nest;
 use Pterodactyl\Models\Server;
+use Pterodactyl\Models\ServerSubdomain;
+use Illuminate\Http\RedirectResponse;
+use Prologue\Alerts\AlertsMessageBag;
+use Illuminate\Support\Facades\Http;
+use Pterodactyl\Contracts\Repository\SettingsRepositoryInterface;
 use Pterodactyl\Exceptions\DisplayException;
 use Pterodactyl\Http\Controllers\Controller;
 use Pterodactyl\Services\Servers\EnvironmentService;
@@ -30,6 +35,8 @@ class ServerViewController extends Controller
         private NestRepository $nestRepository,
         private NodeRepository $nodeRepository,
         private EnvironmentService $environmentService,
+        private AlertsMessageBag $alert,
+        private SettingsRepositoryInterface $settings,
     ) {
     }
 
@@ -147,4 +154,139 @@ class ServerViewController extends Controller
     {
         return view('admin.servers.view.delete', compact('server'));
     }
+
+    /**
+     * Returns the server custom subdomain view.
+     */
+    public function subdomain(Request $request, Server $server): View
+    {
+        $sub = $server->subdomain;
+        $raw = (string) $this->settings->get('settings::nxslab:subdomain:available_domains', "nxslab.in\nplay.nxslab.in");
+        $lines = preg_split('/[\r\n,]+/', $raw);
+        $availableDomains = [];
+
+        foreach ($lines as $line) {
+            $line = strtolower(trim($line));
+            if (!empty($line) && !in_array($line, $availableDomains, true)) {
+                $availableDomains[] = $line;
+            }
+        }
+
+        if (empty($availableDomains)) {
+            $availableDomains = ['nxslab.in'];
+        }
+
+        $targetHost = (string) $this->settings->get('settings::nxslab:subdomain:target_host', 'node.nxslab.in');
+
+        return view('admin.servers.view.subdomain', compact('server', 'sub', 'availableDomains', 'targetHost'));
+    }
+
+    /**
+     * Updates or assigns a custom subdomain to the server.
+     */
+    public function updateSubdomain(Request $request, Server $server): RedirectResponse
+    {
+        $request->validate([
+            'subdomain' => 'required|alpha_dash|min:3|max:32',
+            'domain' => 'required|string',
+        ]);
+
+        $subdomain = strtolower($request->input('subdomain'));
+        $domain = strtolower($request->input('domain'));
+
+        $exists = ServerSubdomain::where('subdomain', $subdomain)
+            ->where('domain', $domain)
+            ->where('server_id', '!=', $server->id)
+            ->exists();
+
+        if ($exists) {
+            $this->alert->danger("Le sous-domaine '{$subdomain}.{$domain}' est déjà utilisé par un autre serveur.")->flash();
+            return redirect()->route('admin.servers.view.subdomain', $server->id);
+        }
+
+        $allocation = $server->allocation;
+        if (!$allocation) {
+            $this->alert->danger("Ce serveur ne possède aucune allocation réseau.")->flash();
+            return redirect()->route('admin.servers.view.subdomain', $server->id);
+        }
+
+        $port = (int) $allocation->port;
+        $target = (string) $this->settings->get('settings::nxslab:subdomain:target_host', 'node.nxslab.in');
+        $cfId = null;
+
+        $autoSync = (bool) $this->settings->get('settings::nxslab:cloudflare:auto_sync', true);
+        $cfToken = $this->settings->get('settings::nxslab:cloudflare:api_token', env('CLOUDFLARE_API_TOKEN', ''));
+        $cfZone = $this->settings->get('settings::nxslab:cloudflare:zone_id', env('CLOUDFLARE_ZONE_ID', ''));
+
+        if ($autoSync && !empty($cfToken) && !empty($cfZone)) {
+            try {
+                $srvData = [
+                    'type' => 'SRV',
+                    'name' => "_minecraft._tcp.{$subdomain}.{$domain}",
+                    'data' => [
+                        'service' => '_minecraft',
+                        'proto' => '_tcp',
+                        'name' => "{$subdomain}.{$domain}",
+                        'priority' => 0,
+                        'weight' => 5,
+                        'port' => $port,
+                        'target' => $target,
+                    ],
+                    'ttl' => 120,
+                ];
+
+                $res = Http::withToken($cfToken)->timeout(6)->post("https://api.cloudflare.com/client/v4/zones/{$cfZone}/dns_records", $srvData);
+                if ($res->successful()) {
+                    $cfId = $res->json('result.id');
+                }
+            } catch (\Throwable) {
+                // Ignore CF error
+            }
+        }
+
+        ServerSubdomain::updateOrCreate(
+            ['server_id' => $server->id],
+            [
+                'user_id' => $server->owner_id,
+                'subdomain' => $subdomain,
+                'domain' => $domain,
+                'port' => $port,
+                'target' => $target,
+                'protocol' => '_tcp',
+                'service' => '_minecraft',
+                'cloudflare_id' => $cfId,
+                'status' => 'active',
+            ]
+        );
+
+        $this->alert->success("Le sous-domaine '{$subdomain}.{$domain}' a été configuré avec succès.")->flash();
+
+        return redirect()->route('admin.servers.view.subdomain', $server->id);
+    }
+
+    /**
+     * Deletes the custom subdomain for the server.
+     */
+    public function deleteSubdomain(Request $request, Server $server): RedirectResponse
+    {
+        $sub = $server->subdomain;
+        if ($sub) {
+            $cfToken = $this->settings->get('settings::nxslab:cloudflare:api_token', env('CLOUDFLARE_API_TOKEN', ''));
+            $cfZone = $this->settings->get('settings::nxslab:cloudflare:zone_id', env('CLOUDFLARE_ZONE_ID', ''));
+
+            if (!empty($cfToken) && !empty($cfZone) && !empty($sub->cloudflare_id)) {
+                try {
+                    Http::withToken($cfToken)->timeout(5)->delete("https://api.cloudflare.com/client/v4/zones/{$cfZone}/dns_records/{$sub->cloudflare_id}");
+                } catch (\Throwable) {
+                    // Ignore
+                }
+            }
+
+            $sub->delete();
+            $this->alert->success("Le sous-domaine a été supprimé.")->flash();
+        }
+
+        return redirect()->route('admin.servers.view.subdomain', $server->id);
+    }
 }
+

@@ -105,6 +105,17 @@
                                 <td><code>{{ $server->io }}</code></td>
                             </tr>
                             <tr>
+                                <td>Custom Subdomain</td>
+                                <td>
+                                    @if($server->subdomain)
+                                        <code style="color: #7c3aed; font-weight: bold; font-size: 13px;">{{ $server->subdomain->subdomain }}.{{ $server->subdomain->domain }}</code>
+                                        <span class="label label-success"><i class="fa fa-check"></i> Active</span>
+                                    @else
+                                        <span class="label label-default">None Assigned</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>Default Connection</td>
                                 <td><code>{{ $server->allocation->ip }}:{{ $server->allocation->port }}</code></td>
                             </tr>
