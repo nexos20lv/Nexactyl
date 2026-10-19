@@ -45,7 +45,13 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
         });
     };
 
-    const serverCategories = ['GESTION', 'MINECRAFT', 'RÉSEAU', 'EXTENSIONS', 'CONFIGURATION'];
+    const serverCategories = [
+        'GESTION',
+        ...(server?.isMinecraft ? ['MINECRAFT'] : []),
+        'RÉSEAU',
+        'EXTENSIONS',
+        'CONFIGURATION',
+    ];
 
     return (
         <aside
@@ -154,7 +160,10 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
                     <div className='space-y-5'>
                         {serverCategories.map((cat) => {
                             const catRoutes = routes.server.filter(
-                                (route) => (route.category || 'GESTION') === cat && route.name
+                                (route) =>
+                                    (route.category || 'GESTION') === cat &&
+                                    route.name &&
+                                    (!route.minecraftOnly || Boolean(server?.isMinecraft))
                             );
                             if (catRoutes.length === 0) return null;
 
