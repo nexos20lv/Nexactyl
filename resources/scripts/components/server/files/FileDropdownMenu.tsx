@@ -24,8 +24,7 @@ import useFlash from '@/plugins/useFlash';
 import tw from 'twin.macro';
 import { FileObject } from '@/api/server/files/loadDirectory';
 import useFileManagerSwr from '@/plugins/useFileManagerSwr';
-import DropdownMenu from '@/components/elements/DropdownMenu';
-import styled from 'styled-components/macro';
+import DropdownMenu, { DropdownButtonRow } from '@/components/elements/DropdownMenu';
 import useEventListener from '@/plugins/useEventListener';
 import compressFiles from '@/api/server/files/compressFiles';
 import decompressFiles from '@/api/server/files/decompressFiles';
@@ -35,23 +34,21 @@ import { Dialog } from '@/components/elements/dialog';
 
 type ModalType = 'rename' | 'move' | 'chmod';
 
-const StyledRow = styled.div<{ $danger?: boolean }>`
-    ${tw`p-2 flex items-center rounded`};
-    ${(props) =>
-        props.$danger ? tw`hover:bg-red-100 hover:text-red-700` : tw`hover:bg-neutral-100 hover:text-neutral-700`};
-`;
-
-interface RowProps extends React.HTMLAttributes<HTMLDivElement> {
+const Row = ({
+    icon,
+    title,
+    danger,
+    onClick,
+}: {
     icon: IconDefinition;
     title: string;
-    $danger?: boolean;
-}
-
-const Row = ({ icon, title, ...props }: RowProps) => (
-    <StyledRow {...props}>
+    danger?: boolean;
+    onClick: (e: React.MouseEvent<any, MouseEvent>) => void;
+}) => (
+    <DropdownButtonRow danger={danger} onClick={onClick}>
         <FontAwesomeIcon icon={icon} css={tw`text-xs`} fixedWidth />
-        <span css={tw`ml-2`}>{title}</span>
-    </StyledRow>
+        <span css={tw`ml-2.5`}>{title}</span>
+    </DropdownButtonRow>
 );
 
 const FileDropdownMenu = ({ file }: { file: FileObject }) => {
@@ -74,8 +71,7 @@ const FileDropdownMenu = ({ file }: { file: FileObject }) => {
     const doDeletion = () => {
         clearFlashes('files');
 
-        // For UI speed, immediately remove the file from the listing before calling the deletion function.
-        // If the delete actually fails, we'll fetch the current directory contents again automatically.
+        // Immediately update UI optimistically
         mutate((files) => files.filter((f) => f.key !== file.key), false);
 
         deleteFiles(uuid, directory, [file.name]).catch((error) => {
@@ -132,63 +128,80 @@ const FileDropdownMenu = ({ file }: { file: FileObject }) => {
             <Dialog.Confirm
                 open={showConfirmation}
                 onClose={() => setShowConfirmation(false)}
-                title={`Delete ${file.isFile ? 'File' : 'Directory'}`}
-                confirm={'Delete'}
+                title={`Supprimer ${file.isFile ? 'le fichier' : 'le dossier'}`}
+                confirm={'Supprimer'}
                 onConfirmed={doDeletion}
             >
-                You will not be able to recover the contents of&nbsp;
-                <span className={'font-semibold text-gray-50'}>{file.name}</span> once deleted.
+                Vous ne pourrez pas récupérer le contenu de&nbsp;
+                <span className={'font-semibold text-white'}>{file.name}</span> une fois supprimé.
             </Dialog.Confirm>
+
+            {modal === 'chmod' && (
+                <ChmodFileModal
+                    visible
+                    appear
+                    files={[{ file: file.name, mode: file.modeBits }]}
+                    onDismissed={() => setModal(null)}
+                />
+            )}
+
+            {(modal === 'rename' || modal === 'move') && (
+                <RenameFileModal
+                    visible
+                    appear
+                    files={[file.name]}
+                    useMoveTerminology={modal === 'move'}
+                    onDismissed={() => setModal(null)}
+                />
+            )}
+
+            <SpinnerOverlay visible={showSpinner} fixed size={'large'} />
+
             <DropdownMenu
                 ref={onClickRef}
                 renderToggle={(onClick) => (
-                    <div css={tw`px-4 py-2 hover:text-white`} onClick={onClick}>
-                        <FontAwesomeIcon icon={faEllipsisH} />
-                        {modal ? (
-                            modal === 'chmod' ? (
-                                <ChmodFileModal
-                                    visible
-                                    appear
-                                    files={[{ file: file.name, mode: file.modeBits }]}
-                                    onDismissed={() => setModal(null)}
-                                />
-                            ) : (
-                                <RenameFileModal
-                                    visible
-                                    appear
-                                    files={[file.name]}
-                                    useMoveTerminology={modal === 'move'}
-                                    onDismissed={() => setModal(null)}
-                                />
-                            )
-                        ) : null}
-                        <SpinnerOverlay visible={showSpinner} fixed size={'large'} />
-                    </div>
+                    <button
+                        type={'button'}
+                        aria-label={'Actions sur le fichier'}
+                        title={'Actions'}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onClick(e);
+                        }}
+                        className={
+                            'p-1.5 w-8 h-8 rounded-xl text-neutral-400 hover:text-white hover:bg-violet-600/20 active:scale-95 transition-all flex items-center justify-center cursor-pointer border-0 bg-transparent outline-none focus:ring-1 focus:ring-violet-500/50'
+                        }
+                    >
+                        <FontAwesomeIcon icon={faEllipsisH} className={'text-sm'} />
+                    </button>
                 )}
             >
-                <Can action={'file.update'}>
-                    <Row onClick={() => setModal('rename')} icon={faPencilAlt} title={'Rename'} />
-                    <Row onClick={() => setModal('move')} icon={faLevelUpAlt} title={'Move'} />
-                    <Row onClick={() => setModal('chmod')} icon={faFileCode} title={'Permissions'} />
-                </Can>
-                {file.isFile && (
-                    <Can action={'file.create'}>
-                        <Row onClick={doCopy} icon={faCopy} title={'Copy'} />
+                <div className={'space-y-0.5'}>
+                    <Can action={'file.update'}>
+                        <Row onClick={() => setModal('rename')} icon={faPencilAlt} title={'Renommer'} />
+                        <Row onClick={() => setModal('move')} icon={faLevelUpAlt} title={'Déplacer'} />
+                        <Row onClick={() => setModal('chmod')} icon={faFileCode} title={'Permissions'} />
                     </Can>
-                )}
-                {file.isArchiveType() ? (
-                    <Can action={'file.create'}>
-                        <Row onClick={doUnarchive} icon={faBoxOpen} title={'Unarchive'} />
+                    {file.isFile && (
+                        <Can action={'file.create'}>
+                            <Row onClick={doCopy} icon={faCopy} title={'Dupliquer'} />
+                        </Can>
+                    )}
+                    {file.isArchiveType() ? (
+                        <Can action={'file.create'}>
+                            <Row onClick={doUnarchive} icon={faBoxOpen} title={'Désarchiver'} />
+                        </Can>
+                    ) : (
+                        <Can action={'file.archive'}>
+                            <Row onClick={doArchive} icon={faFileArchive} title={'Compresser'} />
+                        </Can>
+                    )}
+                    {file.isFile && <Row onClick={doDownload} icon={faFileDownload} title={'Télécharger'} />}
+                    <Can action={'file.delete'}>
+                        <Row onClick={() => setShowConfirmation(true)} icon={faTrashAlt} title={'Supprimer'} danger />
                     </Can>
-                ) : (
-                    <Can action={'file.archive'}>
-                        <Row onClick={doArchive} icon={faFileArchive} title={'Archive'} />
-                    </Can>
-                )}
-                {file.isFile && <Row onClick={doDownload} icon={faFileDownload} title={'Download'} />}
-                <Can action={'file.delete'}>
-                    <Row onClick={() => setShowConfirmation(true)} icon={faTrashAlt} title={'Delete'} $danger />
-                </Can>
+                </div>
             </DropdownMenu>
         </>
     );

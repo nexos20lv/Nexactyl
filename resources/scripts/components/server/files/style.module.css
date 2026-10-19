@@ -18,7 +18,8 @@
     @apply flex items-center relative cursor-pointer border border-violet-500/10 rounded-xl mb-1.5 text-sm no-underline shadow-sm transition-all duration-150;
     background-color: rgba(14, 12, 24, 0.9);
 
-    &:hover {
+    &:hover,
+    &:focus-within {
         @apply text-white border-violet-500/40 shadow-md shadow-violet-950/20;
         background-color: #131024;
     }
