@@ -8,11 +8,15 @@ import {
     faServer,
     faGlobe,
     faChevronRight,
+    faCopy,
+    faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { Server } from '@/api/server/getServer';
 import getServerResourceUsage, { ServerStats } from '@/api/server/getServerResourceUsage';
 import { bytesToString, ip, mbToBytes } from '@/lib/formatters';
+import copy from 'copy-to-clipboard';
+import { usePrivacyMode } from '@/plugins/usePrivacyMode';
 
 type Timer = ReturnType<typeof setInterval>;
 
@@ -20,6 +24,8 @@ const ServerRow = ({ server, className }: { server: Server; className?: string }
     const interval = useRef<Timer>(null) as React.MutableRefObject<Timer>;
     const [isSuspended, setIsSuspended] = useState(server.status === 'suspended');
     const [stats, setStats] = useState<ServerStats | null>(null);
+    const [copied, setCopied] = useState(false);
+    const [hideIp] = usePrivacyMode();
 
     const getStats = () =>
         getServerResourceUsage(server.uuid)
@@ -63,6 +69,16 @@ const ServerRow = ({ server, className }: { server: Server; className?: string }
 
     const isRunning = stats?.status === 'running';
     const isOffline = !stats || stats?.status === 'offline';
+
+    const onCopyAddress = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (allocString && allocString !== 'N/A') {
+            copy(allocString);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
+    };
 
     return (
         <Link
@@ -122,7 +138,29 @@ const ServerRow = ({ server, className }: { server: Server; className?: string }
                                     icon={server.subdomain ? faGlobe : faEthernet}
                                     className='text-[10px] text-violet-400'
                                 />
-                                {allocString}
+                                <span
+                                    className={
+                                        hideIp
+                                            ? 'filter blur-[5px] select-none transition-all duration-200'
+                                            : 'transition-all duration-200'
+                                    }
+                                >
+                                    {allocString}
+                                </span>
+                                <button
+                                    type='button'
+                                    onClick={onCopyAddress}
+                                    title={copied ? 'Copié !' : "Copier l'adresse"}
+                                    className='ml-1 text-neutral-400 hover:text-violet-300'
+                                >
+                                    <FontAwesomeIcon
+                                        icon={copied ? faCheck : faCopy}
+                                        className={`text-[10px] ${copied ? 'text-emerald-400' : ''}`}
+                                    />
+                                </button>
+                            </span>
+                            <span className='text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/[0.03] border border-white/[0.05] text-neutral-400'>
+                                {server.node || 'Node 1'}
                             </span>
                             {server.description && (
                                 <span className='text-neutral-500 text-xs truncate max-w-xs hidden sm:inline'>

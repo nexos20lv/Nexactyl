@@ -17,6 +17,7 @@ import StatBlock from '@/components/server/console/StatBlock';
 import useWebsocketEvent from '@/plugins/useWebsocketEvent';
 import classNames from 'classnames';
 import { capitalize } from '@/lib/strings';
+import { usePrivacyMode } from '@/plugins/usePrivacyMode';
 
 type Stats = Record<'memory' | 'cpu' | 'disk' | 'uptime' | 'rx' | 'tx', number>;
 
@@ -42,6 +43,7 @@ const Limit = ({ limit, children }: { limit: string | null; children: React.Reac
 
 const ServerDetailsBlock = ({ className }: { className?: string }) => {
     const [stats, setStats] = useState<Stats>({ memory: 0, cpu: 0, disk: 0, uptime: 0, tx: 0, rx: 0 });
+    const [hideIp] = usePrivacyMode();
 
     const status = ServerContext.useStoreState((state) => state.status.value);
     const connected = ServerContext.useStoreState((state) => state.socket.connected);
@@ -98,7 +100,15 @@ const ServerDetailsBlock = ({ className }: { className?: string }) => {
                 title={subdomain ? 'Domaine du Serveur' : 'Adresse IP'}
                 copyOnClick={displayAddress}
             >
-                {displayAddress}
+                <span
+                    className={
+                        hideIp
+                            ? 'filter blur-[5px] select-none transition-all duration-200'
+                            : 'transition-all duration-200'
+                    }
+                >
+                    {displayAddress}
+                </span>
             </StatBlock>
             <StatBlock
                 icon={faClock}
