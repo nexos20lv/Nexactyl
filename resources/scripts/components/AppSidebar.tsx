@@ -56,7 +56,7 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
     return (
         <aside
             style={{
-                background: 'rgba(8, 7, 14, 0.95)',
+                background: '#090812',
                 backdropFilter: 'blur(24px) saturate(160%)',
                 WebkitBackdropFilter: 'blur(24px) saturate(160%)',
             }}
@@ -94,7 +94,7 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
 
                 {/* Server Quick Info & Back Button */}
                 {context === 'server' && server && (
-                    <div className='p-3 border-b border-white/[0.06] bg-white/[0.02]'>
+                    <div className='p-3 border-b border-white/[0.06]'>
                         <Link
                             to='/'
                             onClick={onCloseMobile}
@@ -107,7 +107,7 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
                             <FontAwesomeIcon icon={faChevronLeft} className='text-[10px]' />
                             <span>Tous mes serveurs</span>
                         </Link>
-                        <div className='p-3 rounded-2xl bg-[#0e0c18] border border-white/[0.07] shadow-sm'>
+                        <div className='p-3 rounded-2xl bg-white/[0.03] border border-white/[0.07] shadow-sm'>
                             <div className='flex items-center justify-between mb-1'>
                                 <span
                                     className='text-xs font-bold text-neutral-100 truncate max-w-[140px]'
@@ -232,7 +232,7 @@ const AppSidebar: React.FC<Props> = ({ context, server, onCloseMobile }) => {
             </div>
 
             {/* Bottom Credits & User Profile */}
-            <div className='shrink-0 border-t border-white/[0.06] bg-[#06050a] p-3 space-y-2.5'>
+            <div className='shrink-0 border-t border-white/[0.06] p-3 space-y-2.5'>
                 {/* Credits Card */}
                 <div className='p-2.5 rounded-2xl bg-gradient-to-r from-violet-950/40 to-purple-950/20 border border-violet-500/30 flex items-center justify-between shadow-sm'>
                     <div className='flex items-center gap-2'>
